@@ -149,7 +149,8 @@ var ball = Bodies.circle(700,500,15,{
     fillStyle: "white",
     strokeStyle: "black",
     lineWidth: 4
-  }
+  },
+  label: "ball"
 });
 
 var circle = Bodies.circle(450,300,20,{
@@ -183,7 +184,8 @@ var circle2 = Bodies.circle(500,250,20,{
     mask: CAT_BALL | CAT_PLAYER
   }
 });
-
+circle.isPlayer = true;
+circle2.isPlayer = true;
 // add all of the bodies to the world
 World.add(engine.world, [circle, circle2, ball]);
 
@@ -191,7 +193,7 @@ World.add(engine.world, [circle, circle2, ball]);
 
 // run the engine
 Engine.run(engine);
-
+var kicking = false;
 function update() {
   var gamepads = navigator.getGamepads();
   var pad = gamepads[0]
@@ -204,12 +206,38 @@ function update() {
     }
     if (pad.buttons[0].pressed) {
       circle.render.strokeStyle = "white";
+      kicking = true;
     }
     else {
       circle.render.strokeStyle = "black";
+      kicking = false;
     }
   }
   requestAnimationFrame(update);
 }
-
+Matter.Body.applyForce(ball, ball.position, Matter.Vector.create(0.1,0));
 requestAnimationFrame(update);
+
+function possibleKick(pawn, ball) {
+  if (kicking) {
+    circle.render.strokeStyle = "black";
+    kicking = false;
+    Matter.Body.applyForce(ball, ball.position, Matter.Vector.create(0.1,0));
+    console.log("kick!");
+  }
+}
+
+function collisionHandler(event) {
+  for (var i = 0; i < event.pairs.length; i++) {
+    if (event.pairs[i].bodyA == ball && event.pairs[i].bodyB.isPlayer)
+    {
+      possibleKick(event.pairs[i].bodyB, event.pairs[i].bodyA);
+    }
+    else if (event.pairs[i].bodyB == ball && event.pairs[i].bodyA.isPlayer) {
+      possibleKick(event.pairs[i].bodyA, event.pairs[i].bodyB);
+    }
+  }
+}
+
+Matter.Events.on(engine, "collisionActive", collisionHandler);
+Matter.Events.on(engine, "collisionStart", collisionHandler);
