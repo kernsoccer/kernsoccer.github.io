@@ -185,7 +185,9 @@ var circle2 = Bodies.circle(500,250,20,{
   }
 });
 circle.isPlayer = true;
+circle.isKicking = false;
 circle2.isPlayer = true;
+circle2.isKicking = false;
 // add all of the bodies to the world
 World.add(engine.world, [circle, circle2, ball]);
 
@@ -194,6 +196,8 @@ World.add(engine.world, [circle, circle2, ball]);
 // run the engine
 Engine.run(engine);
 var kicking = false;
+var canPress = true;
+
 function update() {
   var gamepads = navigator.getGamepads();
   var pad = gamepads[0]
@@ -205,25 +209,41 @@ function update() {
       Matter.Body.applyForce(circle, circle.position, Matter.Vector.mult(vect,0.01));
     }
     if (pad.buttons[0].pressed) {
-      circle.render.strokeStyle = "white";
-      kicking = true;
+      if (canPress) {
+        kicking = true;
+        canPress = false;
+      }
     }
     else {
-      circle.render.strokeStyle = "black";
+      canPress = true;
+
       kicking = false;
     }
+    if (kicking)
+      circle.render.strokeStyle = "white";
+    else
+      circle.render.strokeStyle = "black";
   }
   requestAnimationFrame(update);
 }
-Matter.Body.applyForce(ball, ball.position, Matter.Vector.create(0.1,0));
+
 requestAnimationFrame(update);
+
+var currentKick = undefined;
 
 function possibleKick(pawn, ball) {
   if (kicking) {
     circle.render.strokeStyle = "black";
     kicking = false;
-    Matter.Body.applyForce(ball, ball.position, Matter.Vector.create(0.1,0));
-    console.log("kick!");
+    currentKick = Matter.Vector.mult(Matter.Vector.normalise(Matter.Vector.sub(ball.position, pawn.position)),0.035);
+    console.log(currentKick);
+  }
+}
+
+function beforeUpdateHandler(event) {
+  if (currentKick !== undefined) {
+    Matter.Body.applyForce(ball, ball.position, currentKick);
+    currentKick = undefined;
   }
 }
 
@@ -241,3 +261,4 @@ function collisionHandler(event) {
 
 Matter.Events.on(engine, "collisionActive", collisionHandler);
 Matter.Events.on(engine, "collisionStart", collisionHandler);
+Matter.Events.on(engine, "beforeUpdate", beforeUpdateHandler);
