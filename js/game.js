@@ -12,24 +12,6 @@ var game = function() {
     var playerList = [];
     var activatedGamepads = {};
 
-    function initBall() {
-      ball = Bodies.circle(700,500,15,{
-        restitution: 0.4,
-        intertia: Number.POSITIVE_INFINITY,
-        collisionFilter: {
-          category: CAT_BALL,
-          mask: CAT_PLAYER | CAT_RESTRICT_BALL
-        },
-        render: {
-          fillStyle: "white",
-          strokeStyle: "black",
-          lineWidth: 4
-        },
-        isBall: true
-      });
-      World.add(engine.world, ball);
-    }
-
     function possibleKick(pawn, ball) {
       if (pawn.isKicking) {
         pawn.render.strokeStyle = "black";
@@ -98,7 +80,7 @@ var game = function() {
       }
     }
     function start() {
-      initBall();
+      Ball();
       currentGameState = gameState.RUNNING;
     }
 
@@ -121,3 +103,5 @@ var game = function() {
 
 
 game.prepare();
+game.addPlayer(500,400,"red",0);
+game.start();

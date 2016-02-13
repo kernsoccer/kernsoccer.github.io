@@ -1,8 +1,14 @@
 var Player = function (positionX, positionY, team, padIdx) {
+  var MASS = 2;
+  var RESTITUTION = 0.4;
+  var FRICTION_AIR = 0.02;
+  var FORCE = 0.001;
+  var DEAD_ZONE = 0.2;
+
   var body = Bodies.circle(positionX,positionY,20,{
-    restitution: 0.4,
-    mass: 10,
-    frictionAir: 0.1,
+    restitution: RESTITUTION,
+    mass: MASS,
+    frictionAir: FRICTION_AIR,
     intertia: Number.POSITIVE_INFINITY,
     render: {
       fillStyle: team,
@@ -27,9 +33,9 @@ var Player = function (positionX, positionY, team, padIdx) {
 
       var vect = Matter.Vector.create(x,y);
 
-      // Apply force to body if it's above min-value.
-      if (Matter.Vector.magnitude(vect) > 0.1) {
-        Matter.Body.applyForce(body, body.position, Matter.Vector.mult(vect,0.01));
+      // Apply force to body if stick is out of dead zone.
+      if (Matter.Vector.magnitude(vect) > DEAD_ZONE) {
+        Matter.Body.applyForce(body, body.position, Matter.Vector.mult(vect,FORCE));
       }
 
       if (playerPad.buttons[0].pressed) {

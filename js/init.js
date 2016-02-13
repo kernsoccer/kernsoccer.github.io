@@ -10,7 +10,7 @@ var engine = Engine.create({
   }
 });
 
-engine.render.options.wireframes = false;
+engine.render.options.wireframes = true;
 engine.render.options.background = "#007500";
 engine.render.canvas.width = 1920;
 engine.render.canvas.height = 1080;
