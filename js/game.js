@@ -7,7 +7,7 @@ var game = function() {
     }
 
     var currentKick = undefined;
-    var ball = undefined;
+    var ball = Ball();
     var currentGameState = gameState.MENU;
     var playerList = [];
     var activatedGamepads = {};
@@ -80,9 +80,8 @@ var game = function() {
       }
     }
     function start() {
-      Ball();
+      ball.reset();
       currentGameState = gameState.RUNNING;
-      playingField.showRightBarrier();
     }
 
     function prepare() {
