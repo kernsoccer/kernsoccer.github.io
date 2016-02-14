@@ -10,10 +10,16 @@ var engine = Engine.create({
   }
 });
 
-engine.render.options.wireframes = true;
+var SCREEN_WIDTH = 1920;
+var SCREEN_HEIGHT = 1080;
+
+engine.render.options.wireframes = false;
 engine.render.options.background = "#007500";
-engine.render.canvas.width = 1920;
-engine.render.canvas.height = 1080;
+engine.render.options.showAngleIndicator = false;
+engine.render.options.showCollisions = true;
+
+engine.render.canvas.width = SCREEN_WIDTH;
+engine.render.canvas.height = SCREEN_HEIGHT;
 engine.world.gravity.y = 0;
 
 

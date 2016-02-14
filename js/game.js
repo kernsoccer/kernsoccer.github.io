@@ -82,6 +82,7 @@ var game = function() {
     function start() {
       Ball();
       currentGameState = gameState.RUNNING;
+      playingField.showRightBarrier();
     }
 
     function prepare() {

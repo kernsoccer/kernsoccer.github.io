@@ -9,7 +9,6 @@ var Player = function (positionX, positionY, team, padIdx) {
     restitution: RESTITUTION,
     mass: MASS,
     frictionAir: FRICTION_AIR,
-    intertia: Number.POSITIVE_INFINITY,
     render: {
       fillStyle: team,
       strokeStyle: "black",
@@ -32,10 +31,9 @@ var Player = function (positionX, positionY, team, padIdx) {
       var y = playerPad.axes[1];
 
       var vect = Matter.Vector.create(x,y);
-
       // Apply force to body if stick is out of dead zone.
       if (Matter.Vector.magnitude(vect) > DEAD_ZONE) {
-        Matter.Body.applyForce(body, body.position, Matter.Vector.mult(vect,FORCE));
+        Matter.Body.applyForce(body, body.position, Matter.Vector.mult(vect,body.isKicking?FORCE/2:FORCE));
       }
 
       if (playerPad.buttons[0].pressed) {
@@ -50,6 +48,7 @@ var Player = function (positionX, positionY, team, padIdx) {
       }
 
       body.render.strokeStyle = (body.isKicking) ? "white" : "black";
+      body.frictionAir = (body.isKicking) ? FRICTION_AIR * 2 : FRICTION_AIR;
     }
   }
 
