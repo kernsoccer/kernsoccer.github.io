@@ -17,15 +17,15 @@ var playingField = function() {
   var OPTIONS_GOAL_POST = {
     isStatic: true,
     collisionFilter: {
-      category: CAT_PLAYER,
-      mask: CAT_BALL | CAT_PLAYER
+      category: CATEGORY.PLAYER,
+      mask: CATEGORY.BALL | CATEGORY.PLAYER
     }
   };
   var OPTIONS_FIELD_LINE = {
     isStatic: true,
     collisionFilter: {
-      category: CAT_RESTRICT_BALL,
-      mask: CAT_BALL
+      category: CATEGORY.RESTRICT_BALL,
+      mask: CATEGORY.BALL
     }
   };
 
@@ -119,6 +119,9 @@ var playingField = function() {
   function createMiddle() {
     rightCircle = Matter.Composite.create();
     leftCircle = Matter.Composite.create();
+    middleLine = Matter.Composite.create();
+
+    // circles to restrict middle at kick off
     var interval = 100/CIRCLE_PARTS;
     for (var i = 0; i < CIRCLE_PARTS; i++) {
       var percentage = (interval * i) / 100;
@@ -148,7 +151,8 @@ var playingField = function() {
         { x: SCREEN_WIDTH/2 - x2, y: SCREEN_HEIGHT/2 - y2 }
       ], OPTIONS_DEFAULT));
     };
-    middleLine = Matter.Composite.create();
+
+    // middle line
     Matter.Composite.add(middleLine, createRect([
       { x: SCREEN_WIDTH/2 - 1, y: 0 },
       { x: SCREEN_WIDTH/2 + 1, y: 0 },
@@ -174,8 +178,8 @@ var playingField = function() {
         lineWidth: 1
       },
       collisionFilter: {
-        category: CAT_RESTRICT_BALL,
-        mask: CAT_BALL
+        category: CATEGORY.RESTRICT_BALL,
+        mask: CATEGORY.BALL
       }
     };
     var contraintOptions = {
@@ -214,20 +218,27 @@ var playingField = function() {
     World.add(engine.world, rightnet);
   }
 
+  var barrierActive = false;
   function showLeftBarrier() {
+    barrierActive = true;
     World.add(engine.world, leftCircle);
     World.add(engine.world, middleLine);
   }
 
   function showRightBarrier() {
+    barrierActive = true;
     World.add(engine.world, rightCircle);
     World.add(engine.world, middleLine);
   }
 
   function hideBarrier() {
-    World.remove(engine.world, rightCircle);
-    World.remove(engine.world, leftCircle);
-    World.remove(engine.world, middleLine);
+    if (barrierActive) {
+      World.remove(engine.world, rightCircle);
+      World.remove(engine.world, leftCircle);
+      World.remove(engine.world, middleLine);
+
+      barrierActive = false;
+    }
   }
 
   function init() {
@@ -235,11 +246,11 @@ var playingField = function() {
     createNets();
     createField();
     createMiddle();
-
-
   }
 
   return {
+    leftTeamLine: SCREEN_WIDTH/2 - FIELD_WIDTH/4,
+    rightTeamLine: SCREEN_WIDTH/2 + FIELD_WIDTH/4,
     showLeftBarrier: showLeftBarrier,
     showRightBarrier: showRightBarrier,
     hideBarrier: hideBarrier,

@@ -1,18 +1,11 @@
 var game = function() {
-
-    var gameState = {
-      MENU: 0,
-      RUNNING: 1,
-      PAUSED: 2
-    }
-
     var currentKick = undefined;
     var ball = Ball();
-    var currentGameState = gameState.MENU;
+    var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
-    var activatedGamepads = {};
 
-    function possibleKick(pawn, ball) {
+    function pawnTouchesBall(pawn, ball) {
+      playingField.hideBarrier();
       if (pawn.isKicking) {
         pawn.render.strokeStyle = "black";
         pawn.isKicking = false;
@@ -28,10 +21,10 @@ var game = function() {
         for (var i = 0; i < event.pairs.length; i++) {
           if (event.pairs[i].bodyA.isBall && event.pairs[i].bodyB.isPlayer)
           {
-            possibleKick(event.pairs[i].bodyB, event.pairs[i].bodyA);
+            pawnTouchesBall(event.pairs[i].bodyB, event.pairs[i].bodyA);
           }
           else if (event.pairs[i].bodyB.isBall && event.pairs[i].bodyA.isPlayer) {
-            possibleKick(event.pairs[i].bodyA, event.pairs[i].bodyB);
+            pawnTouchesBall(event.pairs[i].bodyA, event.pairs[i].bodyB);
           }
         }
       });
@@ -45,63 +38,83 @@ var game = function() {
     };
 
     function update() {
-      var gamepads = navigator.getGamepads();
+      var gamepadState = navigator.getGamepads();
 
-      if (currentGameState == gameState.MENU) {
-        for (var i = 0; i < gamepads.length; i++) {
-          if (gamepads[i]) {
-            if (gamepads[i].buttons[1].pressed) {
-              addPlayer(1800 - Math.random() * 900, Math.random() * 900, "red", i)
-            }
-            else if (gamepads[i].buttons[2].pressed) {
-              addPlayer(Math.random() * 900, Math.random() * 900, "blue", i)
-            }
-          }
-        }
-
-        if (gamepads[0] && gamepads[0].buttons[0].pressed) {
-          start();
-        }
+      for (var i = 0; i < playerList.length; i++) {
+        playerList[i].update(gamepadState[playerList[i].gamePadIndex]);
       }
-      else {
-        for (var i = 0; i < playerList.length; i++) {
-          playerList[i].update(gamepads);
-        }
-      }
-
+      // request next animation frame
       requestAnimationFrame(update);
-    }
+    };
 
-    function addPlayer(x, y, team, gamepadIdx) {
-      if (!activatedGamepads[gamepadIdx]) {
-        activatedGamepads[gamepadIdx] = true;
-
-        playerList.push(Player(x, y, team, gamepadIdx));
+    function resetTeam(players, positionX) {
+      var count = 0;
+      for (var i = 0; i < players.length; i++) {
+        count += players[i].pawnCount;
+      }
+      var offset = 100 * (count-1) / 2;
+      for (var i = 0; i < players.length; i++) {
+        var positions = [];
+        for (var p = 0; p < players[i].pawnCount; p++) {
+          positions.push({
+            x: positionX,
+            y: SCREEN_HEIGHT/2 - offset + 100 * --count
+          });
+        }
+        players[i].reset(positions);
       }
     }
-    function start() {
+
+    function start(options) {
+      var redTeam = [], blueTeam = [];
+
+      for (var i = 0; i < options.players.length; i++) {
+        var player = Player(
+          options.players[i].gamePadIndex,
+          options.players[i].team,
+          options.players[i].pawnCount);
+        playerList.push(player);
+
+        if (player.team == "red") {
+          redTeam.push(player);
+        }
+        else {
+          blueTeam.push(player);
+        }
+      }
+
+      resetTeam(redTeam, playingField.leftTeamLine );
+      resetTeam(blueTeam, playingField.rightTeamLine );
+      playingField.showRightBarrier();
       ball.reset();
-      currentGameState = gameState.RUNNING;
-    }
+      currentGameState = GAME_STATE.WARMUP;
+    };
 
     function prepare() {
       playingField.init();
       registerHandlers();
       requestAnimationFrame(update);
       Engine.run(engine);
-    }
+    };
 
     return {
       start: start,
-      pause:function() {
-         currentGameState = gameState.PAUSED;
-      },
-      prepare:prepare,
-      addPlayer: addPlayer
+      prepare:prepare
     }
 }();
 
-
 game.prepare();
-game.addPlayer(500,400,"red",0);
-game.start();
+game.start({
+  players: [
+    {
+      gamePadIndex: 0,
+      team: "red",
+      pawnCount: 2
+    },
+    {
+      gamePadIndex: 1,
+      team: "blue",
+      pawnCount: 2
+    }
+  ]
+});

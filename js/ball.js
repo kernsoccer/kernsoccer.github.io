@@ -7,8 +7,8 @@ var Ball = function () {
       mass: 1,
 
       collisionFilter: {
-        category: CAT_BALL,
-        mask: CAT_PLAYER | CAT_RESTRICT_BALL
+        category: CATEGORY.BALL,
+        mask: CATEGORY.PLAYER | CATEGORY.RESTRICT_BALL
       },
       render: {
         fillStyle: "white",

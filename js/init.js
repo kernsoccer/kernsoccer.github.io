@@ -24,6 +24,15 @@ engine.world.gravity.y = 0;
 
 
 // CATEGORIES:
-var CAT_BALL = 1;
-var CAT_PLAYER = 2;
-var CAT_RESTRICT_BALL = 4;
+var CATEGORY = {
+  BALL: 1,
+  PLAYER: 2,
+  RESTRICT_BALL: 4
+}
+
+var GAME_STATE = {
+  RUNNING: 0,
+  PAUSED: 1,
+  WARMUP: 2,
+  AFTER_GOAL: 3
+}
