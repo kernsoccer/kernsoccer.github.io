@@ -3,6 +3,8 @@ var game = function() {
     var ball = Ball();
     var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
+    var blueScorePanel = document.getElementById("blueScore");
+    var redScorePanel = document.getElementById("redScore");
 
     var teamScores = {
       red: 0,
@@ -15,7 +17,8 @@ var game = function() {
         pawn.render.strokeStyle = "black";
         pawn.isKicking = false;
         currentKick = {
-          force: Matter.Vector.mult(Matter.Vector.normalise(Matter.Vector.sub(ball.position, pawn.position)),0.035),
+          force: Matter.Vector.mult(Matter.Vector.normalise(
+            Matter.Vector.sub(ball.position, pawn.position)),0.035),
           ball: ball
         };
       }
@@ -46,6 +49,11 @@ var game = function() {
       });
     };
 
+    function updateScore() {
+      redScorePanel.innerText = teamScores.red;
+      blueScorePanel.innerText = teamScores.blue;
+    }
+
     function updateInputs() {
       var gamepadState = navigator.getGamepads();
 
@@ -62,6 +70,7 @@ var game = function() {
 
     function goalScored(scoreTeam, otherTeam) {
       currentGameState = GAME_STATE.AFTER_GOAL;
+      updateScore();
       window.setTimeout(function() {
         prepareKickoff(otherTeam);
         currentGameState = GAME_STATE.RUNNING;
@@ -137,13 +146,19 @@ var game = function() {
           options.players[i].pawnCount);
         playerList.push(player);
       }
-      prepareKickoff("red");
 
+      prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
       setGameStateDelayed(GAME_STATE.RUNNING, 2);
     };
 
+
     function prepare() {
+      teamScores = {
+        red: 0,
+        blue: 0
+      }
+      updateScore();
       playingField.init();
       registerHandlers();
       requestAnimationFrame(update);
@@ -158,6 +173,10 @@ var game = function() {
 
 game.prepare();
 game.start({
+  allowDraw: false,
+  duration: 180,
+  goalLimit: 0,
+  startingTeam: "blue",
   players: [
     {
       gamePadIndex: 1,

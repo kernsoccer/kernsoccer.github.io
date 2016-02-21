@@ -16,7 +16,8 @@ var Ball = function () {
         strokeStyle: "black",
         lineWidth: 4
       },
-      isBall: true
+      isBall: true,
+      label: "ball"
     });
   }
 
