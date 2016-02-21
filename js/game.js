@@ -119,6 +119,16 @@ game.start({
       gamePadIndex: 1,
       team: "blue",
       pawnCount: 2
+    },
+    {
+      gamePadIndex: 2,
+      team: "red",
+      pawnCount: 2
+    },
+    {
+      gamePadIndex: 3,
+      team: "blue",
+      pawnCount: 2
     }
   ]
 });

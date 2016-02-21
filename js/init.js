@@ -1,3 +1,6 @@
+
+//for (var i = 0; i < navigator.getGamepads()[1].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[1].buttons[i].pressed); }
+
 var Engine = Matter.Engine,
     World = Matter.World,
     Bodies = Matter.Bodies;
