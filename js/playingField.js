@@ -268,6 +268,8 @@ var playingField = function() {
   return {
     leftTeamLine: SCREEN_WIDTH/2 - FIELD_WIDTH/4,
     rightTeamLine: SCREEN_WIDTH/2 + FIELD_WIDTH/4,
+    leftGoalLine: LEFT_OFFSET,
+    rightGoalLine: RIGHT_OFFSET,
     showLeftBarrier: showLeftBarrier,
     showRightBarrier: showRightBarrier,
     hideBarrier: hideBarrier,

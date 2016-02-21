@@ -1,5 +1,5 @@
 var Ball = function () {
-  var body = createBall();
+  var body;
 
   function createBall() {
     return Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,15,{
@@ -20,6 +20,10 @@ var Ball = function () {
     });
   }
 
+  function getPositionX() {
+    return body.position.x;
+  }
+
   function reset() {
     if (body !== undefined)
       World.remove(engine.world, body);
@@ -28,6 +32,7 @@ var Ball = function () {
   }
 
   return {
-    reset: reset
+    reset: reset,
+    getPositionX: getPositionX
   }
 };

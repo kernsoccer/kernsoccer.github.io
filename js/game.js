@@ -4,6 +4,11 @@ var game = function() {
     var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
 
+    var teamScores = {
+      red: 0,
+      blue: 0
+    }
+
     function pawnTouchesBall(pawn, ball) {
       playingField.hideBarrier();
       if (pawn.isKicking) {
@@ -41,21 +46,62 @@ var game = function() {
       });
     };
 
-    function update() {
+    function updateInputs() {
       var gamepadState = navigator.getGamepads();
 
       for (var i = 0; i < playerList.length; i++) {
         playerList[i].update(gamepadState[playerList[i].gamePadIndex]);
       }
+    }
+
+    function setGameStateDelayed(nextState, seconds) {
+      window.setTimeout(function() {
+        currentGameState = nextState;
+      }, seconds * 1000);
+    }
+
+    function goalScored(scoreTeam, otherTeam) {
+      currentGameState = GAME_STATE.AFTER_GOAL;
+      window.setTimeout(function() {
+        prepareKickoff(otherTeam);
+        currentGameState = GAME_STATE.RUNNING;
+      }, 2000);
+    }
+
+    function checkGoal() {
+      if (ball.getPositionX() > playingField.rightGoalLine) {
+        teamScores.red += 1;
+        goalScored("red","blue");
+      } else if (ball.getPositionX() < playingField.leftGoalLine) {
+        teamScores.blue += 1;
+        goalScored("blue","red");
+      }
+    }
+
+    function update() {
+      if (currentGameState == GAME_STATE.RUNNING) {
+        updateInputs();
+        checkGoal();
+      } else if (currentGameState == GAME_STATE.WARMUP) {
+
+      } else if (currentGameState == GAME_STATE.AFTER_GOAL) {
+        updateInputs();
+      }
       // request next animation frame
       requestAnimationFrame(update);
     };
 
-    function resetTeam(players, positionX) {
+    function resetTeam(team, positionX) {
+      var players = [];
       var count = 0;
-      for (var i = 0; i < players.length; i++) {
-        count += players[i].pawnCount;
+      // select all players from the team and count their pawns
+      for (var i = 0; i < playerList.length; i++) {
+        if (playerList[i].team == team) {
+          players.push(playerList[i]);
+          count += playerList[i].pawnCount;
+        }
       }
+
       var offset = 100 * (count-1) / 2;
       for (var i = 0; i < players.length; i++) {
         var positions = [];
@@ -69,29 +115,32 @@ var game = function() {
       }
     }
 
-    function start(options) {
-      var redTeam = [], blueTeam = [];
+    function prepareKickoff(team) {
+      resetTeam("red", playingField.leftTeamLine );
+      resetTeam("blue", playingField.rightTeamLine );
 
+      if (team == "red") {
+        playingField.showRightBarrier();
+      }
+      else {
+        playingField.showLeftBarrier();
+      }
+      ball.reset();
+    }
+
+
+    function start(options) {
       for (var i = 0; i < options.players.length; i++) {
         var player = Player(
           options.players[i].gamePadIndex,
           options.players[i].team,
           options.players[i].pawnCount);
         playerList.push(player);
-
-        if (player.team == "red") {
-          redTeam.push(player);
-        }
-        else {
-          blueTeam.push(player);
-        }
       }
+      prepareKickoff("red");
 
-      resetTeam(redTeam, playingField.leftTeamLine );
-      resetTeam(blueTeam, playingField.rightTeamLine );
-      playingField.showRightBarrier();
-      ball.reset();
       currentGameState = GAME_STATE.WARMUP;
+      setGameStateDelayed(GAME_STATE.RUNNING, 2);
     };
 
     function prepare() {
@@ -111,11 +160,6 @@ game.prepare();
 game.start({
   players: [
     {
-      gamePadIndex: 0,
-      team: "red",
-      pawnCount: 2
-    },
-    {
       gamePadIndex: 1,
       team: "blue",
       pawnCount: 2
@@ -123,11 +167,6 @@ game.start({
     {
       gamePadIndex: 2,
       team: "red",
-      pawnCount: 2
-    },
-    {
-      gamePadIndex: 3,
-      team: "blue",
       pawnCount: 2
     }
   ]
