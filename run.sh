@@ -8,11 +8,9 @@ sudo xboxdrv --silent &
 XBOXPID2=$!
 
 live-server
-
+atom .
 
 sudo kill $XBOXPID1
 sudo kill $XBOXPID2
 sudo wait $XBOXPID1
 sudo wait $XBOXPID2
-
-sudo service xboxdrv start
