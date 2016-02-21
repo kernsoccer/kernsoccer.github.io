@@ -23,6 +23,8 @@ var Player = function (gamePadIndex, team, pawnCount) {
     return Bodies.circle(position.x, position.y, 20, {
       restitution: RESTITUTION,
       mass: MASS,
+      friction: 0,
+      inertia: Number.POSITIVE_INFINITY,
       frictionAir: FRICTION_AIR,
       render: {
         fillStyle: team,
@@ -64,7 +66,7 @@ var Player = function (gamePadIndex, team, pawnCount) {
         }
       }
     }
-    
+
     body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
 
     var vect = Matter.Vector.create(x,y);

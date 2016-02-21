@@ -15,7 +15,7 @@ var SCREEN_HEIGHT = 1080;
 
 engine.render.options.wireframes = false;
 engine.render.options.background = "#007500";
-engine.render.options.showAngleIndicator = false;
+engine.render.options.showAngleIndicator = true;
 engine.render.options.showCollisions = true;
 
 engine.render.canvas.width = SCREEN_WIDTH;

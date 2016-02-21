@@ -5,7 +5,8 @@ var Ball = function () {
     return Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,15,{
       restitution: 0.7,
       mass: 1,
-
+      friction: 0,
+      inertia: Number.POSITIVE_INFINITY,
       collisionFilter: {
         category: CATEGORY.BALL,
         mask: CATEGORY.PLAYER | CATEGORY.RESTRICT_BALL

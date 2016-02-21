@@ -165,6 +165,10 @@ var playingField = function() {
       { x: SCREEN_WIDTH/2 + 1, y: SCREEN_HEIGHT/2 + CIRCLE_RADIUS },
       { x: SCREEN_WIDTH/2 - 1, y: SCREEN_HEIGHT/2 + CIRCLE_RADIUS }
     ], OPTIONS_DEFAULT));
+
+    World.add(engine.world, leftCircle);
+    World.add(engine.world, rightCircle);
+    World.add(engine.world, middleLine);
   }
 
   function createNets() {
@@ -221,23 +225,36 @@ var playingField = function() {
   var barrierActive = false;
   function showLeftBarrier() {
     barrierActive = true;
-    World.add(engine.world, leftCircle);
-    World.add(engine.world, middleLine);
+    for (var i = 0; i < middleLine.bodies.length; i++) {
+      middleLine.bodies[i].collisionFilter.category = 1;
+    }
+    for (var i = 0; i < rightCircle.bodies.length; i++) {
+      rightCircle.bodies[i].collisionFilter.category = 0;
+      leftCircle.bodies[i].collisionFilter.category = 1;
+    }
   }
 
   function showRightBarrier() {
     barrierActive = true;
-    World.add(engine.world, rightCircle);
-    World.add(engine.world, middleLine);
+    for (var i = 0; i < middleLine.bodies.length; i++) {
+      middleLine.bodies[i].collisionFilter.category = 1;
+    }
+    for (var i = 0; i < rightCircle.bodies.length; i++) {
+      rightCircle.bodies[i].collisionFilter.category = 1;
+      leftCircle.bodies[i].collisionFilter.category = 0;
+    }
   }
 
   function hideBarrier() {
     if (barrierActive) {
-      World.remove(engine.world, rightCircle);
-      World.remove(engine.world, leftCircle);
-      World.remove(engine.world, middleLine);
-
       barrierActive = false;
+      for (var i = 0; i < middleLine.bodies.length; i++) {
+        middleLine.bodies[i].collisionFilter.category = 0;
+      }
+      for (var i = 0; i < rightCircle.bodies.length; i++) {
+        rightCircle.bodies[i].collisionFilter.category = 0;
+        leftCircle.bodies[i].collisionFilter.category = 0;
+      }
     }
   }
 

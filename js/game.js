@@ -17,21 +17,25 @@ var game = function() {
     }
 
     function registerHandlers() {
-      Matter.Events.on(engine, "collisionActive collisionStart", function(event) {
-        for (var i = 0; i < event.pairs.length; i++) {
-          if (event.pairs[i].bodyA.isBall && event.pairs[i].bodyB.isPlayer)
-          {
-            pawnTouchesBall(event.pairs[i].bodyB, event.pairs[i].bodyA);
+      Matter.Events.on(engine, "collisionActive collisionStart",
+        function(event) {
+          for (var i = 0; i < event.pairs.length; i++) {
+            if (event.pairs[i].bodyA.isBall && event.pairs[i].bodyB.isPlayer)
+            {
+              pawnTouchesBall(event.pairs[i].bodyB, event.pairs[i].bodyA);
+            }
+            else if (event.pairs[i].bodyB.isBall && event.pairs[i].bodyA.isPlayer) {
+              pawnTouchesBall(event.pairs[i].bodyA, event.pairs[i].bodyB);
+            }
           }
-          else if (event.pairs[i].bodyB.isBall && event.pairs[i].bodyA.isPlayer) {
-            pawnTouchesBall(event.pairs[i].bodyA, event.pairs[i].bodyB);
-          }
-        }
-      });
+        });
 
       Matter.Events.on(engine, "beforeUpdate", function(e) {
         if (currentKick !== undefined) {
-          Matter.Body.applyForce(currentKick.ball, currentKick.ball.position, currentKick.force);
+          Matter.Body.applyForce(
+            currentKick.ball,
+            currentKick.ball.position,
+            currentKick.force);
           currentKick = undefined;
         }
       });
