@@ -2,7 +2,7 @@
 simple haxball clone without network but controller support.
 
 ## Todo
-- add messages
+- add message queue for countdown etc
 - add goal limit
 - add time limit
 - add draw

@@ -5,6 +5,7 @@ var game = function() {
     var playerList = [];
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
+    var messagePanel = document.getElementById(MESSAGE_PANEL);
     var engine;
     var playingField;
 
@@ -37,9 +38,6 @@ var game = function() {
             else if (event.pairs[i].bodyB.isBall && event.pairs[i].bodyA.isPlayer) {
               pawnTouchesBall(event.pairs[i].bodyA, event.pairs[i].bodyB);
             }
-            else {
-              debugger;
-            }
           }
         });
 
@@ -53,6 +51,20 @@ var game = function() {
         }
       });
     };
+
+    function showMessage(text, duration) {
+      messagePanel.style.visibility="visible";
+      messagePanel.innerText = text;
+      if (duration !== undefined) {
+        window.setTimeout(function() {
+          hideMessage()
+        },duration * 1000);
+      }
+    }
+
+    function hideMessage() {
+      messagePanel.style.visibility="hidden";
+    }
 
     function updateScore() {
       redScorePanel.innerText = teamScores.red;
@@ -76,6 +88,7 @@ var game = function() {
     function goalScored(scoreTeam, otherTeam) {
       currentGameState = GAME_STATE.AFTER_GOAL;
       updateScore();
+      showMessage(scoreTeam + " team scores!", 5);
       window.setTimeout(function() {
         prepareKickoff(otherTeam);
         currentGameState = GAME_STATE.RUNNING;
@@ -157,7 +170,8 @@ var game = function() {
 
       prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
-      setGameStateDelayed(GAME_STATE.RUNNING, 2);
+      setGameStateDelayed(GAME_STATE.RUNNING, 3);
+      showMessage("Prepare for Kickoff", 3);
     };
 
     function initMatter() {

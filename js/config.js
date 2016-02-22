@@ -1,6 +1,7 @@
 // HTML ELEMENT IDS //
 var SCORE_PANEL_BLUE = "blueScore";
 var SCORE_PANEL_RED = "redScore";
+var MESSAGE_PANEL = "textMessage"
 
 // SCREEN //
 var SCREEN_WIDTH = 1920;
