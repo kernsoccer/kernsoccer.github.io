@@ -27,6 +27,17 @@ var PlayingField = function(engine) {
       mask: CATEGORY.BALL
     }
   };
+  var OPTIONS_NET = {
+    isStatic: true,
+    restitution: FIELD_NET_RESTITUTION,
+    render: {
+      fillStyle: FIELD_NET_RENDER_FILLSTYLE
+    },
+    collisionFilter: {
+      category: CATEGORY.RESTRICT_BALL,
+      mask: CATEGORY.BALL
+    }
+  }
 
   var leftCircle, rightCircle, middleLine;
 
@@ -74,14 +85,12 @@ var PlayingField = function(engine) {
 
   function createField() {
     // top
-    var topline = createRect([
+    Matter.World.add(engine.world, createRect([
       {x: 0,y:0 },
       {x: LEFT_OFFSET,y:TOP_OFFSET},
       {x: RIGHT_OFFSET,y:TOP_OFFSET},
       {x: SCREEN_WIDTH, y: 0 }
-    ],OPTIONS_FIELD_LINE);
-
-    Matter.World.add(engine.world, topline);
+    ],OPTIONS_FIELD_LINE));
     // bottom
     Matter.World.add(engine.world, createRect([
       {x: 0,y:SCREEN_HEIGHT },
@@ -183,61 +192,43 @@ var PlayingField = function(engine) {
   }
 
   function createNets() {
-    var particleOptions = {
-      restitution: FIELD_NET_RESTITUTION,
-      friction: 0.05,
-      mass: 0.5,
-      frictionStatic: 0.1,
-      render: {
-        fillStyle: "grey",
-        strokeStyle: "black",
-        lineWidth: 1
-      },
-      collisionFilter: {
-        category: CATEGORY.RESTRICT_BALL,
-        mask: CATEGORY.BALL
-      }
-    };
-    var contraintOptions = {
-      stiffness: FIELD_NET_STIFFNESS,
-      render: {
-        visible: false
-      }
-    }
+    // left net top
+    Matter.World.add(engine.world, createRect([
+      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2},
+      {x: LEFT_OFFSET - FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 - FIELD_NET_WIDTH/2},
+      {x: 0, y: 0 }
+    ],OPTIONS_NET));
+    // left net bottom
+    Matter.World.add(engine.world, createRect([
+      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2},
+      {x: LEFT_OFFSET - FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 + FIELD_NET_WIDTH/2},
+      {x: 0,y: SCREEN_HEIGHT }
+    ],OPTIONS_NET));
+    // left net back
+    Matter.World.add(engine.world, createRect([
+      {x: LEFT_OFFSET - FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 - FIELD_NET_WIDTH/2},
+      {x: LEFT_OFFSET - FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 + FIELD_NET_WIDTH/2},
+      {x: 0, y: SCREEN_HEIGHT/2 }
+    ],OPTIONS_NET));
 
-    var leftnet = Matter.Composites.softBody(
-      LEFT_OFFSET - FIELD_GOAL_SIZE/20 * 9,
-      SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2 - FIELD_GOAL_SIZE/20,
-      5, 11, 0, 0, true, FIELD_GOAL_SIZE/20, particleOptions, contraintOptions);
-    var removeBodies = [];
-    leftnet.bodies[4].isStatic = true;
-    leftnet.bodies[4].render.visible = false;
-    leftnet.bodies[54].isStatic = true;
-    leftnet.bodies[54].render.visible = false;
-    for (var i = 5; i < 10 * 5; i++) {
-      if (i % 5 != 0) {
-        removeBodies.push(leftnet.bodies[i]);
-      }
-    }
-    Matter.Composite.remove(leftnet, removeBodies);
-    Matter.World.add(engine.world, leftnet);
-
-    var rightnet = Matter.Composites.softBody(
-      RIGHT_OFFSET - FIELD_GOAL_SIZE/20 + FIELD_GOAL_SIZE/40,
-      SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2 - FIELD_GOAL_SIZE/20,
-      5, 11, 0, 0, true, FIELD_GOAL_SIZE/20, particleOptions, contraintOptions);
-    removeBodies = [];
-    rightnet.bodies[0].isStatic = true;
-    rightnet.bodies[0].render.visible = false;
-    rightnet.bodies[50].isStatic = true;
-    rightnet.bodies[50].render.visible = false;
-    for (var i = 5; i < 10 * 5; i++) {
-      if (i % 5 != 4) {
-        removeBodies.push(rightnet.bodies[i]);
-      }
-    }
-    Matter.Composite.remove(rightnet, removeBodies);
-    Matter.World.add(engine.world, rightnet);
+    // right net top
+    Matter.World.add(engine.world, createRect([
+      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2},
+      {x: RIGHT_OFFSET + FIELD_NET_DEPTH, y: SCREEN_HEIGHT/2 - FIELD_NET_WIDTH/2},
+      {x: SCREEN_WIDTH, y: 0 }
+    ],OPTIONS_NET));
+    // right net bottom
+    Matter.World.add(engine.world, createRect([
+      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2},
+      {x: RIGHT_OFFSET + FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 + FIELD_NET_WIDTH/2},
+      {x: SCREEN_WIDTH,y: SCREEN_HEIGHT }
+    ],OPTIONS_NET));
+    // right net back
+    Matter.World.add(engine.world, createRect([
+      {x: RIGHT_OFFSET + FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 - FIELD_NET_WIDTH/2},
+      {x: RIGHT_OFFSET + FIELD_NET_DEPTH,y: SCREEN_HEIGHT/2 + FIELD_NET_WIDTH/2},
+      {x: SCREEN_WIDTH, y: SCREEN_HEIGHT/2 }
+    ],OPTIONS_NET));
   }
 
   var barrierActive = false;

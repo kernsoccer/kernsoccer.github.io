@@ -169,7 +169,7 @@ var game = function() {
         }
       });
 
-      engine.render.options.wireframes = true;
+      engine.render.options.wireframes = false;
       engine.render.options.background = "#007500";
       engine.render.options.showAngleIndicator = false;
       engine.render.options.showCollisions = true;
