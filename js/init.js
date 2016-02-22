@@ -1,22 +1,20 @@
 
-//for (var i = 0; i < navigator.getGamepads()[1].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[1].buttons[i].pressed); }
-var Engine = Matter.Engine,
-    World = Matter.World,
-    Bodies = Matter.Bodies;
-
-// create a Matter.js engine
-var engine = Engine.create({
-  render: {
-    element: document.body,
-    canvas: document.getElementById("playingField")
-  }
+game.init();
+game.start({
+  allowDraw: false,
+  duration: 180,
+  goalLimit: 0,
+  startingTeam: GAME_TEAM_RED,
+  players: [
+    {
+      gamePadIndex: 1,
+      team: GAME_TEAM_BLUE,
+      pawnCount: 2
+    },
+    {
+      gamePadIndex: 2,
+      team: GAME_TEAM_RED,
+      pawnCount: 2
+    }
+  ]
 });
-
-engine.render.options.wireframes = false;
-engine.render.options.background = "#007500";
-engine.render.options.showAngleIndicator = false;
-engine.render.options.showCollisions = true;
-
-engine.render.canvas.width = SCREEN_WIDTH;
-engine.render.canvas.height = SCREEN_HEIGHT;
-engine.world.gravity.y = 0;

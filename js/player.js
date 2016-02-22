@@ -1,7 +1,7 @@
-var Player = function (gamePadIndex, team, pawnCount) {
+var Player = function (engine, gamePadIndex, team, pawnCount) {
   var bodies = [];
   function createBody(position) {
-    return Bodies.circle(position.x, position.y, 20, {
+    return Matter.Bodies.circle(position.x, position.y, 20, {
       restitution: PLAYER_RESTITUTION,
       mass: PLAYER_MASS,
       friction: PLAYER_FRICTION,
@@ -23,13 +23,13 @@ var Player = function (gamePadIndex, team, pawnCount) {
 
   function reset(positions) {
     for (var i = 0; i < bodies.length; i++) {
-      World.remove(engine.world, bodies[i]);
+      Matter.World.remove(engine.world, bodies[i]);
     }
     bodies = [];
     for (var i = 0; i < positions.length; i++) {
       var body = createBody(positions[i]);
       bodies.push(body);
-      World.add(engine.world, body);
+      Matter.World.add(engine.world, body);
     }
   }
 

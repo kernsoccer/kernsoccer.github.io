@@ -75,3 +75,7 @@ var GAME_STATE = {
   WARMUP: 2,
   AFTER_GOAL: 3
 }
+
+// MY LITTLE CONSOLE HELPERS
+
+//for (var i = 0; i < navigator.getGamepads()[1].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[1].buttons[i].pressed); }

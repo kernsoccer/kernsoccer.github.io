@@ -1,4 +1,4 @@
-var playingField = function() {
+var PlayingField = function(engine) {
   var CIRCLE_RADIUS = FIELD_CIRCLE_SIZE / 2;
   var CIRCLE_INNER_RADIUS = CIRCLE_RADIUS -2;
   var LEFT_OFFSET = (SCREEN_WIDTH-FIELD_WIDTH)/2;
@@ -33,28 +33,28 @@ var playingField = function() {
 
   function createWalls() {
     // top wall
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       { x: 0, y: 0 },
       { x: SCREEN_WIDTH, y: 0 },
       { x: SCREEN_WIDTH, y: -10 },
       { x: 0, y: -10 }
     ], OPTIONS_DEFAULT));
     // bottom wall
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       { x: 0, y: SCREEN_HEIGHT },
       { x: SCREEN_WIDTH, y: SCREEN_HEIGHT },
       { x: SCREEN_WIDTH, y: SCREEN_HEIGHT+10 },
       { x: 0, y: SCREEN_HEIGHT+10 }
     ], OPTIONS_DEFAULT));
     // left wall
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       { x: 0, y: 0 },
       { x: 0, y: SCREEN_HEIGHT },
       { x: -10, y: SCREEN_HEIGHT },
       { x: -10, y: 0 }
     ], OPTIONS_DEFAULT));
     // right wall
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       { x: SCREEN_WIDTH, y: 0 },
       { x: SCREEN_WIDTH, y: SCREEN_HEIGHT },
       { x: SCREEN_WIDTH+10, y: SCREEN_HEIGHT },
@@ -64,54 +64,54 @@ var playingField = function() {
 
   function createField() {
     // top
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: 0,y:0 },
       {x: LEFT_OFFSET,y:TOP_OFFSET},
       {x: RIGHT_OFFSET,y:TOP_OFFSET},
       {x: SCREEN_WIDTH, y: 0 }
     ],OPTIONS_FIELD_LINE));
     // bottom
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: 0,y:SCREEN_HEIGHT },
       {x: LEFT_OFFSET,y:BOTTOM_OFFSET},
       {x: RIGHT_OFFSET,y:BOTTOM_OFFSET},
       {x: SCREEN_WIDTH, y: SCREEN_HEIGHT }
     ],OPTIONS_FIELD_LINE));
     // left top
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: 0,y: 0 },
       {x: LEFT_OFFSET,y:TOP_OFFSET},
       {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // left bottom
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: 0,y: SCREEN_HEIGHT },
       {x: LEFT_OFFSET,y:BOTTOM_OFFSET},
       {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // right top
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: SCREEN_WIDTH,y: 0 },
       {x: RIGHT_OFFSET,y: TOP_OFFSET},
       {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // right bottom
-    World.add(engine.world, createRect([
+    Matter.World.add(engine.world, createRect([
       {x: SCREEN_WIDTH,y: SCREEN_HEIGHT },
       {x: RIGHT_OFFSET,y: BOTTOM_OFFSET},
       {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
 
     // left posts
-    World.add(engine.world, Bodies.circle(
+    Matter.World.add(engine.world, Matter.Bodies.circle(
       LEFT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    World.add(engine.world, Bodies.circle(
+    Matter.World.add(engine.world, Matter.Bodies.circle(
       LEFT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
 
     // right posts
-    World.add(engine.world, Bodies.circle(
+    Matter.World.add(engine.world, Matter.Bodies.circle(
       RIGHT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    World.add(engine.world, Bodies.circle(
+    Matter.World.add(engine.world, Matter.Bodies.circle(
       RIGHT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
   }
 
@@ -165,9 +165,9 @@ var playingField = function() {
       { x: SCREEN_WIDTH/2 - 1, y: SCREEN_HEIGHT/2 + CIRCLE_RADIUS }
     ], OPTIONS_DEFAULT));
 
-    World.add(engine.world, leftCircle);
-    World.add(engine.world, rightCircle);
-    World.add(engine.world, middleLine);
+    Matter.World.add(engine.world, leftCircle);
+    Matter.World.add(engine.world, rightCircle);
+    Matter.World.add(engine.world, middleLine);
   }
 
   function createNets() {
@@ -207,7 +207,7 @@ var playingField = function() {
       }
     }
     Matter.Composite.remove(leftnet, removeBodies);
-    World.add(engine.world, leftnet);
+    Matter.World.add(engine.world, leftnet);
 
     var rightnet = Matter.Composites.softBody(
       RIGHT_OFFSET - FIELD_GOAL_SIZE/20 + FIELD_GOAL_SIZE/40,
@@ -224,7 +224,7 @@ var playingField = function() {
       }
     }
     Matter.Composite.remove(rightnet, removeBodies);
-    World.add(engine.world, rightnet);
+    Matter.World.add(engine.world, rightnet);
   }
 
   var barrierActive = false;
@@ -280,4 +280,4 @@ var playingField = function() {
     hideBarrier: hideBarrier,
     init: init
   };
-}();
+};

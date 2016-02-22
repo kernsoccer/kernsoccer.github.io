@@ -1,10 +1,12 @@
 var game = function() {
     var currentKick = undefined;
-    var ball = Ball();
+    var ball;
     var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
+    var engine;
+    var playingField;
 
     var teamScores = {
       red: 0,
@@ -143,6 +145,7 @@ var game = function() {
     function start(options) {
       for (var i = 0; i < options.players.length; i++) {
         var player = Player(
+          engine,
           options.players[i].gamePadIndex,
           options.players[i].team,
           options.players[i].pawnCount);
@@ -154,41 +157,42 @@ var game = function() {
       setGameStateDelayed(GAME_STATE.RUNNING, 2);
     };
 
+    function initMatter() {
+      // create a Matter.js engine
+      engine = Matter.Engine.create({
+        render: {
+          element: document.body,
+          canvas: document.getElementById("playingField")
+        }
+      });
 
-    function prepare() {
+      engine.render.options.wireframes = false;
+      engine.render.options.background = "#007500";
+      engine.render.options.showAngleIndicator = false;
+      engine.render.options.showCollisions = true;
+
+      engine.render.canvas.width = SCREEN_WIDTH;
+      engine.render.canvas.height = SCREEN_HEIGHT;
+      engine.world.gravity.y = 0;
+      Matter.Engine.run(engine);
+    }
+
+    function init() {
       teamScores = {
         red: 0,
         blue: 0
       }
-      updateScore();
+      initMatter();
+      playingField = PlayingField(engine);
       playingField.init();
+      ball = Ball(engine);
+      updateScore();
       registerHandlers();
       requestAnimationFrame(update);
-      Engine.run(engine);
     };
 
     return {
       start: start,
-      prepare:prepare
+      init:init
     }
 }();
-
-game.prepare();
-game.start({
-  allowDraw: false,
-  duration: 180,
-  goalLimit: 0,
-  startingTeam: GAME_TEAM_RED,
-  players: [
-    {
-      gamePadIndex: 1,
-      team: GAME_TEAM_BLUE,
-      pawnCount: 2
-    },
-    {
-      gamePadIndex: 2,
-      team: GAME_TEAM_RED,
-      pawnCount: 2
-    }
-  ]
-});

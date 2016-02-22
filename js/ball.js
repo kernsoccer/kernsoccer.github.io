@@ -1,8 +1,8 @@
-var Ball = function () {
+var Ball = function (engine) {
   var body;
 
   function createBall() {
-    return Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,BALL_RADIUS,{
+    return Matter.Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,BALL_RADIUS,{
       restitution: BALL_RESTITUTION,
       mass: BALL_MASS,
       friction: BALL_FRICTION,
@@ -27,9 +27,9 @@ var Ball = function () {
 
   function reset() {
     if (body !== undefined)
-      World.remove(engine.world, body);
+      Matter.World.remove(engine.world, body);
     body = createBall();
-    World.add(engine.world, body)
+    Matter.World.add(engine.world, body)
   }
 
   return {
