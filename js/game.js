@@ -3,8 +3,8 @@ var game = function() {
     var ball = Ball();
     var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
-    var blueScorePanel = document.getElementById("blueScore");
-    var redScorePanel = document.getElementById("redScore");
+    var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
+    var redScorePanel = document.getElementById(SCORE_PANEL_RED);
 
     var teamScores = {
       red: 0,
@@ -14,11 +14,11 @@ var game = function() {
     function pawnTouchesBall(pawn, ball) {
       playingField.hideBarrier();
       if (pawn.isKicking) {
-        pawn.render.strokeStyle = "black";
+        pawn.render.strokeStyle = PLAYER_RENDER_STROKESTYLE_IDLE;
         pawn.isKicking = false;
         currentKick = {
           force: Matter.Vector.mult(Matter.Vector.normalise(
-            Matter.Vector.sub(ball.position, pawn.position)),0.035),
+            Matter.Vector.sub(ball.position, pawn.position)),PLAYER_KICK_FORCE),
           ball: ball
         };
       }
@@ -74,16 +74,18 @@ var game = function() {
       window.setTimeout(function() {
         prepareKickoff(otherTeam);
         currentGameState = GAME_STATE.RUNNING;
-      }, 2000);
+      }, GAME_AFTER_GOAL_TIME);
     }
 
     function checkGoal() {
+      //TODO: replace by constant
       if (ball.getPositionX() > playingField.rightGoalLine) {
         teamScores.red += 1;
-        goalScored("red","blue");
+        goalScored(GAME_TEAM_RED,GAME_TEAM_BLUE);
+        //TODO: replace by constant
       } else if (ball.getPositionX() < playingField.leftGoalLine) {
         teamScores.blue += 1;
-        goalScored("blue","red");
+        goalScored(GAME_TEAM_BLUE,GAME_TEAM_RED);
       }
     }
 
@@ -111,13 +113,13 @@ var game = function() {
         }
       }
 
-      var offset = 100 * (count-1) / 2;
+      var offset = GAME_PLAYER_KICKOFF_DISTANCE * (count-1) / 2;
       for (var i = 0; i < players.length; i++) {
         var positions = [];
         for (var p = 0; p < players[i].pawnCount; p++) {
           positions.push({
             x: positionX,
-            y: SCREEN_HEIGHT/2 - offset + 100 * --count
+            y: SCREEN_HEIGHT/2 - offset + GAME_PLAYER_KICKOFF_DISTANCE * --count
           });
         }
         players[i].reset(positions);
@@ -125,10 +127,10 @@ var game = function() {
     }
 
     function prepareKickoff(team) {
-      resetTeam("red", playingField.leftTeamLine );
-      resetTeam("blue", playingField.rightTeamLine );
+      resetTeam(GAME_TEAM_RED, playingField.leftTeamLine );
+      resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine );
 
-      if (team == "red") {
+      if (team == GAME_TEAM_RED) {
         playingField.showRightBarrier();
       }
       else {
@@ -176,16 +178,16 @@ game.start({
   allowDraw: false,
   duration: 180,
   goalLimit: 0,
-  startingTeam: "blue",
+  startingTeam: GAME_TEAM_RED,
   players: [
     {
       gamePadIndex: 1,
-      team: "blue",
+      team: GAME_TEAM_BLUE,
       pawnCount: 2
     },
     {
       gamePadIndex: 2,
-      team: "red",
+      team: GAME_TEAM_RED,
       pawnCount: 2
     }
   ]

@@ -1,11 +1,5 @@
 var playingField = function() {
-  var FIELD_WIDTH = 1700;
-  var FIELD_HEIGHT = 950;
-  var GOAL_SIZE = 200;
-  var CIRCLE_SIZE = 250;
-  var CIRCLE_PARTS = 20;
-
-  var CIRCLE_RADIUS = CIRCLE_SIZE / 2;
+  var CIRCLE_RADIUS = FIELD_CIRCLE_SIZE / 2;
   var CIRCLE_INNER_RADIUS = CIRCLE_RADIUS -2;
   var LEFT_OFFSET = (SCREEN_WIDTH-FIELD_WIDTH)/2;
   var RIGHT_OFFSET = SCREEN_WIDTH - LEFT_OFFSET;
@@ -33,7 +27,8 @@ var playingField = function() {
 
   function createRect(vertices, options){
     var position = Matter.Vertices.centre(vertices);
-    return Matter.Bodies.fromVertices(position.x, position.y, vertices, options,false,0.01,0);
+    return Matter.Bodies.fromVertices(
+      position.x, position.y, vertices, options,false,0.01,0);
   };
 
   function createWalls() {
@@ -86,34 +81,38 @@ var playingField = function() {
     World.add(engine.world, createRect([
       {x: 0,y: 0 },
       {x: LEFT_OFFSET,y:TOP_OFFSET},
-      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 - GOAL_SIZE/2}
+      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // left bottom
     World.add(engine.world, createRect([
       {x: 0,y: SCREEN_HEIGHT },
       {x: LEFT_OFFSET,y:BOTTOM_OFFSET},
-      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 + GOAL_SIZE/2}
+      {x: LEFT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // right top
     World.add(engine.world, createRect([
       {x: SCREEN_WIDTH,y: 0 },
       {x: RIGHT_OFFSET,y: TOP_OFFSET},
-      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 - GOAL_SIZE/2}
+      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
     // right bottom
     World.add(engine.world, createRect([
       {x: SCREEN_WIDTH,y: SCREEN_HEIGHT },
       {x: RIGHT_OFFSET,y: BOTTOM_OFFSET},
-      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 + GOAL_SIZE/2}
+      {x: RIGHT_OFFSET,y: SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2}
     ],OPTIONS_FIELD_LINE));
 
     // left posts
-    World.add(engine.world, Bodies.circle(LEFT_OFFSET,SCREEN_HEIGHT/2 - GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    World.add(engine.world, Bodies.circle(LEFT_OFFSET,SCREEN_HEIGHT/2 + GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    World.add(engine.world, Bodies.circle(
+      LEFT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    World.add(engine.world, Bodies.circle(
+      LEFT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
 
     // right posts
-    World.add(engine.world, Bodies.circle(RIGHT_OFFSET,SCREEN_HEIGHT/2 - GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    World.add(engine.world, Bodies.circle(RIGHT_OFFSET,SCREEN_HEIGHT/2 + GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    World.add(engine.world, Bodies.circle(
+      RIGHT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    World.add(engine.world, Bodies.circle(
+      RIGHT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
   }
 
   function createMiddle() {
@@ -122,8 +121,8 @@ var playingField = function() {
     middleLine = Matter.Composite.create();
 
     // circles to restrict middle at kick off
-    var interval = 100/CIRCLE_PARTS;
-    for (var i = 0; i < CIRCLE_PARTS; i++) {
+    var interval = 100/FIELD_CIRCLE_PARTS;
+    for (var i = 0; i < FIELD_CIRCLE_PARTS; i++) {
       var percentage = (interval * i) / 100;
       var angle = Math.PI * percentage;
       var x1 = Math.sin(angle) * CIRCLE_RADIUS;
@@ -193,7 +192,10 @@ var playingField = function() {
       }
     }
 
-    var leftnet = Matter.Composites.softBody(LEFT_OFFSET - GOAL_SIZE/20 * 9, SCREEN_HEIGHT/2 - GOAL_SIZE/2 - GOAL_SIZE/20, 5, 11, 0, 0, true, GOAL_SIZE/20, particleOptions, contraintOptions);
+    var leftnet = Matter.Composites.softBody(
+      LEFT_OFFSET - FIELD_GOAL_SIZE/20 * 9,
+      SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2 - FIELD_GOAL_SIZE/20,
+      5, 11, 0, 0, true, FIELD_GOAL_SIZE/20, particleOptions, contraintOptions);
     var removeBodies = [];
     leftnet.bodies[4].isStatic = true;
     leftnet.bodies[4].render.visible = false;
@@ -207,7 +209,10 @@ var playingField = function() {
     Matter.Composite.remove(leftnet, removeBodies);
     World.add(engine.world, leftnet);
 
-    var rightnet = Matter.Composites.softBody(RIGHT_OFFSET - GOAL_SIZE/20 + GOAL_SIZE/40, SCREEN_HEIGHT/2 - GOAL_SIZE/2 - GOAL_SIZE/20, 5, 11, 0, 0, true, GOAL_SIZE/20, particleOptions, contraintOptions);
+    var rightnet = Matter.Composites.softBody(
+      RIGHT_OFFSET - FIELD_GOAL_SIZE/20 + FIELD_GOAL_SIZE/40,
+      SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2 - FIELD_GOAL_SIZE/20,
+      5, 11, 0, 0, true, FIELD_GOAL_SIZE/20, particleOptions, contraintOptions);
     removeBodies = [];
     rightnet.bodies[0].isStatic = true;
     rightnet.bodies[0].render.visible = false;

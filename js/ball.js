@@ -2,19 +2,19 @@ var Ball = function () {
   var body;
 
   function createBall() {
-    return Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,15,{
-      restitution: 0.7,
-      mass: 1,
-      friction: 0,
-      inertia: Number.POSITIVE_INFINITY,
+    return Bodies.circle(SCREEN_WIDTH/2,SCREEN_HEIGHT/2,BALL_RADIUS,{
+      restitution: BALL_RESTITUTION,
+      mass: BALL_MASS,
+      friction: BALL_FRICTION,
+      inertia: BALL_INERTIA,
       collisionFilter: {
         category: CATEGORY.BALL,
         mask: CATEGORY.PLAYER | CATEGORY.RESTRICT_BALL
       },
       render: {
-        fillStyle: "white",
-        strokeStyle: "black",
-        lineWidth: 4
+        fillStyle: BALL_RENDER_FILLSTYLE,
+        strokeStyle: BALL_RENDER_STROKESTYLE,
+        lineWidth: BALL_RENDER_LINEWIDTH
       },
       isBall: true,
       label: "ball"
