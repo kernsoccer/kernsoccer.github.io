@@ -37,6 +37,9 @@ var game = function() {
             else if (event.pairs[i].bodyB.isBall && event.pairs[i].bodyA.isPlayer) {
               pawnTouchesBall(event.pairs[i].bodyA, event.pairs[i].bodyB);
             }
+            else {
+              debugger;
+            }
           }
         });
 
@@ -166,10 +169,11 @@ var game = function() {
         }
       });
 
-      engine.render.options.wireframes = false;
+      engine.render.options.wireframes = true;
       engine.render.options.background = "#007500";
       engine.render.options.showAngleIndicator = false;
       engine.render.options.showCollisions = true;
+      engine.render.options.showDebug = true;
 
       engine.render.canvas.width = SCREEN_WIDTH;
       engine.render.canvas.height = SCREEN_HEIGHT;

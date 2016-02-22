@@ -7,9 +7,13 @@ var PlayingField = function(engine) {
   var TOP_OFFSET = (SCREEN_HEIGHT-FIELD_HEIGHT)/2;
   var BOTTOM_OFFSET = SCREEN_HEIGHT - TOP_OFFSET;
 
-  var OPTIONS_DEFAULT = { isStatic: true };
+  var OPTIONS_DEFAULT = {
+    isStatic: true,
+    restitution: FIELD_OUTER_RESTITUTION
+  };
   var OPTIONS_GOAL_POST = {
     isStatic: true,
+    restitution: FIELD_GOAL_RESTITUTION,
     collisionFilter: {
       category: CATEGORY.PLAYER,
       mask: CATEGORY.BALL | CATEGORY.PLAYER
@@ -17,6 +21,7 @@ var PlayingField = function(engine) {
   };
   var OPTIONS_FIELD_LINE = {
     isStatic: true,
+    restitution: FIELD_LINE_RESTITUTION,
     collisionFilter: {
       category: CATEGORY.RESTRICT_BALL,
       mask: CATEGORY.BALL
@@ -27,8 +32,13 @@ var PlayingField = function(engine) {
 
   function createRect(vertices, options){
     var position = Matter.Vertices.centre(vertices);
-    return Matter.Bodies.fromVertices(
+    var result = Matter.Bodies.fromVertices(
       position.x, position.y, vertices, options,false,0.01,0);
+
+    // matter... why do i have to do this?!?
+    // but its really needed to get the restitution through
+    result.restitution = options.restitution;
+    return result;
   };
 
   function createWalls() {
@@ -64,12 +74,14 @@ var PlayingField = function(engine) {
 
   function createField() {
     // top
-    Matter.World.add(engine.world, createRect([
+    var topline = createRect([
       {x: 0,y:0 },
       {x: LEFT_OFFSET,y:TOP_OFFSET},
       {x: RIGHT_OFFSET,y:TOP_OFFSET},
       {x: SCREEN_WIDTH, y: 0 }
-    ],OPTIONS_FIELD_LINE));
+    ],OPTIONS_FIELD_LINE);
+
+    Matter.World.add(engine.world, topline);
     // bottom
     Matter.World.add(engine.world, createRect([
       {x: 0,y:SCREEN_HEIGHT },
@@ -172,6 +184,7 @@ var PlayingField = function(engine) {
 
   function createNets() {
     var particleOptions = {
+      restitution: FIELD_NET_RESTITUTION,
       friction: 0.05,
       mass: 0.5,
       frictionStatic: 0.1,
@@ -186,7 +199,7 @@ var PlayingField = function(engine) {
       }
     };
     var contraintOptions = {
-      stiffness: 0.05,
+      stiffness: FIELD_NET_STIFFNESS,
       render: {
         visible: false
       }
