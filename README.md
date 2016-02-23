@@ -3,8 +3,6 @@ simple haxball clone without network but controller support.
 
 ## Todo
 ### plan
-- add time limit
-- add draw
 - add overtime (nodraw)
 - add pause
 - add start menu to setup the game
