@@ -2,8 +2,8 @@
 game.init();
 game.start({
   allowDraw: false,
-  duration: 180,
-  goalLimit: 0,
+  timeLimit: 10,
+  goalLimit: Number.POSITIVE_INFINITY,
   startingTeam: GAME_TEAM_RED,
   players: [
     {

@@ -3,7 +3,6 @@ simple haxball clone without network but controller support.
 
 ## Todo
 ### plan
-- add goal limit
 - add time limit
 - add draw
 - add overtime (nodraw)
@@ -12,3 +11,4 @@ simple haxball clone without network but controller support.
 
 ### nice to have
 - put UI into HUD 'class'
+- put timing into timer 'class'

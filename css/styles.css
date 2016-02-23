@@ -11,6 +11,12 @@ body {
   display: block;
 }
 
+#clock {
+  position: absolute;
+  width: 94%;
+  text-align: right;
+}
+
 #textMessage {
   text-align: center;
   position: absolute;

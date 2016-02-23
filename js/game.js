@@ -6,16 +6,31 @@ var game = function() {
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
     var messagePanel = document.getElementById(MESSAGE_PANEL);
+    var minutesPanel = document.getElementById("minutes");
+    var secondsPanel = document.getElementById("seconds");
     var engine;
     var playingField;
+    var lastUpdate;
+    var updater;
+    var timePlayed;
+
+    var goalLimit = 0;
+    var timeLimit = Number.POSITIVE_INFINITY;
 
     var teamScores = {
       red: 0,
       blue: 0
     }
 
+    function endKickoff() {
+      if (currentGameState == GAME_STATE.KICKOFF) {
+        playingField.hideBarrier();
+        currentGameState = GAME_STATE.RUNNING;
+      }
+    }
+
     function pawnTouchesBall(pawn, ball) {
-      playingField.hideBarrier();
+      endKickoff();
       if (pawn.isKicking) {
         doKick(pawn, ball);
       }
@@ -111,26 +126,49 @@ var game = function() {
       }, seconds * 1000);
     }
 
-    function goalScored(scoreTeam, otherTeam) {
+    function goalScored(scoreTeam) {
+      var gameEnd = false;
       currentGameState = GAME_STATE.AFTER_GOAL;
+      if (scoreTeam == GAME_TEAM_RED) {
+        teamScores.red += 1;
+        gameEnd = teamScores.red >= goalLimit;
+      }
+      else {
+        teamScores.blue += 1;
+        gameEnd = teamScores.blue >= goalLimit;
+      }
       updateScore();
-      showMessage(scoreTeam + " team scores!",
-        scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
-      window.setTimeout(function() {
-        prepareKickoff(otherTeam);
-        currentGameState = GAME_STATE.RUNNING;
-      }, GAME_AFTER_GOAL_TIME);
+      if (gameEnd) {
+        endGame(scoreTeam);
+      }
+      else {
+        showMessage(scoreTeam + " team scores!",
+          scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
+        window.setTimeout(function() {
+          prepareKickoff(scoreTeam == "red"?"blue":"red");
+          currentGameState = GAME_STATE.KICKOFF;
+        }, GAME_AFTER_GOAL_TIME);
+      }
+    }
+
+    function endGame(winner) {
+      currentGameState = GAME_STATE.ENDED;
+      if (winner !== undefined) {
+        showMessage(winner + " wins the game!",
+          winner == "red"?"#D24E4E":"#3A85CC");
+      }
+      else {
+        showMessage("DRAW!", "white");
+      }
     }
 
     function checkGoal() {
       //TODO: replace by constant
       if (ball.getPositionX() > playingField.rightGoalLine) {
-        teamScores.red += 1;
-        goalScored(GAME_TEAM_RED,GAME_TEAM_BLUE);
+        goalScored(GAME_TEAM_RED);
         //TODO: replace by constant
       } else if (ball.getPositionX() < playingField.leftGoalLine) {
-        teamScores.blue += 1;
-        goalScored(GAME_TEAM_BLUE,GAME_TEAM_RED);
+        goalScored(GAME_TEAM_BLUE);
       }
     }
 
@@ -141,24 +179,56 @@ var game = function() {
             ball.getPosition(), engine.world.bodies[i].position);
 
           if (Matter.Vector.magnitudeSquared(diffVector) < 1600) {
-            playingField.hideBarrier();
+            endKickoff();
             doKick(engine.world.bodies[i], ball.getBody());
           }
         }
       }
     }
 
-    function update() {
+    function updateTimer(deltaTime) {
+      var newTimePlayed = timePlayed + deltaTime;
+      var totalSeconds = Math.floor(newTimePlayed / 1000);
+      // if seconds changed we need to update our timer display
+      if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000)) {
+        minutesPanel.innerText = Math.floor(totalSeconds / 60);
+        var seconds = totalSeconds % 60;
+        secondsPanel.innerText = seconds < 10?"0"+seconds:seconds;
+        console.log(Math.floor(newTimePlayed / 1000) % 60);
+      }
+
+      if (timeLimit == totalSeconds) {
+        currentGameState = GAME_STATE.ENDED;
+        if (teamScores.red > teamScores.blue) {
+          endGame(GAME_TEAM_RED);
+        } else if (teamScores.red < teamScores.blue) {
+          endGame(GAME_TEAM_BLUE);
+        } else {
+          endGame();
+        }
+      }
+
+      timePlayed = newTimePlayed;
+    }
+
+    function update(time) {
+      var deltaTime = time - lastUpdate;
+
       if (currentGameState == GAME_STATE.RUNNING) {
         updateInputs();
+        updateTimer(deltaTime);
         checkGoal();
-      } else if (currentGameState == GAME_STATE.WARMUP) {
-
+      } else if (currentGameState == GAME_STATE.KICKOFF) {
+        updateInputs();
       } else if (currentGameState == GAME_STATE.AFTER_GOAL) {
         updateInputs();
+      } else if (currentGameState == GAME_STATE.ENDED) {
+        updateInputs();
       }
+
+      lastUpdate = time;
       // request next animation frame
-      requestAnimationFrame(update);
+      updater = requestAnimationFrame(update);
     };
 
     function resetTeam(team, positionX) {
@@ -185,6 +255,8 @@ var game = function() {
       }
     }
 
+    // caution: kickoff is reversed!
+    // because its easier as goalScored knows only the scoring team
     function prepareKickoff(team) {
       resetTeam(GAME_TEAM_RED, playingField.leftTeamLine );
       resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine );
@@ -208,16 +280,20 @@ var game = function() {
           options.players[i].pawnCount);
         playerList.push(player);
       }
-
+      timePlayed = 0;
+      goalLimit = options.goalLimit;
+      timeLimit = options.timeLimit;
       prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
-      setGameStateDelayed(GAME_STATE.RUNNING, 3);
+      setGameStateDelayed(GAME_STATE.KICKOFF, 3);
       showMessageQueue([
         { text: "3", duration: 1 },
         { text: "2", duration: 1 },
         { text: "1", duration: 1 },
         { text: "GO!", duration: 1 }
       ]);
+      lastUpdate = performance.now();
+      update(lastUpdate);
     };
 
     function initMatter() {
@@ -251,7 +327,6 @@ var game = function() {
       ball = Ball(engine);
       updateScore();
       registerHandlers();
-      requestAnimationFrame(update);
     };
 
     return {
