@@ -21,6 +21,14 @@ var Ball = function (engine) {
     });
   }
 
+  function getBody() {
+    return body;
+  }
+
+  function getPosition() {
+    return body.position;
+  }
+
   function getPositionX() {
     return body.position.x;
   }
@@ -34,6 +42,9 @@ var Ball = function (engine) {
 
   return {
     reset: reset,
-    getPositionX: getPositionX
+    // Todo: refactor this to only get body and make it an attribute
+    getPositionX: getPositionX,
+    getPosition: getPosition,
+    getBody: getBody
   }
 };

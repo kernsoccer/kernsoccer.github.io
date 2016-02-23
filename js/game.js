@@ -17,14 +17,16 @@ var game = function() {
     function pawnTouchesBall(pawn, ball) {
       playingField.hideBarrier();
       if (pawn.isKicking) {
-        pawn.render.strokeStyle = PLAYER_RENDER_STROKESTYLE_IDLE;
-        pawn.isKicking = false;
-        currentKick = {
-          force: Matter.Vector.mult(Matter.Vector.normalise(
-            Matter.Vector.sub(ball.position, pawn.position)),PLAYER_KICK_FORCE),
-          ball: ball
-        };
+        doKick(pawn, ball);
       }
+    }
+
+    function doKick(pawn, ball) {
+      currentKick = {
+        force: Matter.Vector.mult(Matter.Vector.normalise(
+          Matter.Vector.sub(ball.position, pawn.position)),PLAYER_KICK_FORCE),
+        ball: ball
+      };
     }
 
     function registerHandlers() {
@@ -57,7 +59,7 @@ var game = function() {
       if (duration !== undefined) {
         window.setTimeout(function() {
           hideMessage();
-        },duration * 1000);
+        }, duration * 1000);
       }
     }
 
@@ -122,9 +124,24 @@ var game = function() {
       }
     }
 
+    function checkDistanceKicks() {
+      for (var i = 0; i < engine.world.bodies.length; i++) {
+        if (engine.world.bodies[i].isKicking) {
+          var diffVector = Matter.Vector.sub(
+            ball.getPosition(), engine.world.bodies[i].position);
+
+          if (Matter.Vector.magnitudeSquared(diffVector) < 1600) {
+            playingField.hideBarrier();
+            doKick(engine.world.bodies[i], ball.getBody());
+          }
+        }
+      }
+    }
+
     function update() {
       if (currentGameState == GAME_STATE.RUNNING) {
         updateInputs();
+        checkDistanceKicks();
         checkGoal();
       } else if (currentGameState == GAME_STATE.WARMUP) {
 

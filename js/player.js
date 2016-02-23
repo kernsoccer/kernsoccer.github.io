@@ -1,7 +1,7 @@
 var Player = function (engine, gamePadIndex, team, pawnCount) {
   var bodies = [];
   function createBody(position) {
-    return Matter.Bodies.circle(position.x, position.y, 20, {
+    return Matter.Bodies.circle(position.x, position.y, PLAYER_RADIUS, {
       restitution: PLAYER_RESTITUTION,
       mass: PLAYER_MASS,
       friction: PLAYER_FRICTION,
@@ -10,7 +10,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
       render: {
         fillStyle: team,
         strokeStyle: PLAYER_RENDER_STROKESTYLE_IDLE,
-        lineWidth: PLAYER_RENDER_LINEWIDTH
+        lineWidth: PLAYER_RENDER_LINEWIDTH_IDLE
       },
       collisionFilter: {
         category: CATEGORY.PLAYER,
@@ -61,6 +61,9 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
 
     body.render.strokeStyle = (body.isKicking) ?
       PLAYER_RENDER_STROKESTYLE_KICKING : PLAYER_RENDER_STROKESTYLE_IDLE;
+
+    body.render.lineWidth = body.isKicking ?
+      PLAYER_RENDER_LINEWIDTH_KICKING : PLAYER_RENDER_LINEWIDTH_IDLE;
 
     body.frictionAir = (body.isKicking) ?
       PLAYER_FRICTION_AIR_KICKING : PLAYER_FRICTION_AIR;
