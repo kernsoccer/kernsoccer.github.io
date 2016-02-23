@@ -54,8 +54,8 @@ var game = function() {
       });
     };
 
-    function showMessage(text, duration) {
-      drawMessage(text);
+    function showMessage(text, color, duration) {
+      drawMessage(text, color);
       if (duration !== undefined) {
         window.setTimeout(function() {
           hideMessage();
@@ -65,7 +65,7 @@ var game = function() {
 
     function showMessageQueue(messages) {
       var message = messages.shift();
-      drawMessage(message.text);
+      drawMessage(message.text, message.color);
       window.setTimeout(function() {
         hideMessage();
         if (messages.length > 0) {
@@ -74,9 +74,15 @@ var game = function() {
       }, message.duration * 1000);
     }
 
-    function drawMessage(text) {
+    function drawMessage(text, color) {
       messagePanel.style.visibility="visible";
       messagePanel.innerText = text;
+      if (color !== undefined) {
+        messagePanel.style.color = color;
+      }
+      else {
+        messagePanel.style.color = "white";
+      }
     }
 
     function hideMessage() {
@@ -105,7 +111,8 @@ var game = function() {
     function goalScored(scoreTeam, otherTeam) {
       currentGameState = GAME_STATE.AFTER_GOAL;
       updateScore();
-      showMessage(scoreTeam + " team scores!", 5);
+      showMessage(scoreTeam + " team scores!",
+        scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
       window.setTimeout(function() {
         prepareKickoff(otherTeam);
         currentGameState = GAME_STATE.RUNNING;
@@ -207,7 +214,7 @@ var game = function() {
         { text: "3", duration: 1 },
         { text: "2", duration: 1 },
         { text: "1", duration: 1 },
-        { text: "GO!", duration: 2 }
+        { text: "GO!", duration: 1 }
       ]);
     };
 
@@ -223,8 +230,7 @@ var game = function() {
       engine.render.options.wireframes = false;
       engine.render.options.background = "#007500";
       engine.render.options.showAngleIndicator = false;
-      engine.render.options.showCollisions = true;
-      engine.render.options.showDebug = true;
+      engine.render.options.showCollisions = false;
 
       engine.render.canvas.width = SCREEN_WIDTH;
       engine.render.canvas.height = SCREEN_HEIGHT;

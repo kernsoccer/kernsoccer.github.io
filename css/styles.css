@@ -14,10 +14,10 @@ body {
 #textMessage {
   text-align: center;
   position: absolute;
+  font-size: 75px;
   width: 100%;
   top: 300px;
-  color: black;
-  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  color: white;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: black;
 }
@@ -30,4 +30,7 @@ body {
   position: absolute;
   width: 100%;
   text-align: center;
+  color: lightgrey;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
 }
