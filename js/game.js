@@ -22,6 +22,7 @@ var game = function() {
     }
 
     function doKick(pawn, ball) {
+      pawn.isKicking = false;
       currentKick = {
         force: Matter.Vector.mult(Matter.Vector.normalise(
           Matter.Vector.sub(ball.position, pawn.position)),PLAYER_KICK_FORCE),
@@ -100,6 +101,8 @@ var game = function() {
       for (var i = 0; i < playerList.length; i++) {
         playerList[i].update(gamepadState[playerList[i].gamePadIndex]);
       }
+
+      checkDistanceKicks();
     }
 
     function setGameStateDelayed(nextState, seconds) {
@@ -148,7 +151,6 @@ var game = function() {
     function update() {
       if (currentGameState == GAME_STATE.RUNNING) {
         updateInputs();
-        checkDistanceKicks();
         checkGoal();
       } else if (currentGameState == GAME_STATE.WARMUP) {
 
