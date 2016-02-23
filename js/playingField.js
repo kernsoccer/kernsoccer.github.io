@@ -124,16 +124,26 @@ var PlayingField = function(engine) {
     ],OPTIONS_FIELD_LINE));
 
     // left posts
-    Matter.World.add(engine.world, Matter.Bodies.circle(
-      LEFT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    Matter.World.add(engine.world, Matter.Bodies.circle(
-      LEFT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    var leftUpperPost = Matter.Bodies.circle(
+      LEFT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST);
+    leftUpperPost.restitution = FIELD_GOAL_RESTITUTION;
+    Matter.World.add(engine.world, leftUpperPost);
+
+    var leftLowerPost = Matter.Bodies.circle(
+      LEFT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST);
+    leftLowerPost.restitution = FIELD_GOAL_RESTITUTION;
+    Matter.World.add(engine.world, leftLowerPost);
 
     // right posts
-    Matter.World.add(engine.world, Matter.Bodies.circle(
-      RIGHT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
-    Matter.World.add(engine.world, Matter.Bodies.circle(
-      RIGHT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST));
+    var rightUpperPost = Matter.Bodies.circle(
+      RIGHT_OFFSET,SCREEN_HEIGHT/2 - FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST);
+    rightUpperPost.restitution = FIELD_GOAL_RESTITUTION;
+    Matter.World.add(engine.world, rightUpperPost);
+
+    var rightLowerPost = Matter.Bodies.circle(
+      RIGHT_OFFSET,SCREEN_HEIGHT/2 + FIELD_GOAL_SIZE/2,10, OPTIONS_GOAL_POST);
+    rightLowerPost.restitution = FIELD_GOAL_RESTITUTION;
+    Matter.World.add(engine.world, rightLowerPost);
   }
 
   function createMiddle() {
