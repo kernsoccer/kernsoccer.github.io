@@ -53,13 +53,28 @@ var game = function() {
     };
 
     function showMessage(text, duration) {
-      messagePanel.style.visibility="visible";
-      messagePanel.innerText = text;
+      drawMessage(text);
       if (duration !== undefined) {
         window.setTimeout(function() {
-          hideMessage()
+          hideMessage();
         },duration * 1000);
       }
+    }
+
+    function showMessageQueue(messages) {
+      var message = messages.shift();
+      drawMessage(message.text);
+      window.setTimeout(function() {
+        hideMessage();
+        if (messages.length > 0) {
+          showMessageQueue(messages);
+        }
+      }, message.duration * 1000);
+    }
+
+    function drawMessage(text) {
+      messagePanel.style.visibility="visible";
+      messagePanel.innerText = text;
     }
 
     function hideMessage() {
@@ -171,7 +186,12 @@ var game = function() {
       prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
       setGameStateDelayed(GAME_STATE.RUNNING, 3);
-      showMessage("Prepare for Kickoff", 3);
+      showMessageQueue([
+        { text: "3", duration: 1 },
+        { text: "2", duration: 1 },
+        { text: "1", duration: 1 },
+        { text: "GO!", duration: 2 }
+      ]);
     };
 
     function initMatter() {
