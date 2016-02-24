@@ -8,11 +8,13 @@ var game = function() {
     var messagePanel = document.getElementById(MESSAGE_PANEL);
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
+    var allowDraw = true;
     var engine;
     var playingField;
     var lastUpdate;
     var updater;
     var timePlayed;
+    var isOverTime = false;
 
     var goalLimit = 0;
     var timeLimit = Number.POSITIVE_INFINITY;
@@ -138,7 +140,7 @@ var game = function() {
         gameEnd = teamScores.blue >= goalLimit;
       }
       updateScore();
-      if (gameEnd) {
+      if (gameEnd || isOverTime) {
         endGame(scoreTeam);
       }
       else {
@@ -198,13 +200,16 @@ var game = function() {
       }
 
       if (timeLimit == totalSeconds) {
-        currentGameState = GAME_STATE.ENDED;
         if (teamScores.red > teamScores.blue) {
           endGame(GAME_TEAM_RED);
         } else if (teamScores.red < teamScores.blue) {
           endGame(GAME_TEAM_BLUE);
-        } else {
+        } else if (allowDraw) {
           endGame();
+        }
+        else if (!isOverTime) {
+          isOverTime = true;
+          showMessage("Overtime!", "red", 2);
         }
       }
 
@@ -281,6 +286,8 @@ var game = function() {
         playerList.push(player);
       }
       timePlayed = 0;
+      isOverTime = false;
+      allowDraw = options.allowDraw;
       goalLimit = options.goalLimit;
       timeLimit = options.timeLimit;
       prepareKickoff(options.startingTeam);
