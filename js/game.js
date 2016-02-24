@@ -43,8 +43,8 @@ var game = function() {
     function doKick(pawn, ball) {
       pawn.isKicking = false;
       currentKick = {
-        force: Matter.Vector.mult(Matter.Vector.normalise(
-          Matter.Vector.sub(ball.position, pawn.position)),PLAYER_KICK_FORCE),
+        direction: Matter.Vector.normalise(
+          Matter.Vector.sub(ball.position, pawn.position)),
         ball: ball
       };
     }
@@ -65,10 +65,14 @@ var game = function() {
 
       Matter.Events.on(engine, "beforeUpdate", function(e) {
         if (currentKick !== undefined) {
+          var speed = Matter.Vector.magnitude(currentKick.ball.velocity);
+          var newVelocity = Matter.Vector.mult(currentKick.direction, speed);
+          Matter.Body.setVelocity(currentKick.ball, newVelocity);
+          var force = Matter.Vector.mult(currentKick.direction, PLAYER_KICK_FORCE);
           Matter.Body.applyForce(
             currentKick.ball,
             currentKick.ball.position,
-            currentKick.force);
+            force);
           currentKick = undefined;
         }
       });
@@ -198,7 +202,6 @@ var game = function() {
         minutesPanel.innerText = Math.floor(totalSeconds / 60);
         var seconds = totalSeconds % 60;
         secondsPanel.innerText = seconds < 10?"0"+seconds:seconds;
-        console.log(Math.floor(newTimePlayed / 1000) % 60);
       }
 
       if (timeLimit == totalSeconds) {
