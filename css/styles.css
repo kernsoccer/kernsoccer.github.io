@@ -8,17 +8,21 @@ body {
   font-weight: bold;
 }
 #playingField {
+  position: absolute;
   margin: 0 auto;
   display: block;
+  z-index: 5;
 }
 
 #clock {
   position: absolute;
+  z-index: 20;
   width: 94%;
   text-align: right;
 }
 
 #textMessage {
+  z-index: 20;
   text-align: center;
   position: absolute;
   font-size: 75px;
@@ -31,13 +35,100 @@ body {
 
 #container {
   position: relative;
+  width: 1920px;
+  margin: 0 auto;
 }
 
 #scoreBoard {
+  z-index: 20;
   position: absolute;
   width: 100%;
   text-align: center;
   color: lightgrey;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: black;
+}
+
+.lines {
+  position: absolute;
+  top: 63px;
+  left: 108px;
+  width: 1698px;
+  height: 948px;
+  border: 3px solid white;
+}
+
+
+.circle {
+  position: absolute;
+  border-radius: 50%;
+  top: 415px;
+  left: 835px;
+	width: 245px;
+	height: 245px;
+  border: 3px solid white;
+}
+
+.middleLine {
+  position: absolute;
+  height: 951px;
+  top: 63px;
+  left: 959px;
+  border-left: 3px solid white;
+}
+
+.goalPost {
+  position: absolute;
+  border-radius: 50%;
+	width: 20px;
+	height: 20px;
+  background-color: black;
+}
+
+.leftTop {
+  top: 430px;
+  left: 100px;
+}
+
+.leftBottom {
+  top: 630px;
+  left: 100px;
+}
+
+.rightTop {
+  top: 430px;
+  right: 100px;
+}
+
+.rightBottom {
+  top: 630px;
+  right: 100px;
+}
+
+.field {
+  z-index: 10
+}
+
+.leftGoal {
+  position: absolute;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  top: 438px;
+  left: 57px;
+	width: 50px;
+	height: 194px;
+  border: 5px solid black;
+  border-right: none;
+}
+
+.rightGoal {
+  position: absolute;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  top: 438px;
+  right: 57px;
+	width: 50px;
+	height: 194px;
+  border: 5px solid black;
+  border-left: none;
 }

@@ -6,12 +6,24 @@
     <link rel="stylesheet" href="css/styles.css" media="screen" title="no title" charset="utf-8">
   </head>
   <body>
-    <canvas id="playingField"></canvas>
     <div id="container">
+      <canvas id="playingField"></canvas>
       <div id="scoreBoard"><span id="redScore">1</span> - <span id="blueScore">0</span></div>
       <div id="clock"><span id="minutes">0</span>:<span id="seconds">00</span></div>
       <div id="textMessage" style="visibility: hidden;"></div>
+      <div class="field">
+        <div class="lines"></div>
+        <div class="circle"></div>
+        <div class="middleLine"></div>
+        <div class="goalPost leftTop"></div>
+        <div class="goalPost leftBottom"></div>
+        <div class="goalPost rightTop"></div>
+        <div class="goalPost rightBottom"></div>
+        <div class="leftGoal"></div>
+        <div class="rightGoal"></div>
+      </div>
     </div>
+
     <script src="js/decomp.js"></script>
     <script src="js/matter.js"></script>
     <script src="js/config.js"></script>

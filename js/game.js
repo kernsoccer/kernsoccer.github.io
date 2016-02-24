@@ -312,7 +312,7 @@ var game = function() {
       // create a Matter.js engine
       engine = Matter.Engine.create({
         render: {
-          element: document.body,
+          element: document.getElementById("container"),
           canvas: document.getElementById("playingField")
         }
       });
