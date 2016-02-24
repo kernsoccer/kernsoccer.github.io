@@ -3,6 +3,7 @@ var game = function() {
     var ball;
     var currentGameState = GAME_STATE.PAUSED;
     var playerList = [];
+    var pausingPlayer;
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
     var messagePanel = document.getElementById(MESSAGE_PANEL);
@@ -12,9 +13,10 @@ var game = function() {
     var engine;
     var playingField;
     var lastUpdate;
-    var updater;
     var timePlayed;
     var isOverTime = false;
+    var runner;
+
 
     var goalLimit = 0;
     var timeLimit = Number.POSITIVE_INFINITY;
@@ -233,7 +235,7 @@ var game = function() {
 
       lastUpdate = time;
       // request next animation frame
-      updater = requestAnimationFrame(update);
+      requestAnimationFrame(update);
     };
 
     function resetTeam(team, positionX) {
@@ -320,7 +322,9 @@ var game = function() {
       engine.render.canvas.width = SCREEN_WIDTH;
       engine.render.canvas.height = SCREEN_HEIGHT;
       engine.world.gravity.y = 0;
-      Matter.Engine.run(engine);
+      runner = Matter.Runner.create();
+      Matter.Engine.run(runner, engine);
+
     }
 
     function init() {

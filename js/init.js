@@ -12,7 +12,7 @@ game.start({
       pawnCount: 2
     },
     {
-      gamePadIndex: 2,
+      gamePadIndex: 0,
       team: GAME_TEAM_RED,
       pawnCount: 2
     }
