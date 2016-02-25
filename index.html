@@ -22,11 +22,75 @@
         <div class="leftGoal"></div>
         <div class="rightGoal"></div>
       </div>
+      <div id="menu" class="menu">
+        <div class="menuContainer">
+          <h1 class="menuHeadline">SETUP</h1>
+          <hr class="menuDivider" />
+          <div class="clearfix">
+            <div class="redTeam controllerBox">
+              <h2 class="listHeader">red</h2>
+              <div id="redTeam" class="controllerList"></div>
+            </div>
+            <div class="noTeam controllerBox">
+              <h2 class="listHeader">&nbsp;</h2>
+              <div id="noTeam" class="controllerList">
+                <div id="gamepad0" class="gamepad">1</div>
+                <div id="gamepad1" class="gamepad">2</div>
+                <div id="gamepad2" class="gamepad">3</div>
+                <div id="gamepad3" class="gamepad">4</div>
+              </div>
+            </div>
+            <div class="blueTeam controllerBox">
+              <h2 class="listHeader">blue</h2>
+              <div id="blueTeam"  class="controllerList"></div>
+            </div>
+          </div>
+          <hr class="menuDivider" />
+          <div>
+            Score Limit:
+            <select id="goalLimit" name="goalLimit">
+              <option value="">None</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected="true">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div>
+            Time Limit:
+            <select id="timeLimit" name="timeLimit">
+              <option value="">None</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3" selected="true">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div>
+            Allow Draw:
+            <input id="allowDraw" type="checkbox">
+          </div>
+          <input id="startButton" type="button" value="Start">
+        </div>
+      </div>
     </div>
 
     <script src="js/decomp.js"></script>
     <script src="js/matter.js"></script>
     <script src="js/config.js"></script>
+    <script src="js/menu.js"></script>
     <script src="js/playingField.js"></script>
     <script src="js/ball.js"></script>
     <script src="js/player.js"></script>

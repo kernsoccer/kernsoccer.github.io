@@ -1,3 +1,17 @@
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+
 body {
   background-image: url('/img/grass.png');
   margin: 0;
@@ -7,6 +21,14 @@ body {
   font-size: 55px;
   font-weight: bold;
 }
+
+#container {
+  position: relative;
+  width: 1920px;
+  margin: 0 auto;
+  height: 1080px;
+}
+
 #playingField {
   position: absolute;
   margin: 0 auto;
@@ -17,8 +39,21 @@ body {
 #clock {
   position: absolute;
   z-index: 20;
-  width: 94%;
+  width: 94.3%;
   text-align: right;
+  color: lightgrey;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+#scoreBoard {
+  z-index: 20;
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  color: lightgrey;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
 }
 
 #textMessage {
@@ -33,20 +68,10 @@ body {
   -webkit-text-stroke-color: black;
 }
 
-#container {
-  position: relative;
-  width: 1920px;
-  margin: 0 auto;
-}
 
-#scoreBoard {
-  z-index: 20;
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  color: lightgrey;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: black;
+
+.field {
+  z-index: 10
 }
 
 .lines {
@@ -105,9 +130,6 @@ body {
   right: 100px;
 }
 
-.field {
-  z-index: 10
-}
 
 .leftGoal {
   position: absolute;
@@ -131,4 +153,68 @@ body {
 	height: 194px;
   border: 5px solid black;
   border-left: none;
+}
+
+.menu {
+  z-index: 30;
+  position: absolute;
+  width: 1920px;
+  height: 1080px;
+  font-size: 20px;
+  color: white;
+}
+
+.menuContainer {
+  margin: 240px auto;
+  background-color: rgba(0, 0, 0, 0.7);;
+  border-radius: 30px;
+  width: 1000px;
+  height: 600px;
+}
+
+.menuHeadline {
+  margin: 0;
+  text-align: center;
+  display: block;
+  padding: 20px 0 0;
+  font-size: 50px;
+}
+
+.menuDivider {
+  margin: 10px 0;
+}
+
+.controllerBox {
+  float: left;
+  margin: 0 91px;
+}
+
+.controllerList {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  width: 150px;
+  height: 300px;
+}
+
+.listHeader {
+  margin: 0;
+  font-size: 40px;
+  text-align: center;
+}
+
+.redTeam {
+  color: red;
+}
+
+.blueTeam {
+  color: blue;
+}
+
+.gamepad {
+  width: 50px;
+  height: 50px;
+}
+
+.double {
+  text-decoration: underline;
 }

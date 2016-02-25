@@ -1,22 +1,27 @@
-var game = function() {
-    var currentKick = undefined;
-    var ball;
+var Game = function() {
     var currentGameState = GAME_STATE.PAUSED;
+    var allowDraw;
     var playerList = [];
-    var pausingPlayer;
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
     var messagePanel = document.getElementById(MESSAGE_PANEL);
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
-    var allowDraw = true;
-    var engine;
-    var playingField;
+
     var lastUpdate;
     var timePlayed;
     var isOverTime = false;
-    var runner;
+    var currentKick = undefined;
 
+    var beforePauseGameState;
+    var pausingGamepadIndex = -1;
+    var pauseButtonReady = true;
+
+    var menu;
+    var runner;
+    var playingField;
+    var ball;
+    var engine;
 
     var goalLimit = 0;
     var timeLimit = Number.POSITIVE_INFINITY;
@@ -78,6 +83,11 @@ var game = function() {
       });
     };
 
+    function showMenu() {
+      currentGameState = GAME_STATE.MENU;
+      menu.show();
+    }
+
     function showMessage(text, color, duration) {
       drawMessage(text, color);
       if (duration !== undefined) {
@@ -122,10 +132,51 @@ var game = function() {
       var gamepadState = navigator.getGamepads();
 
       for (var i = 0; i < playerList.length; i++) {
+        if (gamepadState[playerList[i].gamePadIndex].buttons[7].pressed && pauseButtonReady) {
+          pauseGame(playerList[i].gamePadIndex);
+          return;
+        }
         playerList[i].update(gamepadState[playerList[i].gamePadIndex]);
       }
-
+      if (!pauseButtonReady) {
+        pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[7].pressed;
+      }
       checkDistanceKicks();
+    }
+
+    function pauseGame(gamePadIndex) {
+      beforePauseGameState = currentGameState;
+      currentGameState = GAME_STATE.PAUSED;
+      pauseButtonReady = false;
+      pausingGamepadIndex = gamePadIndex;
+      showMessage("PAUSED", "red");
+      runner.enabled = false;
+    }
+
+    function updatePause() {
+      var gamepadState = navigator.getGamepads();
+      if (gamepadState[pausingGamepadIndex] === undefined) {
+        continueGame();
+        pauseButtonReady = true;
+        return;
+      }
+      if (gamepadState[pausingGamepadIndex].buttons[7].pressed && pauseButtonReady) {
+        continueGame();
+        return;
+      }
+      if (gamepadState[pausingGamepadIndex].buttons[6].pressed) {
+        hideMessage();
+        showMenu();
+        return;
+      }
+      pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[7].pressed;
+    }
+
+    function continueGame() {
+      pauseButtonReady = false;
+      currentGameState = beforePauseGameState;
+      runner.enabled = true;
+      hideMessage();
     }
 
     function setGameStateDelayed(nextState, seconds) {
@@ -234,12 +285,28 @@ var game = function() {
         updateInputs();
       } else if (currentGameState == GAME_STATE.ENDED) {
         updateInputs();
+        checkMenuReturn();
+      } else if (currentGameState == GAME_STATE.MENU) {
+        menu.update();
+      } else if (currentGameState == GAME_STATE.PAUSED) {
+        updatePause();
       }
+
 
       lastUpdate = time;
       // request next animation frame
       requestAnimationFrame(update);
     };
+
+    function checkMenuReturn() {
+      var gamepadStates = navigator.getGamepads();
+      for (var i = 0; i < gamepadStates.length; i++) {
+        if (gamepadStates[i].buttons[6].pressed) {
+          showMenu();
+          return;
+        }
+      }
+    }
 
     function resetTeam(team, positionX) {
       var players = [];
@@ -282,6 +349,10 @@ var game = function() {
 
 
     function start(options) {
+      for (var i = 0; i < playerList.length; i++) {
+        playerList[i].clear();
+      }
+      playerList = [];
       for (var i = 0; i < options.players.length; i++) {
         var player = Player(
           engine,
@@ -290,6 +361,7 @@ var game = function() {
           options.players[i].pawnCount);
         playerList.push(player);
       }
+      pausingGamepadIndex = -1;
       timePlayed = 0;
       isOverTime = false;
       allowDraw = options.allowDraw;
@@ -304,8 +376,6 @@ var game = function() {
         { text: "1", duration: 1 },
         { text: "GO!", duration: 1 }
       ]);
-      lastUpdate = performance.now();
-      update(lastUpdate);
     };
 
     function initMatter() {
@@ -340,11 +410,15 @@ var game = function() {
       playingField.init();
       ball = Ball(engine);
       updateScore();
+      menu = Menu(this);
+      currentGameState = GAME_STATE.MENU;
       registerHandlers();
+      lastUpdate = performance.now();
+      update(lastUpdate);
     };
 
     return {
       start: start,
       init:init
     }
-}();
+};

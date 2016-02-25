@@ -55,12 +55,12 @@ var PLAYER_INPUT_OPTIONS = [
   {
     axesX: 0,
     axesY: 1,
-    kickers: [0,4,6]
+    kickers: [0,4]
   },
   {
     axesX: 2,
     axesY: 3,
-    kickers: [5,7]
+    kickers: [5]
   }
 ]
 
@@ -90,7 +90,8 @@ var GAME_STATE = {
   PAUSED: 2,
   WARMUP: 3,
   AFTER_GOAL: 4,
-  ENDED: 5
+  ENDED: 5,
+  MENU: 6
 }
 
 // MY LITTLE CONSOLE HELPERS

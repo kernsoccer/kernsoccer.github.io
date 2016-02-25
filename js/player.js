@@ -21,10 +21,14 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
     });
   }
 
-  function reset(positions) {
+  function clear() {
     for (var i = 0; i < bodies.length; i++) {
       Matter.World.remove(engine.world, bodies[i]);
     }
+  }
+
+  function reset(positions) {
+    clear();
     bodies = [];
     for (var i = 0; i < positions.length; i++) {
       var body = createBody(positions[i]);
@@ -70,6 +74,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
 
     return currentButtonState;
   }
+
   var prevButtonStates = [[],[]];
   function update(gamePadState) {
     if (gamePadState !== undefined) {
@@ -82,6 +87,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
   }
 
   return {
+    clear: clear,
     reset: reset,
     update: update,
     team: team,
