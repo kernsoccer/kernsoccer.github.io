@@ -132,14 +132,14 @@ var Game = function() {
       var gamepadState = navigator.getGamepads();
 
       for (var i = 0; i < playerList.length; i++) {
-        if (gamepadState[playerList[i].gamePadIndex].buttons[7].pressed && pauseButtonReady) {
+        if (gamepadState[playerList[i].gamePadIndex].buttons[PLAYER_INPUT_PAUSE].pressed && pauseButtonReady) {
           pauseGame(playerList[i].gamePadIndex);
           return;
         }
         playerList[i].update(gamepadState[playerList[i].gamePadIndex]);
       }
       if (!pauseButtonReady) {
-        pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[7].pressed;
+        pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed;
       }
       checkDistanceKicks();
     }
@@ -160,16 +160,16 @@ var Game = function() {
         pauseButtonReady = true;
         return;
       }
-      if (gamepadState[pausingGamepadIndex].buttons[7].pressed && pauseButtonReady) {
+      if (gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed && pauseButtonReady) {
         continueGame();
         return;
       }
-      if (gamepadState[pausingGamepadIndex].buttons[6].pressed) {
+      if (gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_MENU].pressed) {
         hideMessage();
         showMenu();
         return;
       }
-      pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[7].pressed;
+      pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed;
     }
 
     function continueGame() {
@@ -301,7 +301,7 @@ var Game = function() {
     function checkMenuReturn() {
       var gamepadStates = navigator.getGamepads();
       for (var i = 0; i < gamepadStates.length; i++) {
-        if (gamepadStates[i].buttons[6].pressed) {
+        if (gamepadStates[i].buttons[PLAYER_INPUT_MENU].pressed) {
           showMenu();
           return;
         }

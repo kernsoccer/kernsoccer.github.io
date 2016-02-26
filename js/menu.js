@@ -112,7 +112,7 @@ var Menu = function (game) {
     var gamepadStates = navigator.getGamepads();
     for (var i = 0; i < gamepads.length; i++) {
       updateGamepad(gamepads[i], gamepadStates[i]);
-      if (gamepadStates[i].buttons[7].pressed) {
+      if (gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
         startGame();
         return;
       }
