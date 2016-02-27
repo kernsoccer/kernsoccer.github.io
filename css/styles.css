@@ -13,7 +13,7 @@
 /* close commented backslash hack */
 
 body {
-  background-image: url('/img/grass.png');
+  background-image: url('../img/grass.png');
   margin: 0;
   padding: 0;
   overflow: hidden;

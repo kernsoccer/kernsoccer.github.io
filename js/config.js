@@ -55,14 +55,17 @@ var PLAYER_INPUT_OPTIONS = [
   {
     axesX: 0,
     axesY: 1,
-    kickers: [0,4]
+    kickers: [0,4,6]
   },
   {
     axesX: 2,
     axesY: 3,
-    kickers: [5]
+    kickers: [5,7]
   }
 ]
+
+var PLAYER_INPUT_PAUSE = 9;
+var PLAYER_INPUT_MENU = 8;
 
 // BALL //
 // BALL RENDER
