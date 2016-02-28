@@ -1,4 +1,4 @@
-# gob
+# kernsoccer
 simple haxball clone without network but controller support.
 
 ## Todo
