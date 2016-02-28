@@ -257,3 +257,17 @@ img {
 .pawn.second {
   display: none;
 }
+
+.option {
+  margin: 15px 0;
+}
+
+.optionLabel {
+  display: inline-block;
+  width: 50%;
+  text-align: right;
+}
+
+.optionInput {
+  display: inline-block;
+}

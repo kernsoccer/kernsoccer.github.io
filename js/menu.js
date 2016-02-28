@@ -1,5 +1,4 @@
 var Menu = function (startFunction) {
-  var startButton = document.getElementById("startButton");
   var menuPanel = document.getElementById("menu");
   var goalLimitInput = document.getElementById("goalLimit");
   var timeLimitInput = document.getElementById("timeLimit");
@@ -55,11 +54,13 @@ var Menu = function (startFunction) {
 
   function hide() {
     menuPanel.style.visibility = "hidden";
+    document.body.style.cursor = "none";
   }
 
   function show() {
     playPressed = false;
     menuPanel.style.visibility = "visible";
+    document.body.style.cursor = "auto";
   }
 
   function updateGamepad(gamepad, gamepadState) {
@@ -160,8 +161,6 @@ var Menu = function (startFunction) {
       players: players
     });
   }
-
-  startButton.addEventListener("click", startGame);
 
   return {
     hide: hide,

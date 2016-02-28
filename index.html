@@ -62,43 +62,50 @@
             </div>
           </div>
           <hr class="menuDivider" />
-          <div>
-            Score Limit:
-            <select id="goalLimit" name="goalLimit">
-              <option value="">None</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5" selected="true">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
+          <div class="options">
+            <div class="option">
+              <div class="optionLabel">Score Limit:</div>
+              <div class="optionInput">
+                <select id="goalLimit" name="goalLimit">
+                  <option value="">None</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5" selected="true">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+            <div class="option">
+              <div class="optionLabel">Time Limit:</div>
+              <div class="optionInput">
+                <select id="timeLimit" name="timeLimit">
+                  <option value="">None</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3" selected="true">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+              </div>
+            </div>
+            <div class="option">
+              <div class="optionLabel">Allow Draw:</div>
+              <div class="optionInput">
+                <input id="allowDraw" type="checkbox">
+              </div>
+            </div>
           </div>
-          <div>
-            Time Limit:
-            <select id="timeLimit" name="timeLimit">
-              <option value="">None</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected="true">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </div>
-          <div>
-            Allow Draw:
-            <input id="allowDraw" type="checkbox">
-          </div>
-          <input id="startButton" type="button" value="Start">
         </div>
       </div>
     </div>
