@@ -21,7 +21,10 @@ body {
   font-size: 55px;
   font-weight: bold;
 }
-
+img {
+  width: 100%;
+  height: auto;
+}
 #container {
   position: relative;
   width: 1920px;
@@ -211,10 +214,46 @@ body {
 }
 
 .gamepad {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  position: relative;
+  text-align: center;
+  background-image: url("../img/controller.png");
+  background-size: contain;
 }
 
-.double {
-  text-decoration: underline;
+.gamepadLabel {
+  display: block;
+  padding-top: 15px;
+}
+
+.double .pawn.second {
+  left: 35px;
+  display: block;
+}
+
+.double .pawn {
+  left: 15px;
+}
+
+.pawn {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: white;
+  left: 25px;
+}
+
+.blueTeam .pawn {
+  background-color: blue;
+}
+
+.redTeam .pawn {
+  background-color: red;
+}
+
+.pawn.second {
+  display: none;
 }

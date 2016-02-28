@@ -44,10 +44,10 @@ var PLAYER_MASS = 2;
 var PLAYER_FRICTION = 0;
 var PLAYER_INERTIA = Number.POSITIVE_INFINITY;
 var PLAYER_RESTITUTION = 0.0;
-var PLAYER_FRICTION_AIR = 0.02;
-var PLAYER_FRICTION_AIR_KICKING = 0.04;
-var PLAYER_MOVE_FORCE = 0.001;
-var PLAYER_MOVE_FORCE_KICKING = 0.0005;
+var PLAYER_FRICTION_AIR = 0.11;
+var PLAYER_FRICTION_AIR_KICKING = 0.12;
+var PLAYER_MOVE_FORCE = 0.0035;
+var PLAYER_MOVE_FORCE_KICKING = 0.002;
 // PLAYER INPUT
 var PLAYER_KICK_FORCE = 0.035;
 var PLAYER_INPUT_DEAD_ZONE = 0.2;
@@ -97,6 +97,11 @@ var GAME_STATE = {
   MENU: 6
 }
 
-// MY LITTLE CONSOLE HELPERS
+/*
+### MY LITTLE CONSOLE HELPERS ###
 
-//for (var i = 0; i < navigator.getGamepads()[1].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[1].buttons[i].pressed); }
+for (var i = 0; i < navigator.getGamepads()[0].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[0].buttons[i].pressed); }
+for (var i = 0; i < navigator.getGamepads()[1].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[1].buttons[i].pressed); }
+for (var i = 0; i < navigator.getGamepads()[2].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[2].buttons[i].pressed); }
+for (var i = 0; i < navigator.getGamepads()[3].buttons.length; i++) { console.log(i + ": " + navigator.getGamepads()[3].buttons[i].pressed); }
+*/

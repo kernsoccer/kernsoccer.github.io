@@ -1,4 +1,4 @@
-var Menu = function (game) {
+var Menu = function (startFunction) {
   var startButton = document.getElementById("startButton");
   var menuPanel = document.getElementById("menu");
   var goalLimitInput = document.getElementById("goalLimit");
@@ -11,6 +11,8 @@ var Menu = function (game) {
   var redTeam = [];
   var blueTeam = [];
   var noTeam = [];
+
+  var playPressed = false;
 
   var gamepads = [
     {
@@ -56,6 +58,7 @@ var Menu = function (game) {
   }
 
   function show() {
+    playPressed = false;
     menuPanel.style.visibility = "visible";
   }
 
@@ -94,7 +97,6 @@ var Menu = function (game) {
     }
 
     if (gamepadState.buttons[0].pressed && !gamepad.button) {
-      console.log(gamepadState.index + " pressed button");
       gamepad.double = !gamepad.double;
       if (gamepad.double) {
         gamepad.panel.classList.add("double");
@@ -112,7 +114,8 @@ var Menu = function (game) {
     var gamepadStates = navigator.getGamepads();
     for (var i = 0; i < gamepads.length; i++) {
       updateGamepad(gamepads[i], gamepadStates[i]);
-      if (gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
+      if (!playPressed && gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
+        playPressed = true;
         startGame();
         return;
       }
@@ -147,7 +150,7 @@ var Menu = function (game) {
       return;
     }
     hide();
-    game.start({
+    startFunction({
       allowDraw: allowDrawInput.checked,
       goalLimit: (goalLimitInput.value != "")
         ? goalLimitInput.value : Number.POSITIVE_INFINITY,

@@ -21,15 +21,15 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
     });
   }
 
-  function clear() {
+  function clearBodies() {
     for (var i = 0; i < bodies.length; i++) {
       Matter.World.remove(engine.world, bodies[i]);
     }
+    bodies = [];
   }
 
   function reset(positions) {
-    clear();
-    bodies = [];
+    clearBodies();
     for (var i = 0; i < positions.length; i++) {
       var body = createBody(positions[i]);
       bodies.push(body);
@@ -53,7 +53,6 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
         }
       }
     }
-
     body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
 
     var vect = Matter.Vector.create(x,y);
@@ -87,7 +86,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
   }
 
   return {
-    clear: clear,
+    clearBodies: clearBodies,
     reset: reset,
     update: update,
     team: team,

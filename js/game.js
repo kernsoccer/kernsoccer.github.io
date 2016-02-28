@@ -8,6 +8,8 @@ var Game = function() {
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
 
+    var messageTimer;
+
     var lastUpdate;
     var timePlayed;
     var isOverTime = false;
@@ -89,18 +91,20 @@ var Game = function() {
     }
 
     function showMessage(text, color, duration) {
+      window.clearTimeout(messageTimer);
       drawMessage(text, color);
       if (duration !== undefined) {
-        window.setTimeout(function() {
+        messageTimer = window.setTimeout(function() {
           hideMessage();
         }, duration * 1000);
       }
     }
 
     function showMessageQueue(messages) {
+      window.clearTimeout(messageTimer);
       var message = messages.shift();
       drawMessage(message.text, message.color);
-      window.setTimeout(function() {
+      messageTimer = window.setTimeout(function() {
         hideMessage();
         if (messages.length > 0) {
           showMessageQueue(messages);
@@ -250,9 +254,7 @@ var Game = function() {
       var totalSeconds = Math.floor(newTimePlayed / 1000);
       // if seconds changed we need to update our timer display
       if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000)) {
-        minutesPanel.innerText = Math.floor(totalSeconds / 60);
-        var seconds = totalSeconds % 60;
-        secondsPanel.innerText = seconds < 10?"0"+seconds:seconds;
+        showTimer(totalSeconds);
       }
 
       if (timeLimit == totalSeconds) {
@@ -270,6 +272,12 @@ var Game = function() {
       }
 
       timePlayed = newTimePlayed;
+    }
+
+    function showTimer(totalSeconds) {
+      minutesPanel.innerText = Math.floor(totalSeconds / 60);
+      var seconds = totalSeconds % 60;
+      secondsPanel.innerText = seconds < 10?"0"+seconds:seconds;
     }
 
     function update(time) {
@@ -349,8 +357,14 @@ var Game = function() {
 
 
     function start(options) {
+      runner.enabled = true;
+      teamScores = {
+        red: 0,
+        blue: 0
+      };
+      updateScore();
       for (var i = 0; i < playerList.length; i++) {
-        playerList[i].clear();
+        playerList[i].clearBodies();
       }
       playerList = [];
       for (var i = 0; i < options.players.length; i++) {
@@ -363,6 +377,7 @@ var Game = function() {
       }
       pausingGamepadIndex = -1;
       timePlayed = 0;
+      showTimer(0);
       isOverTime = false;
       allowDraw = options.allowDraw;
       goalLimit = options.goalLimit;
@@ -376,6 +391,7 @@ var Game = function() {
         { text: "1", duration: 1 },
         { text: "GO!", duration: 1 }
       ]);
+
     };
 
     function initMatter() {
@@ -410,7 +426,7 @@ var Game = function() {
       playingField.init();
       ball = Ball(engine);
       updateScore();
-      menu = Menu(this);
+      menu = Menu(start);
       currentGameState = GAME_STATE.MENU;
       registerHandlers();
       lastUpdate = performance.now();
