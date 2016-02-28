@@ -8,7 +8,11 @@ var Game = function() {
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
 
+    createjs.Sound.registerSound("snd/kick.mp3", "kick");
+    createjs.Sound.registerSound("snd/cheer.mp3", "cheer");
+
     var messageTimer;
+    var stateTimer;
 
     var lastUpdate;
     var timePlayed;
@@ -49,6 +53,7 @@ var Game = function() {
 
     function doKick(pawn, ball) {
       pawn.isKicking = false;
+      createjs.Sound.play("kick");
       currentKick = {
         direction: Matter.Vector.normalise(
           Matter.Vector.sub(ball.position, pawn.position)),
@@ -86,6 +91,7 @@ var Game = function() {
     };
 
     function showMenu() {
+      window.clearTimeout(stateTimer);
       currentGameState = GAME_STATE.MENU;
       menu.show();
     }
@@ -190,6 +196,7 @@ var Game = function() {
     }
 
     function goalScored(scoreTeam) {
+      createjs.Sound.play("cheer");
       var gameEnd = false;
       currentGameState = GAME_STATE.AFTER_GOAL;
       if (scoreTeam == GAME_TEAM_RED) {
@@ -207,7 +214,7 @@ var Game = function() {
       else {
         showMessage(scoreTeam + " team scores!",
           scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
-        window.setTimeout(function() {
+        stateTimer = window.setTimeout(function() {
           prepareKickoff(scoreTeam == "red"?"blue":"red");
           currentGameState = GAME_STATE.KICKOFF;
         }, GAME_AFTER_GOAL_TIME);
@@ -217,6 +224,7 @@ var Game = function() {
     function endGame(winner) {
       currentGameState = GAME_STATE.ENDED;
       if (winner !== undefined) {
+        createjs.Sound.play("cheer");
         showMessage(winner + " wins the game!",
           winner == "red"?"#D24E4E":"#3A85CC");
       }
