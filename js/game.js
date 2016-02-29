@@ -8,8 +8,7 @@ var Game = function() {
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
 
-    createjs.Sound.registerSound("snd/kick.mp3", "kick");
-    createjs.Sound.registerSound("snd/cheer.mp3", "cheer");
+    var sound = Sound();
 
     var messageTimer;
     var stateTimer;
@@ -53,7 +52,7 @@ var Game = function() {
 
     function doKick(pawn, ball) {
       pawn.isKicking = false;
-      createjs.Sound.play("kick");
+      sound.playKick();
       currentKick = {
         direction: Matter.Vector.normalise(
           Matter.Vector.sub(ball.position, pawn.position)),
@@ -196,7 +195,7 @@ var Game = function() {
     }
 
     function goalScored(scoreTeam) {
-      createjs.Sound.play("cheer");
+      sound.playCheer();
       var gameEnd = false;
       currentGameState = GAME_STATE.AFTER_GOAL;
       if (scoreTeam == GAME_TEAM_RED) {
@@ -224,7 +223,7 @@ var Game = function() {
     function endGame(winner) {
       currentGameState = GAME_STATE.ENDED;
       if (winner !== undefined) {
-        createjs.Sound.play("cheer");
+        sound.playCheer();
         showMessage(winner + " wins the game!",
           winner == "red"?"#D24E4E":"#3A85CC");
       }
