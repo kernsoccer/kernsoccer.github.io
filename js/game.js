@@ -1,13 +1,9 @@
 var Game = function() {
     var currentGameState = GAME_STATE.PAUSED;
-
     var playerList = [];
-
     var hud = Hud();
     var sound = Sound();
-
     var stateTimer;
-
     var lastUpdate;
     var timePlayed;
     var isOverTime = false;

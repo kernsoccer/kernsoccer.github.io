@@ -6,6 +6,4 @@ simple haxball clone without network but controller support.
 - add bounce sounds with field, net and goalposts
 - add player numbers
 - add state system
-- clamp controller input
-- put UI into HUD 'class'
 - put controller into Helper
