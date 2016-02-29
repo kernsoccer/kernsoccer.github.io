@@ -1,16 +1,11 @@
 var Game = function() {
     var currentGameState = GAME_STATE.PAUSED;
-    var allowDraw;
-    var playerList = [];
-    var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
-    var redScorePanel = document.getElementById(SCORE_PANEL_RED);
-    var messagePanel = document.getElementById(MESSAGE_PANEL);
-    var minutesPanel = document.getElementById("minutes");
-    var secondsPanel = document.getElementById("seconds");
 
+    var playerList = [];
+
+    var hud = Hud();
     var sound = Sound();
 
-    var messageTimer;
     var stateTimer;
 
     var lastUpdate;
@@ -28,7 +23,8 @@ var Game = function() {
     var ball;
     var engine;
 
-    var goalLimit = 0;
+    var allowDraw;
+    var goalLimit = Number.POSITIVE_INFINITY;
     var timeLimit = Number.POSITIVE_INFINITY;
 
     var teamScores = {
@@ -95,48 +91,6 @@ var Game = function() {
       menu.show();
     }
 
-    function showMessage(text, color, duration) {
-      window.clearTimeout(messageTimer);
-      drawMessage(text, color);
-      if (duration !== undefined) {
-        messageTimer = window.setTimeout(function() {
-          hideMessage();
-        }, duration * 1000);
-      }
-    }
-
-    function showMessageQueue(messages) {
-      window.clearTimeout(messageTimer);
-      var message = messages.shift();
-      drawMessage(message.text, message.color);
-      messageTimer = window.setTimeout(function() {
-        hideMessage();
-        if (messages.length > 0) {
-          showMessageQueue(messages);
-        }
-      }, message.duration * 1000);
-    }
-
-    function drawMessage(text, color) {
-      messagePanel.style.visibility="visible";
-      messagePanel.innerText = text;
-      if (color !== undefined) {
-        messagePanel.style.color = color;
-      }
-      else {
-        messagePanel.style.color = "white";
-      }
-    }
-
-    function hideMessage() {
-      messagePanel.style.visibility="hidden";
-    }
-
-    function updateScore() {
-      redScorePanel.innerText = teamScores.red;
-      blueScorePanel.innerText = teamScores.blue;
-    }
-
     function updateInputs() {
       var gamepadState = navigator.getGamepads();
 
@@ -158,7 +112,7 @@ var Game = function() {
       currentGameState = GAME_STATE.PAUSED;
       pauseButtonReady = false;
       pausingGamepadIndex = gamePadIndex;
-      showMessage("PAUSED", "red");
+      hud.showMessage("PAUSED", "red");
       runner.enabled = false;
     }
 
@@ -185,7 +139,7 @@ var Game = function() {
       pauseButtonReady = false;
       currentGameState = beforePauseGameState;
       runner.enabled = true;
-      hideMessage();
+      hud.hideMessage();
     }
 
     function setGameStateDelayed(nextState, seconds) {
@@ -211,7 +165,7 @@ var Game = function() {
         endGame(scoreTeam);
       }
       else {
-        showMessage(scoreTeam + " team scores!",
+        hude.showMessage(scoreTeam + " team scores!",
           scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
         stateTimer = window.setTimeout(function() {
           prepareKickoff(scoreTeam == "red"?"blue":"red");
@@ -224,11 +178,11 @@ var Game = function() {
       currentGameState = GAME_STATE.ENDED;
       if (winner !== undefined) {
         sound.playCheer();
-        showMessage(winner + " wins the game!",
+        hud.showMessage(winner + " wins the game!",
           winner == "red"?"#D24E4E":"#3A85CC");
       }
       else {
-        showMessage("DRAW!", "white");
+        hud.showMessage("DRAW!", "white");
       }
     }
 
@@ -261,7 +215,7 @@ var Game = function() {
       var totalSeconds = Math.floor(newTimePlayed / 1000);
       // if seconds changed we need to update our timer display
       if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000)) {
-        showTimer(totalSeconds);
+        hud.updateTime(totalSeconds);
       }
 
       if (timeLimit == totalSeconds) {
@@ -274,17 +228,11 @@ var Game = function() {
         }
         else if (!isOverTime) {
           isOverTime = true;
-          showMessage("Overtime!", "red", 2);
+          hud.showMessage("Overtime!", "red", 2);
         }
       }
 
       timePlayed = newTimePlayed;
-    }
-
-    function showTimer(totalSeconds) {
-      minutesPanel.innerText = Math.floor(totalSeconds / 60);
-      var seconds = totalSeconds % 60;
-      secondsPanel.innerText = seconds < 10?"0"+seconds:seconds;
     }
 
     function update(time) {
@@ -369,7 +317,7 @@ var Game = function() {
         red: 0,
         blue: 0
       };
-      updateScore();
+      hud.updateScore();
       for (var i = 0; i < playerList.length; i++) {
         playerList[i].clearBodies();
       }
@@ -384,7 +332,7 @@ var Game = function() {
       }
       pausingGamepadIndex = -1;
       timePlayed = 0;
-      showTimer(0);
+      hud.updateTime(0);
       isOverTime = false;
       allowDraw = options.allowDraw;
       goalLimit = options.goalLimit;
@@ -392,13 +340,12 @@ var Game = function() {
       prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
       setGameStateDelayed(GAME_STATE.KICKOFF, 3);
-      showMessageQueue([
+      hud.showMessageQueue([
         { text: "3", duration: 1 },
         { text: "2", duration: 1 },
         { text: "1", duration: 1 },
         { text: "GO!", duration: 1 }
       ]);
-
     };
 
     function initMatter() {
@@ -420,7 +367,6 @@ var Game = function() {
       engine.world.gravity.y = 0;
       runner = Matter.Runner.create();
       Matter.Engine.run(runner, engine);
-
     }
 
     function init() {

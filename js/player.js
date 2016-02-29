@@ -56,6 +56,9 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
     body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
 
     var vect = Matter.Vector.create(x,y);
+    if (Matter.Vector.magnitudeSquared(vect) > 1) {
+      vect = Matter.Vector.normalise(vect);
+    }
     // Apply force to body if stick is out of dead zone.
     if (Matter.Vector.magnitude(vect) > PLAYER_INPUT_DEAD_ZONE) {
       Matter.Body.applyForce(body, body.position,Matter.Vector.mult(
