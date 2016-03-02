@@ -124,7 +124,7 @@ var Game = function() {
         return;
       }
       if (gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_MENU].pressed) {
-        hideMessage();
+        hud.hideMessage();
         showMenu();
         return;
       }
@@ -136,12 +136,6 @@ var Game = function() {
       currentGameState = beforePauseGameState;
       runner.enabled = true;
       hud.hideMessage();
-    }
-
-    function setGameStateDelayed(nextState, seconds) {
-      window.setTimeout(function() {
-        currentGameState = nextState;
-      }, seconds * 1000);
     }
 
     function goalScored(scoreTeam) {
@@ -161,10 +155,11 @@ var Game = function() {
         endGame(scoreTeam);
       }
       else {
-        hude.showMessage(scoreTeam + " team scores!",
+        hud.showMessage(scoreTeam + " team scores!",
           scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
         stateTimer = window.setTimeout(function() {
           prepareKickoff(scoreTeam == "red"?"blue":"red");
+          sound.playStart();
           currentGameState = GAME_STATE.KICKOFF;
         }, GAME_AFTER_GOAL_TIME);
       }
@@ -178,6 +173,7 @@ var Game = function() {
           winner == "red"?"#D24E4E":"#3A85CC");
       }
       else {
+        sound.playEnd();
         hud.showMessage("DRAW!", "white");
       }
     }
@@ -335,7 +331,10 @@ var Game = function() {
       timeLimit = options.timeLimit;
       prepareKickoff(options.startingTeam);
       currentGameState = GAME_STATE.WARMUP;
-      setGameStateDelayed(GAME_STATE.KICKOFF, 3);
+      window.setTimeout(function () {
+        sound.playStart();
+        currentGameState = GAME_STATE.KICKOFF;
+      }, 3000);
       hud.showMessageQueue([
         { text: "3", duration: 1 },
         { text: "2", duration: 1 },
