@@ -347,18 +347,10 @@ var Game = function() {
       // create a Matter.js engine
       engine = Matter.Engine.create({
         render: {
-          element: document.getElementById("container"),
-          canvas: document.getElementById("playingField")
+          controller: HtmlRenderer
         }
       });
 
-      engine.render.options.wireframes = false;
-      engine.render.options.background = "transparent";
-      engine.render.options.showAngleIndicator = false;
-      engine.render.options.showCollisions = false;
-
-      engine.render.canvas.width = SCREEN_WIDTH;
-      engine.render.canvas.height = SCREEN_HEIGHT;
       engine.world.gravity.y = 0;
       runner = Matter.Runner.create();
       Matter.Engine.run(runner, engine);

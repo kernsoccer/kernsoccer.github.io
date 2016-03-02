@@ -37,6 +37,8 @@ img {
   margin: 0 auto;
   display: block;
   z-index: 5;
+  width: 1920px;
+  height: 1080px;
 }
 
 #clock {
