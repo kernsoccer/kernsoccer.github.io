@@ -44,7 +44,7 @@ var Hud = function () {
     messagePanel.style.visibility="hidden";
   }
 
-  function updateScore() {
+  function updateScore(teamScores) {
     redScorePanel.innerText = teamScores.red;
     blueScorePanel.innerText = teamScores.blue;
   }

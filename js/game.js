@@ -156,7 +156,7 @@ var Game = function() {
         teamScores.blue += 1;
         gameEnd = teamScores.blue >= goalLimit;
       }
-      updateScore();
+      hud.updateScore(teamScores);
       if (gameEnd || isOverTime) {
         endGame(scoreTeam);
       }
@@ -313,7 +313,7 @@ var Game = function() {
         red: 0,
         blue: 0
       };
-      hud.updateScore();
+      hud.updateScore(teamScores);
       for (var i = 0; i < playerList.length; i++) {
         playerList[i].clearBodies();
       }
@@ -374,7 +374,7 @@ var Game = function() {
       playingField = PlayingField(engine);
       playingField.init();
       ball = Ball(engine);
-      updateScore();
+      hud.updateScore(teamScores);
       menu = Menu(start);
       currentGameState = GAME_STATE.MENU;
       registerHandlers();
