@@ -279,8 +279,10 @@ var Game = function() {
         var positions = [];
         for (var p = 0; p < players[i].pawnCount; p++) {
           positions.push({
+            label: count,
             x: positionX,
             y: SCREEN_HEIGHT/2 - offset + GAME_PLAYER_KICKOFF_DISTANCE * --count
+
           });
         }
         players[i].reset(positions);

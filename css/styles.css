@@ -41,6 +41,36 @@ img {
   height: 1080px;
 }
 
+  #playingField .displayObject {
+    position: absolute;
+    border-radius: 50%;
+    font-size: 30px;
+    text-align: center;
+  }
+
+  #playingField .player {
+    border: 4px black solid;
+  }
+
+  #playingField .player.kicking {
+    border: 8px white solid;
+  }
+
+  #playingField .red {
+    background-color: red;
+  }
+
+  #playingField .blue {
+    background-color: blue;
+  }
+
+  #playingField .ball {
+    background-color: white;
+    border: 4px black solid;
+  }
+
+
+
 #clock {
   position: absolute;
   z-index: 20;

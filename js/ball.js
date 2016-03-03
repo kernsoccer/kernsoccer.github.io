@@ -37,6 +37,7 @@ var Ball = function (engine) {
     if (body !== undefined)
       Matter.World.remove(engine.world, body);
     body = createBall();
+    HtmlRenderer.setBall(body);
     Matter.World.add(engine.world, body)
   }
 

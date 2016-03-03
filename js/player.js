@@ -23,6 +23,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
 
   function clearBodies() {
     for (var i = 0; i < bodies.length; i++) {
+      HtmlRenderer.removePlayer(bodies[i]);
       Matter.World.remove(engine.world, bodies[i]);
     }
     bodies = [];
@@ -32,6 +33,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
     clearBodies();
     for (var i = 0; i < positions.length; i++) {
       var body = createBody(positions[i]);
+      HtmlRenderer.addPlayer(body, team, positions[i].label);
       bodies.push(body);
       Matter.World.add(engine.world, body);
     }
