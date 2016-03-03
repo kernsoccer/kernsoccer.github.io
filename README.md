@@ -2,8 +2,9 @@
 simple haxball clone without network but controller support.
 
 ## Todo
-- switch to custom renderer
-- add bounce sounds with field, net and goalposts
-- add player numbers
+- add bounce sounds with field, net and goalposts [not sure]
+- add instant replay
+- make game responsive
 - add state system
+- test sprint
 - put controller into Helper
