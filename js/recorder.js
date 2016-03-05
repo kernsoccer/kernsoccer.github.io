@@ -57,6 +57,7 @@ var Recorder = function (world, sound) {
     if (playedTicks < 480 && playedTicks < recording.length) {
       var tick = recording[currentIndex];
       for (var i = 0; i < tick.players.length; i++) {
+        playerBodies[i].isKicking = tick.players[i].isKicking;
         Matter.Body.setPosition(
           playerBodies[i],
           Matter.Vector.create(tick.players[i].x, tick.players[i].y));
