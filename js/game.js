@@ -13,11 +13,14 @@ var Game = function() {
     var pausingGamepadIndex = -1;
     var pauseButtonReady = true;
 
+    var kickOffTeam;
+
     var menu;
     var runner;
     var playingField;
     var ball;
     var engine;
+    var recorder;
 
     var allowDraw;
     var goalLimit = Number.POSITIVE_INFINITY;
@@ -152,27 +155,33 @@ var Game = function() {
       }
       hud.updateScore(teamScores);
       if (gameEnd || isOverTime) {
-        endGame(scoreTeam);
+        endGame(scoreTeam, true);
       }
       else {
+        kickOffTeam = scoreTeam == "red"?"blue":"red";
         hud.showMessage(scoreTeam + " team scores!",
           scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
         stateTimer = window.setTimeout(function() {
-          prepareKickoff(scoreTeam == "red"?"blue":"red");
-          sound.playStart();
-          currentGameState = GAME_STATE.KICKOFF;
+          currentGameState = GAME_STATE.REPLAY;
+          runner.enabled = false;
         }, GAME_AFTER_GOAL_TIME);
       }
     }
 
-    function endGame(winner) {
-      currentGameState = GAME_STATE.ENDED;
+    function endGame(winner, byGoal) {
       if (winner !== undefined) {
         sound.playCheer();
         hud.showMessage(winner + " wins the game!",
           winner == "red"?"#D24E4E":"#3A85CC");
+        if (byGoal) {
+          stateTimer = window.setTimeout(function() {
+            currentGameState = GAME_STATE.REPLAY_END;
+            runner.enabled = false;
+          }, GAME_AFTER_GOAL_TIME);
+        }
       }
       else {
+        currentGameState = GAME_STATE.ENDED;
         sound.playEnd();
         hud.showMessage("DRAW!", "white");
       }
@@ -231,12 +240,14 @@ var Game = function() {
       var deltaTime = time - lastUpdate;
 
       if (currentGameState == GAME_STATE.RUNNING) {
+        recorder.recordTick();
         updateInputs();
         updateTimer(deltaTime);
         checkGoal();
       } else if (currentGameState == GAME_STATE.KICKOFF) {
         updateInputs();
       } else if (currentGameState == GAME_STATE.AFTER_GOAL) {
+        recorder.recordTick();
         updateInputs();
       } else if (currentGameState == GAME_STATE.ENDED) {
         updateInputs();
@@ -245,6 +256,21 @@ var Game = function() {
         menu.update();
       } else if (currentGameState == GAME_STATE.PAUSED) {
         updatePause();
+      } else if (currentGameState == GAME_STATE.REPLAY) {
+        recorder.playTick();
+        if (recorder.isDone()) {
+          runner.enabled = true;
+          prepareKickoff(kickOffTeam);
+          sound.playStart();
+          currentGameState = GAME_STATE.KICKOFF;
+        }
+      } else if (currentGameState == GAME_STATE.REPLAY_END) {
+        checkMenuReturn();
+        recorder.playTick();
+        if (recorder.isDone()) {
+          runner.enabled = true;
+          currentGameState = GAME_STATE.ENDED;
+        }
       }
       HtmlRenderer.update();
       lastUpdate = time;
@@ -288,8 +314,6 @@ var Game = function() {
       }
     }
 
-    // caution: kickoff is reversed!
-    // because its easier as goalScored knows only the scoring team
     function prepareKickoff(team) {
       resetTeam(GAME_TEAM_RED, playingField.leftTeamLine );
       resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine );
@@ -301,6 +325,8 @@ var Game = function() {
         playingField.showLeftBarrier();
       }
       ball.reset();
+      recorder = Recorder(engine.world, sound);
+      sound.setRecorder(recorder);
     }
 
 

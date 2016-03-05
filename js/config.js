@@ -94,7 +94,9 @@ var GAME_STATE = {
   WARMUP: 3,
   AFTER_GOAL: 4,
   ENDED: 5,
-  MENU: 6
+  MENU: 6,
+  REPLAY: 7,
+  REPLAY_END: 8
 }
 
 /*
