@@ -236,6 +236,18 @@ var Game = function() {
       timePlayed = newTimePlayed;
     }
 
+    function checkCancel() {
+      var gamepadState = navigator.getGamepads();
+      for (var i = 0; i < 4; i++) {
+        if (gamepadState[i] !== undefined
+            && gamepadState[i].buttons[PLAYER_INPUT_CANCEL].pressed) {
+
+          return true;
+        }
+      }
+      return false;
+    }
+
     function update(time) {
       var deltaTime = time - lastUpdate;
 
@@ -259,7 +271,7 @@ var Game = function() {
         updatePause();
       } else if (currentGameState == GAME_STATE.REPLAY) {
         recorder.playTick();
-        if (recorder.isDone()) {
+        if (recorder.isDone() || checkCancel()) {
           runner.enabled = true;
           prepareKickoff(kickOffTeam);
           sound.playStart();
@@ -268,7 +280,7 @@ var Game = function() {
       } else if (currentGameState == GAME_STATE.REPLAY_END) {
         checkMenuReturn();
         recorder.playTick();
-        if (recorder.isDone()) {
+        if (recorder.isDone() || checkCancel()) {
           runner.enabled = true;
           currentGameState = GAME_STATE.ENDED;
         }

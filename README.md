@@ -2,7 +2,7 @@
 simple haxball clone without network but controller support.
 
 ## Todo
-- add instant replay
+- add instant replay cancel method
 - add state system
 - make game responsive
 - test sprint

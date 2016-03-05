@@ -30,7 +30,7 @@ var Sound = function () {
   }
 
   function playStart() {
-    play(Matter.Common.choose(["start1","start2","start3"]));
+    play(Matter.Common.choose(["start1","start2","start3"]), true);
   }
 
   function playEnd() {
