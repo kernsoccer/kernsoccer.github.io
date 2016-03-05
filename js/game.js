@@ -245,6 +245,7 @@ var Game = function() {
         updateTimer(deltaTime);
         checkGoal();
       } else if (currentGameState == GAME_STATE.KICKOFF) {
+        recorder.recordTick();
         updateInputs();
       } else if (currentGameState == GAME_STATE.AFTER_GOAL) {
         recorder.recordTick();
