@@ -246,8 +246,7 @@ var Game = function() {
       } else if (currentGameState == GAME_STATE.PAUSED) {
         updatePause();
       }
-
-
+      HtmlRenderer.update();
       lastUpdate = time;
       // request next animation frame
       requestAnimationFrame(update);
@@ -346,10 +345,18 @@ var Game = function() {
     };
 
     function initMatter() {
-      // create a Matter.js engine
+      // create a Matter.js engine with dummy renderer
+      var dummyRenderer = {
+          create: function() {
+              return { controller: dummyRenderer };
+          },
+          world: function(engine) {
+              // your code here to render engine.world
+          }
+      };
       engine = Matter.Engine.create({
         render: {
-          controller: HtmlRenderer
+          controller: dummyRenderer
         }
       });
 

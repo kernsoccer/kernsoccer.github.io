@@ -46,6 +46,7 @@ img {
     border-radius: 50%;
     font-size: 30px;
     text-align: center;
+    box-sizing: border-box;
   }
 
   #playingField .player {
@@ -53,7 +54,8 @@ img {
   }
 
   #playingField .player.kicking {
-    border: 8px white solid;
+    border-color: white;
+    color: white;
   }
 
   #playingField .red {

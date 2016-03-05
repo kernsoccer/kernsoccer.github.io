@@ -11,15 +11,15 @@ var HtmlRenderer = function () {
 
   function setBall(body) {
     ballBody = body;
-    ballDisplayObject.style.width = body.circleRadius * 2 - 8 + "px";
-    ballDisplayObject.style.height = body.circleRadius * 2 - 8 + "px"
+    ballDisplayObject.style.width = body.circleRadius * 2 + "px";
+    ballDisplayObject.style.height = body.circleRadius * 2 + "px"
   }
 
   function addPlayer(body, color, label) {
     var displayObject = document.createElement("div");
     displayObject.classList.add("displayObject");
-    displayObject.style.width = body.circleRadius * 2 - 8 + "px";
-    displayObject.style.height = body.circleRadius * 2 - 8 + "px";
+    displayObject.style.width = body.circleRadius * 2 + "px";
+    displayObject.style.height = body.circleRadius * 2 + "px";
     if (label !== undefined) {
       displayObject.innerText = label;
     }
@@ -48,8 +48,6 @@ var HtmlRenderer = function () {
     var x = player.body.position.x - player.body.circleRadius;
     var y = player.body.position.y - player.body.circleRadius;
     if (player.body.isKicking) {
-      x-=4;
-      y-=4;
       player.displayObject.classList.add("kicking");
     }
     else {
@@ -59,11 +57,7 @@ var HtmlRenderer = function () {
       "translate(" + x + "px," + y + "px)";
   }
 
-  function create() {
-    return { controller: HtmlRenderer };
-  }
-
-  function world(engine) {
+  function update(engine) {
     for (var i = 0; i < players.length; i++) {
       updatePlayer(players[i]);
     }
@@ -76,8 +70,7 @@ var HtmlRenderer = function () {
   }
 
   return {
-    create: create,
-    world: world,
+    update: update,
     addPlayer: addPlayer,
     removePlayer: removePlayer,
     setBall: setBall
