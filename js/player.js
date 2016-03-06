@@ -7,11 +7,6 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
       friction: PLAYER_FRICTION,
       inertia: PLAYER_INERTIA,
       frictionAir: PLAYER_FRICTION_AIR,
-      render: {
-        fillStyle: team,
-        strokeStyle: PLAYER_RENDER_STROKESTYLE_IDLE,
-        lineWidth: PLAYER_RENDER_LINEWIDTH_IDLE
-      },
       collisionFilter: {
         category: CATEGORY.PLAYER,
         mask: CATEGORY.BALL | CATEGORY.PLAYER

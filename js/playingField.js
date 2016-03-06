@@ -10,9 +10,6 @@ var PlayingField = function(engine) {
   var OPTIONS_DEFAULT = {
     isStatic: true,
     restitution: FIELD_OUTER_RESTITUTION,
-    render: {
-      visible: false
-    }
   };
   var OPTIONS_GOAL_POST = {
     isStatic: true,
@@ -20,9 +17,6 @@ var PlayingField = function(engine) {
     collisionFilter: {
       category: CATEGORY.RESTRICT_BALL,
       mask: CATEGORY.BALL
-    },
-    render: {
-      visible: false
     }
   };
   var OPTIONS_FIELD_LINE = {
@@ -31,9 +25,6 @@ var PlayingField = function(engine) {
     collisionFilter: {
       category: CATEGORY.RESTRICT_BALL,
       mask: CATEGORY.BALL
-    },
-    render: {
-      visible: false
     }
   };
   var OPTIONS_NET = {
@@ -45,9 +36,6 @@ var PlayingField = function(engine) {
     collisionFilter: {
       category: CATEGORY.RESTRICT_BALL,
       mask: CATEGORY.BALL
-    },
-    render: {
-      visible: false
     }
   }
 

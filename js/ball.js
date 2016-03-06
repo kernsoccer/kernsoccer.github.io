@@ -11,11 +11,6 @@ var Ball = function (engine) {
         category: CATEGORY.BALL,
         mask: CATEGORY.PLAYER | CATEGORY.RESTRICT_BALL
       },
-      render: {
-        fillStyle: BALL_RENDER_FILLSTYLE,
-        strokeStyle: BALL_RENDER_STROKESTYLE,
-        lineWidth: BALL_RENDER_LINEWIDTH
-      },
       isBall: true,
       label: "ball"
     });
