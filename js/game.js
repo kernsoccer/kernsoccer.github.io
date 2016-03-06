@@ -263,6 +263,7 @@ var Game = function() {
         recorder.recordTick();
         updateInputs();
       } else if (currentGameState == GAME_STATE.ENDED) {
+        recorder.recordTick();
         updateInputs();
         checkMenuReturn();
       } else if (currentGameState == GAME_STATE.MENU) {
