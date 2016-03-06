@@ -169,6 +169,7 @@ var Game = function() {
     }
 
     function endGame(winner, byGoal) {
+      currentGameState = GAME_STATE.ENDED;
       if (winner !== undefined) {
         sound.playCheer();
         hud.showMessage(winner + " wins the game!",
@@ -181,7 +182,6 @@ var Game = function() {
         }
       }
       else {
-        currentGameState = GAME_STATE.ENDED;
         sound.playEnd();
         hud.showMessage("DRAW!", "white");
       }
