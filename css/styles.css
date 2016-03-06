@@ -201,6 +201,21 @@ img {
   color: white;
 }
 
+.info {
+  text-decoration: none;
+  position: absolute;
+  display: block;
+  right: 500px;
+  top: 270px;
+  font-size: 30px;
+  color: black;
+  background-color: white;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+}
+
 .menuContainer {
   margin: 240px auto;
   background-color: rgba(0, 0, 0, 0.7);;

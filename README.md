@@ -7,6 +7,5 @@ simple haxball clone without network but controller support.
 - make game responsive
 - add themes
 - add maps
-- add How to page
 - test sprint
 - add bounce sounds with field, net and goalposts [not sure]
