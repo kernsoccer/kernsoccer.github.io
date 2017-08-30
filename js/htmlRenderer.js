@@ -26,6 +26,13 @@ var HtmlRenderer = function () {
     displayObject.classList.add("player");
     displayObject.classList.add(color);
 
+    var boostBar = document.createElement('div');
+
+    boostBar.classList.add('boost');
+    boostBar.appendChild(document.createElement('span'));
+
+    displayObject.appendChild(boostBar);
+
     field.appendChild(displayObject);
 
     players.push({
@@ -53,6 +60,19 @@ var HtmlRenderer = function () {
     else {
       player.displayObject.classList.remove("kicking");
     }
+
+    var boost = player.displayObject.querySelector('.boost');
+    var boostMeter = boost.querySelector('span');
+
+    boostMeter.style.width = player.body.energy + '%';
+
+    if (player.body.isOutPowered) {
+      boost.classList.add("isOutPowered");
+    }
+    else {
+      boost.classList.remove("isOutPowered");
+    }
+    
     player.displayObject.style.transform =
       "translate(" + x + "px," + y + "px)";
   }

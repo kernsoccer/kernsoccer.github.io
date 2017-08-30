@@ -1,322 +1,407 @@
-.clearfix:after {
-     visibility: hidden;
-     display: block;
-     font-size: 0;
-     content: " ";
-     clear: both;
-     height: 0;
-     }
-.clearfix { display: inline-block; }
+.clearfix:after
+{
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+}
+
+.clearfix
+{
+    display: inline-block;
+}
 /* start commented backslash hack \*/
-* html .clearfix { height: 1%; }
-.clearfix { display: block; }
+* html .clearfix
+{
+    height: 1%;
+}
+
+.clearfix
+{
+    display: block;
+}
 /* close commented backslash hack */
 
-body {
-  background-image: url('../img/grass.png');
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  font-family: sans-serif;
-  font-size: 55px;
-  font-weight: bold;
-}
-img {
-  width: 100%;
-  height: auto;
-}
-#container {
-  position: relative;
-  width: 1920px;
-  margin: 0 auto;
-  height: 1080px;
+body
+{
+    background-image: url('../img/grass.png');
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: sans-serif;
+    font-size: 55px;
+    font-weight: bold;
 }
 
-#playingField {
-  position: absolute;
-  margin: 0 auto;
-  display: block;
-  z-index: 5;
-  width: 1920px;
-  height: 1080px;
+img
+{
+    width: 100%;
+    height: auto;
 }
 
-  #playingField .displayObject {
+#container
+{
+    position: relative;
+    width: 1920px;
+    margin: 0 auto;
+    height: 1080px;
+}
+
+#playingField
+{
+    position: absolute;
+    margin: 0 auto;
+    display: block;
+    z-index: 5;
+    width: 1920px;
+    height: 1080px;
+}
+
+    #playingField .displayObject
+    {
+        position: absolute;
+        border-radius: 50%;
+        font-size: 30px;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    #playingField .player
+    {
+        border: 4px black solid;
+    }
+
+        #playingField .player.kicking
+        {
+            border-color: white;
+            color: white;
+        }
+
+    #playingField .red
+    {
+        background-color: red;
+    }
+
+    #playingField .blue
+    {
+        background-color: blue;
+    }
+
+    #playingField .ball
+    {
+        background-color: white;
+        border: 4px black solid;
+    }
+
+
+
+#clock
+{
+    position: absolute;
+    z-index: 20;
+    width: 94.3%;
+    text-align: right;
+    color: lightgrey;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+
+#scoreBoard
+{
+    z-index: 20;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: lightgrey;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+
+#textMessage
+{
+    z-index: 20;
+    text-align: center;
+    position: absolute;
+    font-size: 75px;
+    width: 100%;
+    top: 300px;
+    color: white;
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: black;
+}
+
+
+
+.field
+{
+    z-index: 10
+}
+
+.lines
+{
+    position: absolute;
+    top: 63px;
+    left: 108px;
+    width: 1698px;
+    height: 948px;
+    border: 3px solid white;
+}
+
+
+.circle
+{
     position: absolute;
     border-radius: 50%;
-    font-size: 30px;
-    text-align: center;
-    box-sizing: border-box;
-  }
+    top: 415px;
+    left: 835px;
+    width: 245px;
+    height: 245px;
+    border: 3px solid white;
+}
 
-  #playingField .player {
-    border: 4px black solid;
-  }
+.middleLine
+{
+    position: absolute;
+    height: 951px;
+    top: 63px;
+    left: 959px;
+    border-left: 3px solid white;
+}
 
-  #playingField .player.kicking {
-    border-color: white;
+.goalPost
+{
+    position: absolute;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+}
+
+.leftTop
+{
+    top: 430px;
+    left: 100px;
+}
+
+.leftBottom
+{
+    top: 630px;
+    left: 100px;
+}
+
+.rightTop
+{
+    top: 430px;
+    right: 100px;
+}
+
+.rightBottom
+{
+    top: 630px;
+    right: 100px;
+}
+
+
+.leftGoal
+{
+    position: absolute;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    top: 438px;
+    left: 57px;
+    width: 50px;
+    height: 194px;
+    border: 5px solid black;
+    border-right: none;
+}
+
+.rightGoal
+{
+    position: absolute;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    top: 438px;
+    right: 57px;
+    width: 50px;
+    height: 194px;
+    border: 5px solid black;
+    border-left: none;
+}
+
+.menu
+{
+    z-index: 30;
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
+    font-size: 20px;
     color: white;
-  }
+}
 
-  #playingField .red {
-    background-color: red;
-  }
-
-  #playingField .blue {
-    background-color: blue;
-  }
-
-  #playingField .ball {
+.info
+{
+    text-decoration: none;
+    position: absolute;
+    display: block;
+    right: 500px;
+    top: 270px;
+    font-size: 30px;
+    color: black;
     background-color: white;
-    border: 4px black solid;
-  }
-
-
-
-#clock {
-  position: absolute;
-  z-index: 20;
-  width: 94.3%;
-  text-align: right;
-  color: lightgrey;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: black;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    text-align: center;
 }
 
-#scoreBoard {
-  z-index: 20;
-  position: absolute;
-  width: 100%;
-  text-align: center;
-  color: lightgrey;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: black;
+.menuContainer
+{
+    margin: 240px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    ;
+    border-radius: 30px;
+    width: 1000px;
+    height: 600px;
 }
 
-#textMessage {
-  z-index: 20;
-  text-align: center;
-  position: absolute;
-  font-size: 75px;
-  width: 100%;
-  top: 300px;
-  color: white;
-  -webkit-text-stroke-width: 2px;
-  -webkit-text-stroke-color: black;
+.menuHeadline
+{
+    margin: 0;
+    text-align: center;
+    display: block;
+    padding: 20px 0 0;
+    font-size: 50px;
 }
 
-
-
-.field {
-  z-index: 10
+.menuDivider
+{
+    margin: 10px 0;
 }
 
-.lines {
-  position: absolute;
-  top: 63px;
-  left: 108px;
-  width: 1698px;
-  height: 948px;
-  border: 3px solid white;
+.controllerBox
+{
+    float: left;
+    margin: 0 91px;
 }
 
-
-.circle {
-  position: absolute;
-  border-radius: 50%;
-  top: 415px;
-  left: 835px;
-	width: 245px;
-	height: 245px;
-  border: 3px solid white;
+.controllerList
+{
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    width: 150px;
+    height: 300px;
 }
 
-.middleLine {
-  position: absolute;
-  height: 951px;
-  top: 63px;
-  left: 959px;
-  border-left: 3px solid white;
+.listHeader
+{
+    margin: 0;
+    font-size: 40px;
+    text-align: center;
 }
 
-.goalPost {
-  position: absolute;
-  border-radius: 50%;
-	width: 20px;
-	height: 20px;
-  background-color: black;
+.redTeam
+{
+    color: red;
 }
 
-.leftTop {
-  top: 430px;
-  left: 100px;
+.blueTeam
+{
+    color: blue;
 }
 
-.leftBottom {
-  top: 630px;
-  left: 100px;
+.gamepad
+{
+    width: 60px;
+    height: 60px;
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    background-image: url("../img/controller.png");
+    background-size: contain;
 }
 
-.rightTop {
-  top: 430px;
-  right: 100px;
+.gamepadLabel
+{
+    display: block;
+    padding-top: 15px;
 }
 
-.rightBottom {
-  top: 630px;
-  right: 100px;
+.double .pawn.second
+{
+    left: 35px;
+    display: block;
 }
 
-
-.leftGoal {
-  position: absolute;
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  top: 438px;
-  left: 57px;
-	width: 50px;
-	height: 194px;
-  border: 5px solid black;
-  border-right: none;
+.double .pawn
+{
+    left: 15px;
 }
 
-.rightGoal {
-  position: absolute;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  top: 438px;
-  right: 57px;
-	width: 50px;
-	height: 194px;
-  border: 5px solid black;
-  border-left: none;
+.pawn
+{
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: white;
+    left: 25px;
 }
 
-.menu {
-  z-index: 30;
-  position: absolute;
-  width: 1920px;
-  height: 1080px;
-  font-size: 20px;
-  color: white;
+.blueTeam .pawn
+{
+    background-color: blue;
 }
 
-.info {
-  text-decoration: none;
-  position: absolute;
-  display: block;
-  right: 500px;
-  top: 270px;
-  font-size: 30px;
-  color: black;
-  background-color: white;
-  border-radius: 50%;
-  width: 35px;
-  height: 35px;
-  text-align: center;
+.redTeam .pawn
+{
+    background-color: red;
 }
 
-.menuContainer {
-  margin: 240px auto;
-  background-color: rgba(0, 0, 0, 0.7);;
-  border-radius: 30px;
-  width: 1000px;
-  height: 600px;
+.pawn.second
+{
+    display: none;
 }
 
-.menuHeadline {
-  margin: 0;
-  text-align: center;
-  display: block;
-  padding: 20px 0 0;
-  font-size: 50px;
+.option
+{
+    margin: 15px 0;
 }
 
-.menuDivider {
-  margin: 10px 0;
+.optionLabel
+{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
 }
 
-.controllerBox {
-  float: left;
-  margin: 0 91px;
+.optionInput
+{
+    display: inline-block;
 }
 
-.controllerList {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
-  width: 150px;
-  height: 300px;
+.boost
+{
+    height: 4px;
+    width: 40px;
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    top: -15px;
+    left: -5px;
+    background-color: white;
 }
 
-.listHeader {
-  margin: 0;
-  font-size: 40px;
-  text-align: center;
-}
+    .boost > span
+    {
+        display: block;
+        height: 100%;
+        background-color: green;
+        line-height: 1.5em;
+        font-size: 14.5px;
+    }
 
-.redTeam {
-  color: red;
-}
-
-.blueTeam {
-  color: blue;
-}
-
-.gamepad {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto;
-  position: relative;
-  text-align: center;
-  background-image: url("../img/controller.png");
-  background-size: contain;
-}
-
-.gamepadLabel {
-  display: block;
-  padding-top: 15px;
-}
-
-.double .pawn.second {
-  left: 35px;
-  display: block;
-}
-
-.double .pawn {
-  left: 15px;
-}
-
-.pawn {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: white;
-  left: 25px;
-}
-
-.blueTeam .pawn {
-  background-color: blue;
-}
-
-.redTeam .pawn {
-  background-color: red;
-}
-
-.pawn.second {
-  display: none;
-}
-
-.option {
-  margin: 15px 0;
-}
-
-.optionLabel {
-  display: inline-block;
-  width: 50%;
-  text-align: right;
-}
-
-.optionInput {
-  display: inline-block;
-}
+    .boost.isOutPowered > span
+    {
+        background-color: orange;
+    }
