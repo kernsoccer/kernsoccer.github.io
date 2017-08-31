@@ -64,6 +64,8 @@ var HtmlRenderer = function () {
     var boost = player.displayObject.querySelector('.boost');
     var boostMeter = boost.querySelector('span');
 
+    doEmote(player);
+
     boostMeter.style.width = player.body.energy + '%';
 
     if (player.body.isOutPowered) {

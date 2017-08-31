@@ -13,7 +13,10 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
       },
       isPlayer: true,
       isKicking: false,
+      isEmoting: false,
+      emoteKey: 0,
       energy: 100,
+      team: team,
       isOutPowered: false
     });
   }
@@ -54,6 +57,13 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
     }
     body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
     body.isBoosting = gamePadState.buttons[inputOptions.boost].pressed;
+    for (var i = 0; i < inputOptions.emoteKeys.length; i++) {
+      if(gamePadState.buttons[inputOptions.emoteKeys[i]].pressed)
+        {
+          body.emoteKey = inputOptions.emoteKeys[i];
+          break;
+        }
+    }
 
     var vect = Matter.Vector.create(x,y);
     if (Matter.Vector.magnitudeSquared(vect) > 1) {
