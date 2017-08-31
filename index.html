@@ -1,114 +1,135 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>kernsoccer</title>
     <link rel="stylesheet" href="css/styles.css" media="screen" title="no title" charset="utf-8">
-  </head>
-  <body>
+    <link rel="stylesheet" href="css/checkbox.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
     <div id="container">
-      <div id="playingField"></div>
-      <div id="scoreBoard"><span id="redScore">1</span> - <span id="blueScore">0</span></div>
-      <div id="clock"><span id="minutes">0</span>:<span id="seconds">00</span></div>
-      <div id="textMessage" style="visibility: hidden;"></div>
-      <div class="field">
-        <div class="lines"></div>
-        <div class="circle"></div>
-        <div class="middleLine"></div>
-        <div class="goalPost leftTop"></div>
-        <div class="goalPost leftBottom"></div>
-        <div class="goalPost rightTop"></div>
-        <div class="goalPost rightBottom"></div>
-        <div class="leftGoal"></div>
-        <div class="rightGoal"></div>
-      </div>
-      <div id="menu" class="menu">
-        <div class="menuContainer">
-          <a class="info" href="info.html">?</a>
-          <h1 class="menuHeadline">KERNSOCCER</h1>
-          <hr class="menuDivider" />
-          <div class="clearfix">
-            <div class="redTeam controllerBox">
-              <h2 class="listHeader">red</h2>
-              <div id="redTeam" class="controllerList"></div>
-            </div>
-            <div class="noTeam controllerBox">
-              <h2 class="listHeader">&nbsp;</h2>
-              <div id="noTeam" class="controllerList">
-                <div id="gamepad0" class="gamepad">
-                  <div class="gamepadLabel">1</div>
-                  <div class="pawn"></div>
-                  <div class="pawn second"></div>
-                </div>
-                <div id="gamepad1" class="gamepad">
-                  <div class="gamepadLabel">2</div>
-                  <div class="pawn"></div>
-                  <div class="pawn second"></div>
-                </div>
-                <div id="gamepad2" class="gamepad">
-                  <div class="gamepadLabel">3</div>
-                  <div class="pawn"></div>
-                  <div class="pawn second"></div>
-                </div>
-                <div id="gamepad3" class="gamepad">
-                  <div class="gamepadLabel">4</div>
-                  <div class="pawn"></div>
-                  <div class="pawn second"></div>
-                </div>
-              </div>
-            </div>
-            <div class="blueTeam controllerBox">
-              <h2 class="listHeader">blue</h2>
-              <div id="blueTeam"  class="controllerList"></div>
-            </div>
-          </div>
-          <hr class="menuDivider" />
-          <div class="options">
-            <div class="option">
-              <div class="optionLabel">Score Limit:</div>
-              <div class="optionInput">
-                <select id="goalLimit" name="goalLimit">
-                  <option value="">None</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5" selected="true">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-              </div>
-            </div>
-            <div class="option">
-              <div class="optionLabel">Time Limit:</div>
-              <div class="optionInput">
-                <select id="timeLimit" name="timeLimit">
-                  <option value="">None</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3" selected="true">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-              </div>
-            </div>
-            <div class="option">
-              <div class="optionLabel">Allow Draw:</div>
-              <div class="optionInput">
-                <input id="allowDraw" type="checkbox">
-              </div>
-            </div>
-          </div>
+        <div id="playingField"></div>
+        <div id="scoreBoard"><span id="redScore">1</span> - <span id="blueScore">0</span></div>
+        <div id="clock"><span id="minutes">0</span>:<span id="seconds">00</span></div>
+        <div id="textMessage" style="visibility: hidden;"></div>
+        <div class="field">
+            <div class="lines"></div>
+            <div class="circle"></div>
+            <div class="middleLine"></div>
+            <div class="goalPost leftTop"></div>
+            <div class="goalPost leftBottom"></div>
+            <div class="goalPost rightTop"></div>
+            <div class="goalPost rightBottom"></div>
+            <div class="leftGoal"></div>
+            <div class="rightGoal"></div>
         </div>
-      </div>
+
+        <div id="menu" class="menu">
+            <div class="menu-head">
+                <h1 class="menuHeadline">KERNSOCCER</h1>
+            </div>
+            <hr class="menuDivider" />
+            <div class="menu-content">
+                <div class="clearfix">
+                    <div class="redTeam controllerBox">
+                        <h2 class="listHeader">red</h2>
+                        <div id="redTeam" class="controllerList"></div>
+                    </div>
+                    <div class="noTeam controllerBox">
+                        <h2 class="listHeader">&nbsp;</h2>
+                        <div id="noTeam" class="controllerList">
+                            <div id="gamepad0" class="gamepad">
+                                <div class="gamepadLabel">1</div>
+                                <div class="pawn"></div>
+                                <div class="pawn second"></div>
+                            </div>
+                            <div id="gamepad1" class="gamepad">
+                                <div class="gamepadLabel">2</div>
+                                <div class="pawn"></div>
+                                <div class="pawn second"></div>
+                            </div>
+                            <div id="gamepad2" class="gamepad">
+                                <div class="gamepadLabel">3</div>
+                                <div class="pawn"></div>
+                                <div class="pawn second"></div>
+                            </div>
+                            <div id="gamepad3" class="gamepad">
+                                <div class="gamepadLabel">4</div>
+                                <div class="pawn"></div>
+                                <div class="pawn second"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="blueTeam controllerBox">
+                        <h2 class="listHeader">blue</h2>
+                        <div id="blueTeam" class="controllerList"></div>
+                    </div>
+                </div>
+            </div>
+            <hr class="menuDivider" />
+            <div class="menu-footer clearfix">
+                <input type="button" id="btnOptions" value="Options" />
+                <a class="info" href="info.html">?</a>
+            </div>
+        </div>
+
+        <div id="options" class="menu options">
+            <div class="menu-head">
+                <h1 class="menuHeadline">Options</h1>
+                <div id="closeOptions" class="closeButton">x</div>
+            </div>
+            <div class="menu-content">
+                <hr class="menuDivider" />
+
+                <div class="item-list">
+                    <div class="item">
+                        Score Limit:
+                        <select id="goalLimit" name="goalLimit">
+                            <option value="">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5" selected="true">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        Time Limit:
+                        <select id="timeLimit" name="timeLimit">
+                            <option value="">None</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3" selected="true">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox" id="allowDraw" checked="checked" />
+                        <label for="allowDraw">Allow Draw</label>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox" id="allowBoost" checked="checked" />
+                        <label for="allowBoost">Allow Boost</label>
+                    </div>
+                </div>
+
+                <hr class="menuDivider" />
+                <div class="menu-footer">
+
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="js/vendor/soundjs-0.6.2.min.js"></script>
@@ -119,6 +140,7 @@
     <script src="js/recorder.js"></script>
     <script src="js/htmlRenderer.js"></script>
     <script src="js/sound.js"></script>
+    <script src="js/options.js"></script>
     <script src="js/menu.js"></script>
     <script src="js/hud.js"></script>
     <script src="js/playingField.js"></script>
@@ -126,5 +148,5 @@
     <script src="js/player.js"></script>
     <script src="js/game.js"></script>
     <script src="js/init.js"></script>
-  </body>
+</body>
 </html>
