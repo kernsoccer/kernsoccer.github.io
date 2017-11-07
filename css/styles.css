@@ -35,11 +35,6 @@ body
     font-weight: bold;
 }
 
-    body .field .lines
-    {
-        background-image: url('../img/street.jpg');
-    }
-
 img
 {
     width: 100%;
@@ -238,85 +233,20 @@ img
 .menu
 {
     z-index: 30;
+    position: absolute;
+    width: 1920px;
+    height: 1080px;
     font-size: 20px;
     color: white;
-    top: 50%; /* position the top  edge of the element at the middle of the parent */
-    left: 50%; /* position the left edge of the element at the middle of the parent */
-    transform: translate(-50%, -50%);
-    position: relative;
-    height: auto;
-    width: 1000px;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 30px;
-    min-height: 550px;
-}
-
-.menu-head
-{
-    box-sizing: border-box;
-    padding: 15px 15px 0 15px;
-}
-
-.menu-footer
-{
-    box-sizing: border-box;
-    padding: 0 15px 15px 15px;
-}
-
-.menu.options
-{
-    display: none;
-}
-
-.item-list
-{
-    padding-left: 20%;
-    box-sizing: border-box;
-}
-
-    .item-list .item
-    {
-        margin: 15px 0;
-    }
-
-.menu .closeButton
-{
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border-radius: 50%;
-    background-color: white;
-    color: black;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    text-align: center;
-    padding-top: 3px;
-    box-sizing: border-box;
-}
-
-.menu-content
-{
-}
-
-.menuHeadline
-{
-    margin: 0;
-    text-align: center;
-    display: block;
-    font-size: 50px;
-}
-
-.menuDivider
-{
-    margin: 10px 0;
 }
 
 .info
 {
     text-decoration: none;
-    float: right;
-    display: inline-block;
+    position: absolute;
+    display: block;
+    right: 500px;
+    top: 270px;
     font-size: 30px;
     color: black;
     background-color: white;
@@ -324,6 +254,30 @@ img
     width: 35px;
     height: 35px;
     text-align: center;
+}
+
+.menuContainer
+{
+    margin: 240px auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    ;
+    border-radius: 30px;
+    width: 1000px;
+    height: 600px;
+}
+
+.menuHeadline
+{
+    margin: 0;
+    text-align: center;
+    display: block;
+    padding: 20px 0 0;
+    font-size: 50px;
+}
+
+.menuDivider
+{
+    margin: 10px 0;
 }
 
 .controllerBox
@@ -410,6 +364,23 @@ img
     display: none;
 }
 
+.option
+{
+    margin: 15px 0;
+}
+
+.optionLabel
+{
+    display: inline-block;
+    width: 50%;
+    text-align: right;
+}
+
+.optionInput
+{
+    display: inline-block;
+}
+
 .boost
 {
     height: 4px;
@@ -420,11 +391,6 @@ img
     left: -5px;
     background-color: black;
 }
-
-    .boost.hidden
-    {
-        display: none;
-    }
 
     .boost > span
     {
