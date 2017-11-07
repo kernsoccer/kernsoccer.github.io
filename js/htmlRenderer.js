@@ -64,6 +64,7 @@ var HtmlRenderer = function ()
     {
         var x = player.body.position.x - player.body.circleRadius;
         var y = player.body.position.y - player.body.circleRadius;
+
         if (player.body.isKicking)
         {
             player.displayObject.classList.add("kicking");
@@ -73,9 +74,9 @@ var HtmlRenderer = function ()
             player.displayObject.classList.remove("kicking");
         }
 
-    doEmote(player);
+        doEmote(player);
 
-    boostMeter.style.width = player.body.energy + '%';
+        var boost = player.displayObject.querySelector('.boost');
 
         if (gameOptions.allowBoost)
         {
@@ -103,7 +104,6 @@ var HtmlRenderer = function ()
             {
                 boost.classList.add('hidden')
             }
-
         }
 
         player.displayObject.style.transform =
