@@ -73,7 +73,9 @@ var HtmlRenderer = function ()
             player.displayObject.classList.remove("kicking");
         }
 
-        var boost = player.displayObject.querySelector('.boost');
+    doEmote(player);
+
+    boostMeter.style.width = player.body.energy + '%';
 
         if (gameOptions.allowBoost)
         {

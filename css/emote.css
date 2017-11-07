@@ -1,0 +1,70 @@
+@keyframes bubble {
+    0% { top: -50px; } 
+    3% { top: 0px; }
+    4% { transform: rotate(-5deg); } 
+    8% { transform: rotate(3deg); } 
+    12% { transform: rotate(-3deg); } 
+    16% { transform: rotate(2deg); }
+    20% { transform: rotate(-1deg); }
+    75% { top: 0px; }
+    100% { top:50px; }
+}
+
+@keyframes emoteText {
+    0% { left: -100px;}
+    10% { left: -100px; }
+    25% { left: 0px; }
+}
+
+div.emote {
+    overflow: hidden;
+    height: 36px;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 104px;
+    top: -95px;
+    position: relative;
+    left: -36px;    
+}
+div.emote span {
+    animation-name: emoteText;
+    animation-duration: 2s;
+    position: relative;
+}
+div.emote div.bubble {
+    animation-name: bubble;
+    animation-duration: 1.5s;
+    position: relative;
+    top: 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 2px solid #000;
+    background: #fff;
+    text-align: center;
+    width: 80px;
+    font-size: 12px;
+}
+div.emote div.bubble:before {
+    content: ' ';
+    position: absolute;
+    top: 100%;
+    left: 42px;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 9px solid #000;
+    clear: both;
+}
+div.emote div.bubble::after {
+    content: ' ';
+    position: absolute;
+    top: 100%;
+    margin:auto;
+    left: 43px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #000;
+    clear: both;
+}

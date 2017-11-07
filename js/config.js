@@ -62,13 +62,15 @@ var PLAYER_INPUT_OPTIONS = [
     axesX: 0,
     axesY: 1,
     kickers: [0,6],
-    boost: 4
+    boost: 4,
+    emoteKeys: [12,13,14,15]
   },
   {
     axesX: 2,
     axesY: 3,
     kickers: [7],
-    boost: 5
+    boost: 5,
+    emoteKeys: [12,13,14,15]
   }
 ]
 

@@ -1,23 +1,30 @@
-var Player = function (engine, gamePadIndex, team, pawnCount)
-{
-    var bodies = [];
-    function createBody(position)
-    {
-        return Matter.Bodies.circle(position.x, position.y, PLAYER_RADIUS, {
-            restitution: PLAYER_RESTITUTION,
-            mass: PLAYER_MASS,
-            friction: PLAYER_FRICTION,
-            inertia: PLAYER_INERTIA,
-            frictionAir: PLAYER_FRICTION_AIR,
-            collisionFilter: {
-                category: CATEGORY.PLAYER,
-                mask: CATEGORY.BALL | CATEGORY.PLAYER
-            },
-            isPlayer: true,
-            isKicking: false,
-            energy: 100,
-            isOutPowered: false
-        });
+var Player = function (engine, gamePadIndex, team, pawnCount) {
+  var bodies = [];
+  function createBody(position) {
+    return Matter.Bodies.circle(position.x, position.y, PLAYER_RADIUS, {
+      restitution: PLAYER_RESTITUTION,
+      mass: PLAYER_MASS,
+      friction: PLAYER_FRICTION,
+      inertia: PLAYER_INERTIA,
+      friction: PLAYER_FRICTION,
+      collisionFilter: {
+        category: CATEGORY.PLAYER,
+        mask: CATEGORY.BALL | CATEGORY.PLAYER
+      },
+      isPlayer: true,
+      isKicking: false,
+      isEmoting: false,
+      emoteKey: 0,
+      energy: 100,
+      team: team,
+      isOutPowered: false
+    });
+  }
+
+  function clearBodies() {
+    for (var i = 0; i < bodies.length; i++) {
+      HtmlRenderer.removePlayer(bodies[i]);
+      Matter.World.remove(engine.world, bodies[i]);
     }
 
     function clearBodies()
@@ -39,6 +46,13 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
             HtmlRenderer.addPlayer(body, team, positions[i].label);
             bodies.push(body);
             Matter.World.add(engine.world, body);
+        }
+    }
+    for (var i = 0; i < inputOptions.emoteKeys.length; i++) {
+      if(gamePadState.buttons[inputOptions.emoteKeys[i]].pressed)
+        {
+          body.emoteKey = inputOptions.emoteKeys[i];
+          break;
         }
     }
 
