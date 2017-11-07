@@ -6,7 +6,6 @@ var Recorder = function (world, sound)
     var playbackDone = false;
     var playedTicks = 0;
 
-
     for (var i = 0; i < world.bodies.length; i++)
     {
         if (world.bodies[i].isPlayer)
