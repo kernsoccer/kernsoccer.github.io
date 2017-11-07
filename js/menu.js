@@ -116,7 +116,7 @@ var Menu = function (startFunction) {
     
     for (var i = 0; i < gamepads.length; i++) {
       updateGamepad(gamepads[i], gamepadStates[i]);
-      if (!playPressed && gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
+      if (!playPressed && gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
         playPressed = true;
         startGame();
         return;
