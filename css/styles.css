@@ -35,10 +35,15 @@ body
     font-weight: bold;
 }
 
-    body .field .lines
-    {
-        background-image: url('../img/street.jpg');
-    }
+.lines.theme-default
+{
+    background-image: url('../img/grass.png');
+}
+
+.lines.theme-street
+{
+    background-image: url('../img/street.jpg');
+}
 
 img
 {

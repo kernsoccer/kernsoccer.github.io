@@ -28,7 +28,8 @@ var Game = function ()
         allowDraw: true,
         allowBoost: true,
         goalLimit: Number.POSITIVE_INFINITY,
-        timeLimit: Number.POSITIVE_INFINITY
+        timeLimit: Number.POSITIVE_INFINITY,
+        fieldTheme: 'default'
     };
 
     var teamScores = {
@@ -431,11 +432,14 @@ var Game = function ()
             blue: 0
         };
         hud.updateScore(teamScores);
+
         for (var i = 0; i < playerList.length; i++)
         {
             playerList[i].clearBodies();
         }
+
         playerList = [];
+
         for (var i = 0; i < options.players.length; i++)
         {
             var player = Player(
@@ -443,11 +447,15 @@ var Game = function ()
                 options.players[i].gamePadIndex,
                 options.players[i].team,
                 options.players[i].pawnCount);
+
             playerList.push(player);
         }
         pausingGamepadIndex = -1;
         timePlayed = 0;
+
         hud.updateTime(0);
+        hud.setFieldTheme(options.fieldTheme);
+
         isOverTime = false;
         gameOptions.allowDraw = options.allowDraw;
         gameOptions.allowBoost = options.allowBoost;
@@ -460,6 +468,7 @@ var Game = function ()
             sound.playStart();
             currentGameState = GAME_STATE.KICKOFF;
         }, 3000);
+
         hud.showMessageQueue([
             { text: "3", duration: 1 },
             { text: "2", duration: 1 },

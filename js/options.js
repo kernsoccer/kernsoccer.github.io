@@ -11,6 +11,7 @@ var OptionsMenu = function (menu)
     var timeLimitInput = document.getElementById("timeLimit");
     var allowDrawInput = document.getElementById("allowDraw");
     var allowBoostInput = document.getElementById("allowBoost");
+    var themeInput = document.getElementById("theme");
 
     function hide()
     {
@@ -33,7 +34,8 @@ var OptionsMenu = function (menu)
             allowBoost: allowBoostInput.checked,
             goalLimit: (goalLimitInput.value != "") ? goalLimitInput.value : Number.POSITIVE_INFINITY,
             timeLimit: (timeLimitInput.value != "") ? timeLimitInput.value * 60 : Number.POSITIVE_INFINITY,
-            startingTeam: GAME_TEAM_RED
+            startingTeam: GAME_TEAM_RED,
+            fieldTheme: themeInput.value
         };
 
         return options;

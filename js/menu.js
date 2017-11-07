@@ -177,6 +177,7 @@ var Menu = function (startFunction)
         {
             return false;
         }
+
         hide();
 
         var gameOptions = optionsMenu.getGameOptions();
