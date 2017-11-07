@@ -91,7 +91,7 @@ var Game = function() {
     }
 
     function updateInputs() {
-      var gamepadState = navigator.getGamepads();
+      var gamepadState = ControllerHelper.getControllerStates();
 
       for (var i = 0; i < playerList.length; i++) {
         if (gamepadState[playerList[i].gamePadIndex].buttons[PLAYER_INPUT_PAUSE].pressed && pauseButtonReady) {
@@ -116,7 +116,7 @@ var Game = function() {
     }
 
     function updatePause() {
-      var gamepadState = navigator.getGamepads();
+      var gamepadState = ControllerHelper.getControllerStates();
       if (gamepadState[pausingGamepadIndex] === undefined) {
         continueGame();
         pauseButtonReady = true;
@@ -154,13 +154,15 @@ var Game = function() {
         gameEnd = teamScores.blue >= goalLimit;
       }
       hud.updateScore(teamScores);
+
       if (gameEnd || isOverTime) {
         endGame(scoreTeam, true);
       }
       else {
         kickOffTeam = scoreTeam == "red"?"blue":"red";
-        hud.showMessage(scoreTeam + " team scores!",
-          scoreTeam == "red"?"#D24E4E":"#3A85CC", 5);
+
+        hud.showMessage(scoreTeam + " team scores!", scoreTeam == "red" ? "#D24E4E" : "#3A85CC", 5);
+
         stateTimer = window.setTimeout(function() {
           currentGameState = GAME_STATE.REPLAY;
           runner.enabled = false;
@@ -237,7 +239,7 @@ var Game = function() {
     }
 
     function checkCancel() {
-      var gamepadState = navigator.getGamepads();
+      var gamepadState = ControllerHelper.getControllerStates();
       for (var i = 0; i < 4; i++) {
         if (gamepadState[i] !== undefined
             && gamepadState[i].buttons[PLAYER_INPUT_CANCEL].pressed) {
@@ -293,7 +295,7 @@ var Game = function() {
     };
 
     function checkMenuReturn() {
-      var gamepadStates = navigator.getGamepads();
+      var gamepadStates = ControllerHelper.getControllerStates();
       for (var i = 0; i < gamepadStates.length; i++) {
         if (gamepadStates[i].buttons[PLAYER_INPUT_MENU].pressed) {
           showMenu();
@@ -419,6 +421,7 @@ var Game = function() {
       currentGameState = GAME_STATE.MENU;
       registerHandlers();
       lastUpdate = performance.now();
+      window.ControllerHelper = ControllerHelper();
       update(lastUpdate);
     };
 

@@ -12,7 +12,12 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
         mask: CATEGORY.BALL | CATEGORY.PLAYER
       },
       isPlayer: true,
-      isKicking: false
+      isKicking: false,
+      isEmoting: false,
+      emoteKey: 0,
+      energy: 100,
+      team: team,
+      isOutPowered: false
     });
   }
 
@@ -51,15 +56,46 @@ var Player = function (engine, gamePadIndex, team, pawnCount) {
       }
     }
     body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
+    body.isBoosting = gamePadState.buttons[inputOptions.boost].pressed;
+    for (var i = 0; i < inputOptions.emoteKeys.length; i++) {
+      if(gamePadState.buttons[inputOptions.emoteKeys[i]].pressed)
+        {
+          body.emoteKey = inputOptions.emoteKeys[i];
+          break;
+        }
+    }
 
     var vect = Matter.Vector.create(x,y);
     if (Matter.Vector.magnitudeSquared(vect) > 1) {
       vect = Matter.Vector.normalise(vect);
     }
+
+    if(body.isBoosting && body.energy > 0 && !body.isOutPowered)
+    {
+        vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
+        body.energy -= ENERGY_DROWNING;
+
+        if(body.energy <= 0)
+        {
+            body.energy = 0;
+            body.isOutPowered = true;
+        }
+    }
+    else if(body.energy < 100)
+    {
+        body.energy += body.isOutPowered ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
+
+        if(body.energy >= 100)
+        {
+            body.energy = 100;
+            body.isOutPowered = false;
+        }
+    }
+
     // Apply force to body if stick is out of dead zone.
     if (Matter.Vector.magnitude(vect) > PLAYER_INPUT_DEAD_ZONE) {
       Matter.Body.applyForce(body, body.position,Matter.Vector.mult(
-          vect, body.isKicking?PLAYER_MOVE_FORCE_KICKING:PLAYER_MOVE_FORCE));
+          vect, body.isKicking ? PLAYER_MOVE_FORCE_KICKING : PLAYER_MOVE_FORCE));
     }
 
     body.render.strokeStyle = (body.isKicking) ?

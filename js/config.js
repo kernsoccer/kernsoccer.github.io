@@ -31,6 +31,12 @@ var FIELD_NET_RENDER_FILLSTYLE = "grey";
 var FIELD_CIRCLE_SIZE = 250;
 var FIELD_CIRCLE_PARTS = 20;
 
+var PLAYER_BOOSTENERGY = 1.5;
+
+var ENERGY_DROWNING = 1.5;
+var ENERGY_REGENERATION = 0.4;
+var ENERGY_REGENERATION_OUTPOWERED = 0.2;
+
 
 // PLAYER //
 // PLAYER RENDER
@@ -55,12 +61,16 @@ var PLAYER_INPUT_OPTIONS = [
   {
     axesX: 0,
     axesY: 1,
-    kickers: [0,4,6]
+    kickers: [0,6],
+    boost: 4,
+    emoteKeys: [12,13,14,15]
   },
   {
     axesX: 2,
     axesY: 3,
-    kickers: [5,7]
+    kickers: [7],
+    boost: 5,
+    emoteKeys: [12,13,14,15]
   }
 ]
 

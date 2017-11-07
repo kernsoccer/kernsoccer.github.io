@@ -112,7 +112,8 @@ var Menu = function (startFunction) {
   }
 
   function update() {
-    var gamepadStates = navigator.getGamepads();
+    var gamepadStates = ControllerHelper.getControllerStates();
+    
     for (var i = 0; i < gamepads.length; i++) {
       updateGamepad(gamepads[i], gamepadStates[i]);
       if (!playPressed && gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed) {
