@@ -30,8 +30,8 @@ var ControllerHelper = function ()
                     axes: [0, 0]
                 };
             }
-
-            activePads.push(loopedPad);
+			if (loopedPad.buttons.length > 2)
+				activePads.push(loopedPad);
 
             // if (loopedPad.buttons[8].pressed) {
             //   window.location.reload();
