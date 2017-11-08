@@ -1,6 +1,6 @@
 var ControllerHelper = function ()
 {
-    var useKeyboard = true;
+    var useKeyboard = false;
 
     function getControllerStates()
     {
