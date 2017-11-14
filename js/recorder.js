@@ -29,7 +29,9 @@ var Recorder = function (world, sound)
             players.push({
                 x: playerBodies[i].position.x,
                 y: playerBodies[i].position.y,
-                isKicking: playerBodies[i].isKicking
+                isKicking: playerBodies[i].isKicking,
+                energy: playerBodies[i].energy,
+                isOutPowered: playerBodies[i].isOutPowered
             });
         }
 
@@ -73,7 +75,8 @@ var Recorder = function (world, sound)
             for (var i = 0; i < tick.players.length; i++)
             {
                 playerBodies[i].isKicking = tick.players[i].isKicking;
-
+                playerBodies[i].energy = tick.players[i].energy;
+                playerBodies[i].isOutPowered = tick.players[i].isOutPowered;
                 Matter.Body.setPosition(
                     playerBodies[i],
                     Matter.Vector.create(tick.players[i].x, tick.players[i].y));

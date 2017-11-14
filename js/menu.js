@@ -74,13 +74,12 @@ var Menu = function (startFunction)
                 gamepad.connected = false;
                 removeGamepad(gamepad);
             }
-            else
-            {
-                return;
-            }
+            return;
         }
         if (!gamepad.connected)
         {
+            if (gamepadState.mapping !== "standard")
+                return;
             gamepad.connected = true;
             addGamepad(gamepad);
         }

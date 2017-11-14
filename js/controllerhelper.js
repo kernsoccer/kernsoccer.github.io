@@ -1,6 +1,6 @@
 var ControllerHelper = function ()
 {
-    var useKeyboard = true;
+    var useKeyboard = false;
 
     function getControllerStates()
     {
@@ -14,6 +14,9 @@ var ControllerHelper = function ()
 
             if (!loopedPad)
             {
+                if (!useKeyboard) {
+                    continue;
+                }
                 loopedPad = {
                     buttons: [
                         { pressed: false }, // 0
@@ -27,15 +30,13 @@ var ControllerHelper = function ()
                         { pressed: false }, // 8
                         { pressed: false }, // 9
                     ],
-                    axes: [0, 0]
+                    axes: [0, 0],
+                    mapping: "standard"
                 };
             }
-			if (loopedPad.buttons.length > 2)
+            if (loopedPad.mapping == "standard")
 				activePads.push(loopedPad);
-
-            // if (loopedPad.buttons[8].pressed) {
-            //   window.location.reload();
-            // }
+            
         }
         
         if (useKeyboard)
