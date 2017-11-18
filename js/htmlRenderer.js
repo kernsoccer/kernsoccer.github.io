@@ -89,13 +89,13 @@ var HtmlRenderer = function ()
 
             boostMeter.style.width = player.body.energy + '%';
 
-            if (player.body.isOutPowered)
+            if (player.body.isExhausted)
             {
-                boost.classList.add("isOutPowered");
+                boost.classList.add("isExhausted");
             }
             else
             {
-                boost.classList.remove("isOutPowered");
+                boost.classList.remove("isExhausted");
             }
         }
         else

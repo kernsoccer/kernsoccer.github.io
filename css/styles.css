@@ -440,7 +440,7 @@ img
         font-size: 14.5px;
     }
 
-    .boost.isOutPowered > span
+    .boost.isExhausted > span
     {
         background-color: orange;
     }

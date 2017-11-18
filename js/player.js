@@ -19,7 +19,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
             emoteKey: 0,
             energy: 100,
             team: team,
-            isOutPowered: false
+            isExhausted: false
         });
     }
 
@@ -94,7 +94,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
 
         if (gameOptions.allowBoost)
         {
-            if (body.isBoosting && body.energy > 0 && !body.isOutPowered)
+            if (body.isBoosting && body.energy > 0 && !body.isExhausted)
             {
                 vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
                 body.energy -= ENERGY_DROWNING;
@@ -102,17 +102,17 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
                 if (body.energy <= 0)
                 {
                     body.energy = 0;
-                    body.isOutPowered = true;
+                    body.isExhausted = true;
                 }
             }
             else if (body.energy < 100)
             {
-                body.energy += body.isOutPowered ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
+                body.energy += body.isExhausted ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
 
                 if (body.energy >= 100)
                 {
                     body.energy = 100;
-                    body.isOutPowered = false;
+                    body.isExhausted = false;
                 }
             }
         }
