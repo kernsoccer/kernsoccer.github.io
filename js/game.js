@@ -230,11 +230,9 @@ var Game = function ()
 
     function checkGoal()
     {
-        //TODO: replace by constant
         if (ball.getPositionX() > playingField.rightGoalLine)
         {
             goalScored(GAME_TEAM_RED);
-            //TODO: replace by constant
         } else if (ball.getPositionX() < playingField.leftGoalLine)
         {
             goalScored(GAME_TEAM_BLUE);
