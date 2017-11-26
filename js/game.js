@@ -4,6 +4,7 @@ var Game = function ()
     var playerList = [];
     var hud = Hud();
     var sound = Sound();
+    var controllerManager = ControllerManager();
     var stateTimer;
     var lastUpdate;
     var timePlayed;
@@ -11,8 +12,7 @@ var Game = function ()
     var currentKick = undefined;
 
     var beforePauseGameState;
-    var pausingGamepadIndex = -1;
-    var pauseButtonReady = true;
+    var pausingPlayer = undefined;
 
     var kickOffTeam;
 
@@ -58,6 +58,7 @@ var Game = function ()
     function doKick(pawn, ball)
     {
         pawn.isKicking = false;
+        pawn.hasKicked = true;
         sound.playKick();
         currentKick = {
             direction: Matter.Vector.normalise(
@@ -110,60 +111,51 @@ var Game = function ()
 
     function updateInputs()
     {
-        var gamepadState = ControllerHelper.getControllerStates();
+        controllerManager.update();
 
         for (var i = 0; i < playerList.length; i++)
         {
-            if (gamepadState[playerList[i].gamePadIndex].buttons[PLAYER_INPUT_PAUSE].pressed && pauseButtonReady)
+            if (playerList[i].controller.get("pause"))
             {
-                pauseGame(playerList[i].gamePadIndex);
+                pauseGame(playerList[i]);
                 return;
             }
-            playerList[i].update(gamepadState[playerList[i].gamePadIndex], gameOptions);
-        }
-        if (!pauseButtonReady)
-        {
-            pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed;
+            playerList[i].update();
         }
         checkDistanceKicks();
     }
 
-    function pauseGame(gamePadIndex)
+    function pauseGame(player)
     {
         beforePauseGameState = currentGameState;
         currentGameState = GAME_STATE.PAUSED;
-        pauseButtonReady = false;
-        pausingGamepadIndex = gamePadIndex;
+        pausingPlayer = player;
         hud.showMessage("PAUSED", "red");
         runner.enabled = false;
     }
 
     function updatePause()
     {
-        var gamepadState = ControllerHelper.getControllerStates();
-        if (gamepadState[pausingGamepadIndex] === undefined)
-        {
-            continueGame();
-            pauseButtonReady = true;
-            return;
-        }
-        if (gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed && pauseButtonReady)
+        controllerManager.update();
+        if (!pausingPlayer.controller.isConnected())
         {
             continueGame();
             return;
         }
-        if (gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_MENU].pressed)
+        if (pausingPlayer.controller.get("pause"))
+        {
+            continueGame();
+            return;
+        }
+        if (pausingPlayer.controller.get("menu"))
         {
             hud.hideMessage();
             showMenu();
-            return;
         }
-        pauseButtonReady = !gamepadState[pausingGamepadIndex].buttons[PLAYER_INPUT_PAUSE].pressed;
     }
 
     function continueGame()
     {
-        pauseButtonReady = false;
         currentGameState = beforePauseGameState;
         runner.enabled = true;
         hud.hideMessage();
@@ -291,13 +283,11 @@ var Game = function ()
 
     function checkCancel()
     {
-        var gamepadState = ControllerHelper.getControllerStates();
+        controllerManager.update();
         for (var i = 0; i < 4; i++)
         {
-            if (gamepadState[i] !== undefined
-                && gamepadState[i].buttons[PLAYER_INPUT_CANCEL].pressed)
+            if (controllerManager.controllers[i].get("cancel"))
             {
-
                 return true;
             }
         }
@@ -361,10 +351,10 @@ var Game = function ()
 
     function checkMenuReturn()
     {
-        var gamepadStates = ControllerHelper.getControllerStates();
-        for (var i = 0; i < gamepadStates.length; i++)
+        controllerManager.update();
+        for (var i = 0; i < 4; i++)
         {
-            if (gamepadStates[i].buttons[PLAYER_INPUT_MENU].pressed)
+            if (controllerManager.controllers[i].get("menu"))
             {
                 showMenu();
                 return;
@@ -442,7 +432,7 @@ var Game = function ()
         {
             var player = Player(
                 engine,
-                options.players[i].gamePadIndex,
+                controllerManager.controllers[options.players[i].gamePadIndex],
                 options.players[i].team,
                 options.players[i].pawnCount);
 
@@ -452,7 +442,6 @@ var Game = function ()
         timePlayed = 0;
 
         hud.updateTime(0);
-        hud.setFieldTheme(options.fieldTheme);
 
         isOverTime = false;
         gameOptions.allowDraw = options.allowDraw;
@@ -511,12 +500,11 @@ var Game = function ()
         playingField.init();
         ball = Ball(engine);
         hud.updateScore(teamScores);
-        menu = Menu(start);
+        menu = Menu(controllerManager, start);
         menu.init();
         currentGameState = GAME_STATE.MENU;
         registerHandlers();
         lastUpdate = performance.now();
-        window.ControllerHelper = ControllerHelper();
         update(lastUpdate);
     };
 

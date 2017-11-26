@@ -1,6 +1,11 @@
-var Player = function (engine, gamePadIndex, team, pawnCount)
+var Player = function (engine, controller, team, pawnCount)
 {
     var bodies = [];
+
+    controller.setMapping(PLAYER_INPUT_MAPPINGS[
+        pawnCount == 1 ? "onePawn" : "twoPawns"
+    ]);
+
     function createBody(position)
     {
         return Matter.Bodies.circle(position.x, position.y, PLAYER_RADIUS, {
@@ -15,6 +20,7 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
             },
             isPlayer: true,
             isKicking: false,
+            hasKicked: false,
             isEmoting: false,
             emoteKey: 0,
             energy: 100,
@@ -54,69 +60,50 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
         }
     }
 
-    function updateBody(gamePadState, prevButtonState, body, inputOptions, gameOptions)
+    function updateBody(bodyIndex)
     {
-        var x = gamePadState.axes[inputOptions.axesX];
-        var y = gamePadState.axes[inputOptions.axesY];
-        var currentButtonState = [];
-        var newButtonPressed = false, anyButtonPressed = false;
-        for (var i = 0; i < inputOptions.kickers.length; i++)
-        {
-            currentButtonState[inputOptions.kickers[i]] =
-                gamePadState.buttons[inputOptions.kickers[i]].pressed;
+        var body = bodies[bodyIndex];
 
-            if (gamePadState.buttons[inputOptions.kickers[i]].pressed)
-            {
-                anyButtonPressed = true;
-                if (!prevButtonState[inputOptions.kickers[i]])
-                {
-                    newButtonPressed = true;
-                }
+        if (body.hasKicked) {
+            if (!controller.get("kicking" + bodyIndex)) {
+                body.hasKicked = false;
             }
         }
-        body.isKicking = (newButtonPressed || (anyButtonPressed && body.isKicking));
-        body.isBoosting = gamePadState.buttons[inputOptions.boost].pressed;
-
-        for (var i = 0; i < inputOptions.emoteKeys.length; i++)
-        {
-            if (gamePadState.buttons[inputOptions.emoteKeys[i]].pressed)
-            {
-                body.emoteKey = inputOptions.emoteKeys[i];
-                break;
-            }
+        else {
+            body.isKicking = controller.get("kicking" + bodyIndex);
         }
-
-        var vect = Matter.Vector.create(x, y);
+        
+        body.isBoosting = controller.get("boost" + bodyIndex);
+        
+        var input = controller.get("input" + bodyIndex);
+        var vect = Matter.Vector.create(input.x, input.y);
         if (Matter.Vector.magnitudeSquared(vect) > 1)
         {
             vect = Matter.Vector.normalise(vect);
         }
-
-        if (gameOptions.allowBoost)
+        
+        if (body.isBoosting && body.energy > 0 && !body.isExhausted)
         {
-            if (body.isBoosting && body.energy > 0 && !body.isExhausted)
-            {
-                vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
-                body.energy -= ENERGY_DROWNING;
+            vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
+            body.energy -= ENERGY_DROWNING;
 
-                if (body.energy <= 0)
-                {
-                    body.energy = 0;
-                    body.isExhausted = true;
-                }
-            }
-            else if (body.energy < 100)
+            if (body.energy <= 0)
             {
-                body.energy += body.isExhausted ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
-
-                if (body.energy >= 100)
-                {
-                    body.energy = 100;
-                    body.isExhausted = false;
-                }
+                body.energy = 0;
+                body.isExhausted = true;
             }
         }
+        else if (body.energy < 100)
+        {
+            body.energy += body.isExhausted ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
 
+            if (body.energy >= 100)
+            {
+                body.energy = 100;
+                body.isExhausted = false;
+            }
+        }
+        
         // Apply force to body if stick is out of dead zone.
         if (Matter.Vector.magnitude(vect) > PLAYER_INPUT_DEAD_ZONE)
         {
@@ -132,23 +119,13 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
 
         body.frictionAir = (body.isKicking) ?
             PLAYER_FRICTION_AIR_KICKING : PLAYER_FRICTION_AIR;
-
-        return currentButtonState;
     }
-
-    var prevButtonStates = [[], []];
-
-    function update(gamePadState, gameOptions)
+    
+    function update()
     {
-        if (gamePadState !== undefined)
+        for (var i = 0; i < bodies.length; i++)
         {
-            for (var i = 0; i < bodies.length; i++)
-            {
-                prevButtonStates[i] = updateBody(
-                    gamePadState, prevButtonStates[i],
-                    bodies[i], PLAYER_INPUT_OPTIONS[i],
-                    gameOptions);
-            }
+            updateBody(i);
         }
     }
 
@@ -158,6 +135,6 @@ var Player = function (engine, gamePadIndex, team, pawnCount)
         update: update,
         team: team,
         pawnCount: pawnCount,
-        gamePadIndex: gamePadIndex
+        controller: controller
     }
 };

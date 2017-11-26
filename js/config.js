@@ -10,7 +10,9 @@ var SCREEN_HEIGHT = 1080;
 // GAME //
 var GAME_TEAM_RED = "red";
 var GAME_TEAM_BLUE = "blue";
+// time between ball entering the goal and replay starts
 var GAME_AFTER_GOAL_TIME = 3000;
+// the distance from middle where players are lined up at kickoff
 var GAME_PLAYER_KICKOFF_DISTANCE = 100;
 
 // FIELD //
@@ -28,7 +30,9 @@ var FIELD_NET_WIDTH = 200;
 var FIELD_NET_RESTITUTION = 0;
 var FIELD_NET_RENDER_FILLSTYLE = "grey";
 
+// size of the circle arround the kickoff point
 var FIELD_CIRCLE_SIZE = 250;
+// segments to use for the circle
 var FIELD_CIRCLE_PARTS = 20;
 
 var PLAYER_BOOSTENERGY = 1.5;
@@ -57,26 +61,111 @@ var PLAYER_MOVE_FORCE_KICKING = 0.002;
 // PLAYER INPUT
 var PLAYER_KICK_FORCE = 0.035;
 var PLAYER_INPUT_DEAD_ZONE = 0.2;
-var PLAYER_INPUT_OPTIONS = [
-  {
-    axesX: 0,
-    axesY: 1,
-    kickers: [0,6],
-    boost: 4,
-    emoteKeys: [12,13,14,15]
-  },
-  {
-    axesX: 2,
-    axesY: 3,
-    kickers: [7],
-    boost: 5,
-    emoteKeys: [12,13,14,15]
-  }
-]
-
-var PLAYER_INPUT_CANCEL = 1;
-var PLAYER_INPUT_PAUSE = 9;
-var PLAYER_INPUT_MENU = 8;
+var PLAYER_INPUT_MAPPINGS = {
+    menu: {
+        start: {
+            type: "button",
+            buttons: [9],
+            toggle: true
+        },
+        double: {
+            type: "button",
+            buttons: [0],
+            toggle: true
+        },
+        menuLeft: {
+            type: "axisbutton",
+            axes: [0],
+            threshold: -0.8,
+            toggle: true
+        },
+        menuRight: {
+            type: "axisbutton",
+            axes: [0],
+            threshold: 0.8,
+            toggle: true
+        }
+    },
+    onePawn: {
+        input0: {
+            type: "vector",
+            xaxis: 0,
+            yaxis: 1
+        },
+        kicking0: {
+            type: "button",
+            buttons: [0, 6],
+            toggle: false
+        },
+        boost0: {
+            type: "button",
+            buttons: [4],
+            toggle: false
+        },
+        pause: {
+            type: "button",
+            buttons: [9],
+            toggle: true
+        },
+        cancel: {
+            type: "button",
+            buttons: [1],
+            toggle: true
+        },
+        menu: {
+            type: "button",
+            buttons: [8],
+            toggle: true
+        }
+    },
+    twoPawns: {
+        input0: {
+            type: "vector",
+            xaxis: 0,
+            yaxis: 1
+        },
+        kicking0: {
+            type: "button",
+            buttons: [0, 6],
+            toggle: false
+        },
+        boost0: {
+            type: "button",
+            buttons: [4],
+            toggle: false
+        },
+        input1: {
+            type: "vector",
+            xaxis: 2,
+            yaxis: 3
+        },
+        kicking1: {
+            type: "button",
+            buttons: [7],
+            toggle: false
+        },
+        boost1: {
+            type: "button",
+            buttons: [5],
+            toggle: false
+        },
+        pause: {
+            type: "button",
+            buttons: [9],
+            toggle: true
+        },
+        cancel: {
+            type: "button",
+            buttons: [1],
+            toggle: true
+        },
+        menu: {
+            type: "button",
+            buttons: [8],
+            toggle: true
+        }
+    }
+}
 
 // BALL //
 // BALL RENDER

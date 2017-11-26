@@ -1,4 +1,4 @@
-var Menu = function (startFunction)
+var Menu = function (controllerManager, startFunction)
 {
     var optionsMenu;
     var menuPanel = document.getElementById("menu");
@@ -10,43 +10,33 @@ var Menu = function (startFunction)
     var redTeam = [];
     var blueTeam = [];
     var noTeam = [];
-
-    var playPressed = false;
-
+    
     var gamepads = [
         {
             index: 0,
             team: "none",
-            connected: false,
-            x: 0,
-            button: false,
+            connected: true,
             double: false,
             panel: document.getElementById("gamepad0")
         },
         {
             index: 1,
             team: "none",
-            connected: false,
-            x: 0,
-            button: false,
+            connected: true,
             double: false,
             panel: document.getElementById("gamepad1")
         },
         {
             index: 2,
             team: "none",
-            connected: false,
-            x: 0,
-            button: false,
+            connected: true,
             double: false,
             panel: document.getElementById("gamepad2")
         },
         {
             index: 3,
             team: "none",
-            connected: false,
-            x: 0,
-            button: false,
+            connected: true,
             double: false,
             panel: document.getElementById("gamepad3")
         }
@@ -60,14 +50,14 @@ var Menu = function (startFunction)
 
     function show()
     {
-        playPressed = false;
+        setMappings();
         menuPanel.style.display = "inherit";
         document.body.style.cursor = "auto";
     }
 
-    function updateGamepad(gamepad, gamepadState)
+    function updateGamepad(gamepad, controller)
     {
-        if (gamepadState === undefined)
+        if (!controller.isConnected())
         {
             if (gamepad.connected)
             {
@@ -78,13 +68,11 @@ var Menu = function (startFunction)
         }
         if (!gamepad.connected)
         {
-            if (gamepadState.mapping !== "standard")
-                return;
             gamepad.connected = true;
             addGamepad(gamepad);
         }
 
-        if (gamepadState.axes[0] > 0.8 && gamepad.x < 0.8)
+        if (controller.get("menuRight"))
         {
             if (gamepad.team == GAME_TEAM_RED)
             {
@@ -96,7 +84,7 @@ var Menu = function (startFunction)
                 gamepad.team = GAME_TEAM_BLUE;
             }
         }
-        else if (gamepadState.axes[0] < -0.8 && gamepad.x > -0.8)
+        else if (controller.get("menuLeft"))
         {
             if (gamepad.team == GAME_TEAM_BLUE)
             {
@@ -109,7 +97,7 @@ var Menu = function (startFunction)
             }
         }
 
-        if (gamepadState.buttons[0].pressed && !gamepad.button)
+        if (controller.get("double"))
         {
             gamepad.double = !gamepad.double;
             if (gamepad.double)
@@ -121,22 +109,18 @@ var Menu = function (startFunction)
                 gamepad.panel.classList.remove("double");
             }
         }
-
-        gamepad.x = gamepadState.axes[0];
-        gamepad.button = gamepadState.buttons[0].pressed;
     }
 
     function update()
     {
-        var gamepadStates = ControllerHelper.getControllerStates();
+        controllerManager.update();
 
-        for (var i = 0; i < gamepads.length; i++)
+        for (var i = 0; i < 4; i++)
         {
-            updateGamepad(gamepads[i], gamepadStates[i]);
-            if (!playPressed && gamepadStates[i] !== undefined && gamepadStates[i].buttons[PLAYER_INPUT_PAUSE].pressed)
+            updateGamepad(gamepads[i], controllerManager.controllers[i]);
+            if (controllerManager.controllers[i].get("start"))
             {
-                playPressed = startGame();
-
+                startGame();
                 return;
             }
         }
@@ -150,12 +134,12 @@ var Menu = function (startFunction)
 
     function addGamepad(gamepad)
     {
-        gamepad.panel.style.visibility = "inherit";
+        gamepad.panel.style.display = "inherit";
     }
 
     function removeGamepad(gamepad)
     {
-        gamepad.panel.style.visibility = "hidden";
+        gamepad.panel.style.display = "none";
     }
     
     function startGame()
@@ -174,7 +158,7 @@ var Menu = function (startFunction)
         }
         if (players.length == 0)
         {
-            return false;
+            return;
         }
 
         hide();
@@ -183,12 +167,18 @@ var Menu = function (startFunction)
         gameOptions.players = players;
 
         startFunction(gameOptions);
+    }
 
-        return true;
+    function setMappings() {
+        for (var i = 0; i < 4; i++) {
+            controllerManager.controllers[i].setMapping(
+                PLAYER_INPUT_MAPPINGS["menu"]);
+        }
     }
 
     function init()
     {
+        setMappings();
         optionsMenu = OptionsMenu(this);
         optionsMenu.init();
     }

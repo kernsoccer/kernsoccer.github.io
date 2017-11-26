@@ -73,9 +73,7 @@ var HtmlRenderer = function ()
         {
             player.displayObject.classList.remove("kicking");
         }
-
-        doEmote(player);
-
+        
         var boost = player.displayObject.querySelector('.boost');
 
         if (gameOptions.allowBoost)
