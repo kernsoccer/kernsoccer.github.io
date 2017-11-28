@@ -343,7 +343,7 @@ var Game = function ()
                 currentGameState = GAME_STATE.ENDED;
             }
         }
-        HtmlRenderer.update(gameOptions);
+        HtmlRenderer.update();
         lastUpdate = time;
         // request next animation frame
         requestAnimationFrame(update);

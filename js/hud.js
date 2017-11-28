@@ -5,7 +5,7 @@ var Hud = function ()
     var messagePanel = document.getElementById(MESSAGE_PANEL);
     var minutesPanel = document.getElementById("minutes");
     var secondsPanel = document.getElementById("seconds");
-    var fieldLines = document.querySelector("body .field .lines");
+    
     var messageTimer;
 
     function showMessageQueue(messages)
@@ -27,23 +27,7 @@ var Hud = function ()
         }, message.duration * 1000);
     }
 
-    function setFieldTheme(theme)
-    {
-        var THEMEPREFIX = 'theme-';
-
-        for (var i = 0; i < fieldLines.classList.length; i++)
-        {
-            var className = fieldLines.classList[i];
-
-            if (className.startsWith(THEMEPREFIX))
-            {
-                fieldLines.classList.remove(className);
-                break;
-            }
-        }
-
-        fieldLines.classList.add(THEMEPREFIX + theme);
-    }
+    
 
     function drawMessage(text, color)
     {
@@ -101,7 +85,6 @@ var Hud = function ()
         hideMessage: hideMessage,
         showMessageQueue: showMessageQueue,
         updateTime: updateTime,
-        updateScore: updateScore,
-        setFieldTheme: setFieldTheme
+        updateScore: updateScore
     };
 };

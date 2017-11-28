@@ -426,11 +426,6 @@ img
     background-color: black;
 }
 
-    .boost.hidden
-    {
-        display: none;
-    }
-
     .boost > span
     {
         display: block;

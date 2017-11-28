@@ -1,5 +1,7 @@
 var HtmlRenderer = function ()
 {
+    var prevWidth = 0;
+    var container = document.getElementById("container");
     var field = document.getElementById("playingField");
     var players = [];
     var ballBody;
@@ -17,7 +19,7 @@ var HtmlRenderer = function ()
         ballDisplayObject.style.height = body.circleRadius * 2 + "px"
     }
 
-    function addPlayer(body, color, label, gameOptions)
+    function addPlayer(body, color, label)
     {
         var displayObject = document.createElement("div");
         displayObject.classList.add("displayObject");
@@ -60,7 +62,7 @@ var HtmlRenderer = function ()
         }
     }
 
-    function updatePlayer(player, gameOptions)
+    function updatePlayer(player)
     {
         var x = player.body.position.x - player.body.circleRadius;
         var y = player.body.position.y - player.body.circleRadius;
@@ -75,44 +77,33 @@ var HtmlRenderer = function ()
         }
         
         var boost = player.displayObject.querySelector('.boost');
+        var boostMeter = boost.querySelector('span');
+        boostMeter.style.width = player.body.energy + '%';
 
-        if (gameOptions.allowBoost)
+        if (player.body.isExhausted)
         {
-            if (boost.classList.contains('hidden'))
-            {
-                boost.classList.remove('hidden')
-            }
-
-            var boostMeter = boost.querySelector('span');
-
-            boostMeter.style.width = player.body.energy + '%';
-
-            if (player.body.isExhausted)
-            {
-                boost.classList.add("isExhausted");
-            }
-            else
-            {
-                boost.classList.remove("isExhausted");
-            }
+            boost.classList.add("isExhausted");
         }
         else
         {
-            if (!boost.classList.contains('hidden'))
-            {
-                boost.classList.add('hidden')
-            }
+            boost.classList.remove("isExhausted");
         }
-
+        
         player.displayObject.style.transform =
             "translate(" + x + "px," + y + "px)";
     }
-
-    function update(gameOptions)
+    
+    function update()
     {
+        if (document.body.clientWidth != prevWidth)
+        {
+            container.style.zoom = (document.body.clientWidth / SCREEN_WIDTH * 100) + "%";
+            prevWidth = document.body.clientWidth;
+        }
+
         for (var i = 0; i < players.length; i++)
         {
-            updatePlayer(players[i], gameOptions);
+            updatePlayer(players[i]);
         }
         if (ballBody !== undefined)
         {
