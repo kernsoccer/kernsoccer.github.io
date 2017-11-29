@@ -3,7 +3,7 @@ var OptionsMenu = function (menu)
     var btnOptions = document.getElementById("btnOptions");
     var btnCloseOptions = document.getElementById("closeOptions");
     var optionsMenuPanel = document.getElementById("options");
-    var fieldLines = document.querySelector("body .field .lines");
+    var htmlBody = document.body;
 
     /**
      * Option controls
@@ -16,16 +16,16 @@ var OptionsMenu = function (menu)
     function setFieldTheme(theme) {
         var THEMEPREFIX = 'theme-';
 
-        for (var i = 0; i < fieldLines.classList.length; i++) {
-            var className = fieldLines.classList[i];
+        for (var i = 0; i < htmlBody.classList.length; i++) {
+            var className = htmlBody.classList[i];
 
             if (className.startsWith(THEMEPREFIX)) {
-                fieldLines.classList.remove(className);
+                htmlBody.classList.remove(className);
                 break;
             }
         }
 
-        fieldLines.classList.add(THEMEPREFIX + theme);
+        htmlBody.classList.add(THEMEPREFIX + theme);
     }
 
     function hide()
@@ -48,8 +48,7 @@ var OptionsMenu = function (menu)
             allowDraw: allowDrawInput.checked,
             goalLimit: (goalLimitInput.value != "") ? goalLimitInput.value : Number.POSITIVE_INFINITY,
             timeLimit: (timeLimitInput.value != "") ? timeLimitInput.value * 60 : Number.POSITIVE_INFINITY,
-            startingTeam: GAME_TEAM_RED,
-            fieldTheme: themeInput.value
+            startingTeam: GAME_TEAM_RED
         };
 
         return options;
@@ -65,6 +64,9 @@ var OptionsMenu = function (menu)
         btnCloseOptions.addEventListener('click', function ()
         {
             hide();
+        });
+        themeInput.addEventListener("change", function () {
+            setFieldTheme(themeInput.value);
         });
     }
     return {

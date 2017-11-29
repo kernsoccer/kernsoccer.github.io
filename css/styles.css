@@ -35,13 +35,12 @@ body
     font-weight: bold;
 }
 
-.lines.theme-default
-{
-    background-image: url('../img/grass.png');
-}
+    body.theme-blue {
+        background-image: none;
+        background-color: #1b7ead;
+    }
 
-.lines.theme-street
-{
+body.theme-street .field .lines {
     background-image: url('../img/street.jpg');
 }
 

@@ -256,7 +256,7 @@ var Game = function ()
         // if seconds changed we need to update our timer display
         if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000))
         {
-            hud.updateTime(totalSeconds);
+            hud.updateTime(gameOptions.timeLimit-totalSeconds);
         }
 
         if (gameOptions.timeLimit == totalSeconds)
@@ -441,7 +441,7 @@ var Game = function ()
         pausingGamepadIndex = -1;
         timePlayed = 0;
 
-        hud.updateTime(0);
+        hud.updateTime(options.timeLimit);
 
         isOverTime = false;
         gameOptions.allowDraw = options.allowDraw;
@@ -466,22 +466,7 @@ var Game = function ()
 
     function initMatter()
     {
-        // create a Matter.js engine with dummy renderer
-        var dummyRenderer = {
-            create: function ()
-            {
-                return { controller: dummyRenderer };
-            },
-            world: function (engine)
-            {
-                // your code here to render engine.world
-            }
-        };
-        engine = Matter.Engine.create({
-            render: {
-                controller: dummyRenderer
-            }
-        });
+        engine = Matter.Engine.create();
 
         engine.world.gravity.y = 0;
         runner = Matter.Runner.create();
