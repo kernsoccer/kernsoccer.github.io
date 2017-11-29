@@ -24,6 +24,10 @@ var Game = function ()
     var engine;
     var recorder;
 
+    var gameStates = {
+        running: new RunningState(this)
+    }
+
     var gameOptions = {
         allowDraw: true,
         allowBoost: true,
