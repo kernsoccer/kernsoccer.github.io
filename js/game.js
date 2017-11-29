@@ -28,8 +28,7 @@ var Game = function ()
         allowDraw: true,
         allowBoost: true,
         goalLimit: Number.POSITIVE_INFINITY,
-        timeLimit: Number.POSITIVE_INFINITY,
-        fieldTheme: 'default'
+        timeLimit: Number.POSITIVE_INFINITY
     };
 
     var teamScores = {
