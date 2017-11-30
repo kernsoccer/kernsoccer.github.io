@@ -1,10 +1,12 @@
-var AfterGoalState = function(game) {
+var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
     function begin() {
 
     }
 
-    function update() {
-        
+    function update(deltaTime) {
+        recorder.recordTick();
+        updateInputs();
+        checkDistanceKicks();
     }
 
     function end() {

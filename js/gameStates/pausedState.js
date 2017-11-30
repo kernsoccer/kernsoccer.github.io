@@ -1,10 +1,10 @@
-var PausedState = function(game) {
+var PausedState = function(updatePause) {
     function begin() {
 
     }
 
     function update() {
-        
+        updatePause();
     }
 
     function end() {

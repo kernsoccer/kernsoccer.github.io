@@ -1,10 +1,10 @@
-var MenuState = function(game) {
+var MenuState = function(menu) {
     function begin() {
 
     }
 
     function update() {
-        
+        menu.update();
     }
 
     function end() {

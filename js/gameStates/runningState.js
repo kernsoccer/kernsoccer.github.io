@@ -1,10 +1,15 @@
-var RunningState = function(game) {
+var RunningState = function(recorder, updateInputs, checkDistanceKicks, updateTimer, checkGoal) {
+
     function begin() {
 
     }
 
-    function update() {
-        
+    function update(deltaTime) {
+        recorder.recordTick();
+        updateInputs();
+        checkDistanceKicks();
+        updateTimer(deltaTime);
+        checkGoal();
     }
 
     function end() {

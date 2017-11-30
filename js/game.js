@@ -1,6 +1,7 @@
 var Game = function ()
 {
-    var currentGameState = GAME_STATE.PAUSED;
+    var gameStates = {};
+    var currentGameState = undefined;
     var playerList = [];
     var hud = Hud();
     var sound = Sound();
@@ -23,10 +24,6 @@ var Game = function ()
     var ball;
     var engine;
     var recorder;
-
-    var gameStates = {
-        running: new RunningState(this)
-    }
 
     var gameOptions = {
         allowDraw: true,
@@ -115,7 +112,6 @@ var Game = function ()
     function updateInputs()
     {
         controllerManager.update();
-
         for (var i = 0; i < playerList.length; i++)
         {
             if (playerList[i].controller.get("pause"))
@@ -125,7 +121,6 @@ var Game = function ()
             }
             playerList[i].update();
         }
-        checkDistanceKicks();
     }
 
     function pauseGame(player)
@@ -300,52 +295,8 @@ var Game = function ()
     function update(time)
     {
         var deltaTime = time - lastUpdate;
-
-        if (currentGameState == GAME_STATE.RUNNING)
-        {
-            recorder.recordTick();
-            updateInputs();
-            updateTimer(deltaTime);
-            checkGoal();
-        } else if (currentGameState == GAME_STATE.KICKOFF)
-        {
-            recorder.recordTick();
-            updateInputs();
-        } else if (currentGameState == GAME_STATE.AFTER_GOAL)
-        {
-            recorder.recordTick();
-            updateInputs();
-        } else if (currentGameState == GAME_STATE.ENDED)
-        {
-            recorder.recordTick();
-            updateInputs();
-            checkMenuReturn();
-        } else if (currentGameState == GAME_STATE.MENU)
-        {
-            menu.update();
-        } else if (currentGameState == GAME_STATE.PAUSED)
-        {
-            updatePause();
-        } else if (currentGameState == GAME_STATE.REPLAY)
-        {
-            recorder.playTick();
-            if (recorder.isDone() || checkCancel())
-            {
-                runner.enabled = true;
-                prepareKickoff(kickOffTeam);
-                sound.playStart();
-                currentGameState = GAME_STATE.KICKOFF;
-            }
-        } else if (currentGameState == GAME_STATE.REPLAY_END)
-        {
-            checkMenuReturn();
-            recorder.playTick();
-            if (recorder.isDone() || checkCancel())
-            {
-                runner.enabled = true;
-                currentGameState = GAME_STATE.ENDED;
-            }
-        }
+        //controllerManager.update();
+        currentGameState.update(deltaTime);
         HtmlRenderer.update();
         lastUpdate = time;
         // request next animation frame
@@ -467,10 +418,15 @@ var Game = function ()
         ]);
     };
 
+    function switchGameState(stateName, options) {
+        currentGameState.end();
+        currentGameState = gameStates[stateName];
+        currentGameState.begin(options);
+    }
+
     function initMatter()
     {
         engine = Matter.Engine.create();
-
         engine.world.gravity.y = 0;
         runner = Matter.Runner.create();
         Matter.Engine.run(runner, engine);
@@ -490,11 +446,45 @@ var Game = function ()
         hud.updateScore(teamScores);
         menu = Menu(controllerManager, start);
         menu.init();
-        currentGameState = GAME_STATE.MENU;
         registerHandlers();
+
+        gameStates["afterGoal"] = AfterGoalState(
+            recorder, 
+            updateInputs, 
+            checkDistanceKicks);
+        gameStates["ended"]     = EndedState(
+            recorder, 
+            updateInputs, 
+            checkDistanceKicks, 
+            checkMenuReturn);
+        gameStates["kickoff"]   = KickoffState(
+            recorder, 
+            updateInputs, 
+            checkDistanceKicks);
+        gameStates["menu"]      = MenuState(
+            menu);
+        gameStates["paused"]    = PausedState(
+            updatePause);
+        gameStates["replay"]    = ReplayState(
+            recorder, 
+            checkCancel, 
+            runner, 
+            sound, 
+            switchGameState);
+        gameStates["running"]   = RunningState(
+            recorder, 
+            updateInputs, 
+            checkDistanceKicks, 
+            updateTimer, 
+            checkGoal);
+        gameStates["warmup"]    = WarmupState(controllerManager.controllers);
+        currentGameState = gameStates["paused"];
+
         lastUpdate = performance.now();
         update(lastUpdate);
     };
+
+    
 
     return {
         start: start,

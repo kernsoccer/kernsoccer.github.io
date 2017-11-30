@@ -1,10 +1,12 @@
-var KickoffState = function(game) {
+var KickoffState = function(recorder, updateInputs, checkDistanceKicks) {
     function begin() {
 
     }
 
-    function update() {
-        
+    function update(deltaTime) {
+        recorder.recordTick();
+        updateInputs();
+        checkDistanceKicks();
     }
 
     function end() {
