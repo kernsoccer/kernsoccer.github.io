@@ -39,10 +39,10 @@ var Game = function ()
 
     function endKickoff()
     {
-        if (currentGameState == GAME_STATE.KICKOFF)
+        if (currentGameState.name == "kickoff")
         {
             playingField.hideBarrier();
-            currentGameState = GAME_STATE.RUNNING;
+            switchGameState("running");            
         }
     }
 
@@ -105,7 +105,7 @@ var Game = function ()
     function showMenu()
     {
         window.clearTimeout(stateTimer);
-        currentGameState = GAME_STATE.MENU;
+        switchGameState("menu");
         menu.show();
     }
 
@@ -125,8 +125,8 @@ var Game = function ()
 
     function pauseGame(player)
     {
-        beforePauseGameState = currentGameState;
-        currentGameState = GAME_STATE.PAUSED;
+        beforePauseGameState = currentGameState.name;
+        switchGameState("paused");
         pausingPlayer = player;
         hud.showMessage("PAUSED", "red");
         runner.enabled = false;
@@ -154,7 +154,7 @@ var Game = function ()
 
     function continueGame()
     {
-        currentGameState = beforePauseGameState;
+        switchGameState(beforePauseGameState);
         runner.enabled = true;
         hud.hideMessage();
     }
@@ -163,7 +163,7 @@ var Game = function ()
     {
         sound.playCheer();
         var gameEnd = false;
-        currentGameState = GAME_STATE.AFTER_GOAL;
+        switchGameState("afterGoal");
         if (scoreTeam == GAME_TEAM_RED)
         {
             teamScores.red += 1;
@@ -420,6 +420,7 @@ var Game = function ()
 
     function switchGameState(stateName, options) {
         currentGameState.end();
+        window.location.hash = stateName;
         currentGameState = gameStates[stateName];
         currentGameState.begin(options);
     }
@@ -430,6 +431,10 @@ var Game = function ()
         engine.world.gravity.y = 0;
         runner = Matter.Runner.create();
         Matter.Engine.run(runner, engine);
+    }
+
+    function addState(gameState) {
+        gameStates[gameState.name] = gameState;
     }
 
     function init()
@@ -448,36 +453,45 @@ var Game = function ()
         menu.init();
         registerHandlers();
 
-        gameStates["afterGoal"] = AfterGoalState(
+        addState(AfterGoalState(
             recorder, 
             updateInputs, 
-            checkDistanceKicks);
-        gameStates["ended"]     = EndedState(
+            checkDistanceKicks
+        ));
+        addState(EndedState(
             recorder, 
             updateInputs, 
             checkDistanceKicks, 
-            checkMenuReturn);
-        gameStates["kickoff"]   = KickoffState(
+            checkMenuReturn
+        ));
+        addState(KickoffState(
             recorder, 
             updateInputs, 
-            checkDistanceKicks);
-        gameStates["menu"]      = MenuState(
-            menu);
-        gameStates["paused"]    = PausedState(
-            updatePause);
-        gameStates["replay"]    = ReplayState(
+            checkDistanceKicks
+        ));
+        addState(MenuState(
+            menu
+        ));
+        addState(PausedState(
+            updatePause
+        ));
+        addState(ReplayState(
             recorder, 
             checkCancel, 
             runner, 
             sound, 
-            switchGameState);
-        gameStates["running"]   = RunningState(
+            switchGameState
+        ));
+        addState(RunningState(
             recorder, 
             updateInputs, 
             checkDistanceKicks, 
             updateTimer, 
-            checkGoal);
-        gameStates["warmup"]    = WarmupState(controllerManager.controllers);
+            checkGoal
+        ));
+        addState(WarmupState(
+            controllerManager.controllers
+        ));
         currentGameState = gameStates["paused"];
 
         lastUpdate = performance.now();

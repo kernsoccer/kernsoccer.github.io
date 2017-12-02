@@ -15,6 +15,7 @@ var EndedState = function(recorder, updateInputs, checkDistanceKicks, checkMenuR
     }
 
     return {
+        name: "ended",
         begin: begin,
         update: update,
         end: end

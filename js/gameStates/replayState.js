@@ -33,6 +33,7 @@ var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState
     }
 
     return {
+        name: "replay",
         begin: begin,
         update: update,
         end: end

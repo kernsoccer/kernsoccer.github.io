@@ -12,6 +12,7 @@ var MenuState = function(menu) {
     }
 
     return {
+        name: "menu",
         begin: begin,
         update: update,
         end: end

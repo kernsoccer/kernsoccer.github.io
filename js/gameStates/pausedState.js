@@ -12,6 +12,7 @@ var PausedState = function(updatePause) {
     }
 
     return {
+        name: "paused",
         begin: begin,
         update: update,
         end: end

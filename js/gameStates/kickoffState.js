@@ -14,6 +14,7 @@ var KickoffState = function(recorder, updateInputs, checkDistanceKicks) {
     }
 
     return {
+        name: "kickoff",
         begin: begin,
         update: update,
         end: end

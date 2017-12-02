@@ -14,6 +14,7 @@ var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
     }
 
     return {
+        name: "afterGoal",
         begin: begin,
         update: update,
         end: end

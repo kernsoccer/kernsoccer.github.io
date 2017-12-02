@@ -12,6 +12,7 @@ var WarmupState = function(game) {
     }
 
     return {
+        name: "warmup",
         begin: begin,
         update: update,
         end: end

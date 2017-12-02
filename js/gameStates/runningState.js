@@ -17,6 +17,7 @@ var RunningState = function(recorder, updateInputs, checkDistanceKicks, updateTi
     }
 
     return {
+        name: "running",
         begin: begin,
         update: update,
         end: end
