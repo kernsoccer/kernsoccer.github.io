@@ -1,4 +1,4 @@
-var Menu = function (controllerManager, startFunction)
+var Menu = function (controllers, startFunction)
 {
     var optionsMenu;
     var menuPanel = document.getElementById("menu");
@@ -17,28 +17,32 @@ var Menu = function (controllerManager, startFunction)
             team: "none",
             connected: true,
             double: false,
-            panel: document.getElementById("gamepad0")
+            panel: document.getElementById("gamepad0"),
+            idPanel: document.getElementById("controllerIdPanel0")
         },
         {
             index: 1,
             team: "none",
             connected: true,
             double: false,
-            panel: document.getElementById("gamepad1")
+            panel: document.getElementById("gamepad1"),
+            idPanel: document.getElementById("controllerIdPanel1")
         },
         {
             index: 2,
             team: "none",
             connected: true,
             double: false,
-            panel: document.getElementById("gamepad2")
+            panel: document.getElementById("gamepad2"),
+            idPanel: document.getElementById("controllerIdPanel2")
         },
         {
             index: 3,
             team: "none",
             connected: true,
             double: false,
-            panel: document.getElementById("gamepad3")
+            panel: document.getElementById("gamepad3"),
+            idPanel: document.getElementById("controllerIdPanel3")
         }
     ];
 
@@ -57,6 +61,7 @@ var Menu = function (controllerManager, startFunction)
 
     function updateGamepad(gamepad, controller)
     {
+        gamepad.idPanel.innerText = controller.getId();
         if (!controller.isConnected())
         {
             if (gamepad.connected)
@@ -113,10 +118,10 @@ var Menu = function (controllerManager, startFunction)
 
     function update()
     {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < controllers.length; i++)
         {
-            updateGamepad(gamepads[i], controllerManager.controllers[i]);
-            if (controllerManager.controllers[i].get("start"))
+            updateGamepad(gamepads[i], controllers[i]);
+            if (controllers[i].get("start"))
             {
                 startGame();
                 return;
@@ -169,7 +174,7 @@ var Menu = function (controllerManager, startFunction)
 
     function setMappings() {
         for (var i = 0; i < 4; i++) {
-            controllerManager.controllers[i].setMapping(
+            controllers[i].setMapping(
                 PLAYER_INPUT_MAPPINGS["menu"]);
         }
     }

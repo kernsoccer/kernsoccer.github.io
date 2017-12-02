@@ -102,6 +102,13 @@ var Controller = function () {
         return false;
     }
 
+    function getId() {
+        if (!state) {
+            return "not available";
+        }
+        return state.id;
+    }
+
     function get(name) {
         if (!mapping || !mapping[name]) {
             return undefined;
@@ -146,6 +153,7 @@ var Controller = function () {
         update: update,
         setMapping: setMapping,
         get: get,
+        getId: getId,
         isConnected: isConnected
     }
 }

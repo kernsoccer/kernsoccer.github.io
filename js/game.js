@@ -444,7 +444,7 @@ var Game = function ()
         playingField.init();
         ball = Ball(engine);
         hud.updateScore(teamScores);
-        menu = Menu(controllerManager, start);
+        menu = Menu(controllerManager.controllers, start);
         menu.init();
         recorder = Recorder(engine.world, sound);
         sound.setRecorder(recorder);
