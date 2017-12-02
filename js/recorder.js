@@ -5,19 +5,6 @@ var Recorder = function (world, sound)
     var ballBody;
     var playbackDone = false;
     var playedTicks = 0;
-
-    for (var i = 0; i < world.bodies.length; i++)
-    {
-        if (world.bodies[i].isPlayer)
-        {
-            playerBodies.push(world.bodies[i]);
-        }
-        else if (world.bodies[i].isBall)
-        {
-            ballBody = world.bodies[i];
-        }
-    }
-
     var recording = [];
 
     function recordTick()
@@ -104,9 +91,29 @@ var Recorder = function (world, sound)
         return playbackDone;
     }
 
-    recordTick();
+    function reset() 
+    {
+        playerBodies = [];
+        currentIndex = -1;
+        playbackDone = false;
+        playedTicks = 0;
+        recording = [];
+        for (var i = 0; i < world.bodies.length; i++)
+        {
+            if (world.bodies[i].isPlayer)
+            {
+                playerBodies.push(world.bodies[i]);
+            }
+            else if (world.bodies[i].isBall)
+            {
+                ballBody = world.bodies[i];
+            }
+        }
+        recordTick();
+    }
 
     return {
+        reset: reset,
         recordTick: recordTick,
         playTick: playTick,
         isDone: isDone,

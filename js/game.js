@@ -15,8 +15,6 @@ var Game = function ()
     var beforePauseGameState;
     var pausingPlayer = undefined;
 
-    var kickOffTeam;
-
     var menu;
     var optionsMenu;
     var runner;
@@ -57,6 +55,10 @@ var Game = function ()
 
     function doKick(pawn, ball)
     {
+        if (currentKick !== undefined) 
+        {
+            return;
+        }
         pawn.isKicking = false;
         pawn.hasKicked = true;
         sound.playKick();
@@ -111,7 +113,6 @@ var Game = function ()
 
     function updateInputs()
     {
-        controllerManager.update();
         for (var i = 0; i < playerList.length; i++)
         {
             if (playerList[i].controller.get("pause"))
@@ -134,7 +135,6 @@ var Game = function ()
 
     function updatePause()
     {
-        controllerManager.update();
         if (!pausingPlayer.controller.isConnected())
         {
             continueGame();
@@ -182,13 +182,11 @@ var Game = function ()
         }
         else
         {
-            kickOffTeam = scoreTeam == "red" ? "blue" : "red";
-
             hud.showMessage(scoreTeam + " team scores!", scoreTeam == "red" ? "#D24E4E" : "#3A85CC", 5);
 
             stateTimer = window.setTimeout(function ()
             {
-                currentGameState = GAME_STATE.REPLAY;
+                switchGameState("replay", scoreTeam == "red" ? "blue" : "red");
                 runner.enabled = false;
             }, GAME_AFTER_GOAL_TIME);
         }
@@ -196,7 +194,6 @@ var Game = function ()
 
     function endGame(winner, byGoal)
     {
-        currentGameState = GAME_STATE.ENDED;
         if (winner !== undefined)
         {
             sound.playCheer();
@@ -206,13 +203,14 @@ var Game = function ()
             {
                 stateTimer = window.setTimeout(function ()
                 {
-                    currentGameState = GAME_STATE.REPLAY_END;
+                    switchGameState("replay", undefined);
                     runner.enabled = false;
                 }, GAME_AFTER_GOAL_TIME);
             }
         }
         else
         {
+            switchGameState("ended");
             sound.playEnd();
             hud.showMessage("DRAW!", "white");
         }
@@ -281,7 +279,6 @@ var Game = function ()
 
     function checkCancel()
     {
-        controllerManager.update();
         for (var i = 0; i < 4; i++)
         {
             if (controllerManager.controllers[i].get("cancel"))
@@ -295,7 +292,7 @@ var Game = function ()
     function update(time)
     {
         var deltaTime = time - lastUpdate;
-        //controllerManager.update();
+        controllerManager.update();
         currentGameState.update(deltaTime);
         HtmlRenderer.update();
         lastUpdate = time;
@@ -305,7 +302,6 @@ var Game = function ()
 
     function checkMenuReturn()
     {
-        controllerManager.update();
         for (var i = 0; i < 4; i++)
         {
             if (controllerManager.controllers[i].get("menu"))
@@ -361,8 +357,7 @@ var Game = function ()
             playingField.showLeftBarrier();
         }
         ball.reset();
-        recorder = Recorder(engine.world, sound);
-        sound.setRecorder(recorder);
+        recorder.reset();
     }
 
 
@@ -403,11 +398,11 @@ var Game = function ()
         gameOptions.goalLimit = options.goalLimit;
         gameOptions.timeLimit = options.timeLimit;
         prepareKickoff(options.startingTeam);
-        currentGameState = GAME_STATE.WARMUP;
+        switchGameState("warmup");
         window.setTimeout(function ()
         {
             sound.playStart();
-            currentGameState = GAME_STATE.KICKOFF;
+            switchGameState("kickoff");
         }, 3000);
 
         hud.showMessageQueue([
@@ -418,11 +413,11 @@ var Game = function ()
         ]);
     };
 
-    function switchGameState(stateName, options) {
+    function switchGameState(stateName, switchOptions) {
         currentGameState.end();
         window.location.hash = stateName;
         currentGameState = gameStates[stateName];
-        currentGameState.begin(options);
+        currentGameState.begin(switchOptions);
     }
 
     function initMatter()
@@ -451,6 +446,8 @@ var Game = function ()
         hud.updateScore(teamScores);
         menu = Menu(controllerManager, start);
         menu.init();
+        recorder = Recorder(engine.world, sound);
+        sound.setRecorder(recorder);
         registerHandlers();
 
         addState(AfterGoalState(
@@ -477,6 +474,7 @@ var Game = function ()
         ));
         addState(ReplayState(
             recorder, 
+            prepareKickoff,
             checkCancel, 
             runner, 
             sound, 
@@ -492,7 +490,7 @@ var Game = function ()
         addState(WarmupState(
             controllerManager.controllers
         ));
-        currentGameState = gameStates["paused"];
+        currentGameState = gameStates["menu"];
 
         lastUpdate = performance.now();
         update(lastUpdate);

@@ -113,8 +113,6 @@ var Menu = function (controllerManager, startFunction)
 
     function update()
     {
-        controllerManager.update();
-
         for (var i = 0; i < 4; i++)
         {
             updateGamepad(gamepads[i], controllerManager.controllers[i]);

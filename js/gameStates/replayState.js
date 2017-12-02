@@ -1,18 +1,18 @@
-var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState) {
-    var gameEnded = false;
-    function begin(ended) {
-        gameEnded = ended;
+var ReplayState = function(recorder, prepareKickoff, checkCancel, runner, sound, switchGameState) {
+    var kickOffTeam = undefined;
+
+    function begin(team) {
+        kickOffTeam = team;
     }
 
     function update() {
-        if (gameEnded)
+        if (kickOffTeam === undefined)
         {
-            checkMenuReturn();
             recorder.playTick();
             if (recorder.isDone() || checkCancel())
             {
                 runner.enabled = true;
-                currentGameState = GAME_STATE.ENDED;
+                switchGameState("ended");
             }
         }
         else 
