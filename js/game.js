@@ -256,7 +256,7 @@ var Game = function ()
         // if seconds changed we need to update our timer display
         if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000))
         {
-            hud.updateTime(gameOptions.timeLimit-totalSeconds);
+            hud.updateTime(Math.abs(gameOptions.timeLimit-totalSeconds));
         }
 
         if (gameOptions.timeLimit == totalSeconds)
