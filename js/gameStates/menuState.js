@@ -1,6 +1,6 @@
 var MenuState = function(menu) {
     function begin() {
-
+        menu.show();
     }
 
     function update() {

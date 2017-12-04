@@ -35,18 +35,8 @@ var Game = function ()
         blue: 0
     }
 
-    function endKickoff()
-    {
-        if (currentGameState.name == "kickoff")
-        {
-            playingField.hideBarrier();
-            switchGameState("running");            
-        }
-    }
-
     function pawnTouchesBall(pawn, ball)
     {
-        endKickoff();
         if (pawn.isKicking)
         {
             doKick(pawn, ball);
@@ -108,7 +98,6 @@ var Game = function ()
     {
         window.clearTimeout(stateTimer);
         switchGameState("menu");
-        menu.show();
     }
 
     function updateInputs()
@@ -238,7 +227,6 @@ var Game = function ()
 
                 if (Matter.Vector.magnitudeSquared(diffVector) < 1600)
                 {
-                    endKickoff();
                     doKick(engine.world.bodies[i], ball.getBody());
                 }
             }
@@ -302,7 +290,7 @@ var Game = function ()
 
     function checkMenuReturn()
     {
-        for (var i = 0; i < 4; i++)
+        for (var i = 0; i < controllerManager.controllers.length; i++)
         {
             if (controllerManager.controllers[i].get("menu"))
             {
@@ -343,24 +331,6 @@ var Game = function ()
         }
     }
 
-    function prepareKickoff(team)
-    {
-        resetTeam(GAME_TEAM_RED, playingField.leftTeamLine);
-        resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine);
-
-        if (team == GAME_TEAM_RED)
-        {
-            playingField.showRightBarrier();
-        }
-        else
-        {
-            playingField.showLeftBarrier();
-        }
-        ball.reset();
-        recorder.reset();
-    }
-
-
     function start(options)
     {
         runner.enabled = true;
@@ -394,23 +364,10 @@ var Game = function ()
 
         isOverTime = false;
         gameOptions.allowDraw = options.allowDraw;
-        gameOptions.allowBoost = options.allowBoost;
         gameOptions.goalLimit = options.goalLimit;
         gameOptions.timeLimit = options.timeLimit;
-        prepareKickoff(options.startingTeam);
-        switchGameState("warmup");
-        window.setTimeout(function ()
-        {
-            sound.playStart();
-            switchGameState("kickoff");
-        }, 3000);
-
-        hud.showMessageQueue([
-            { text: "3", duration: 1 },
-            { text: "2", duration: 1 },
-            { text: "1", duration: 1 },
-            { text: "GO!", duration: 1 }
-        ]);
+        switchGameState("warmup", options.startingTeam);
+        
     };
 
     function switchGameState(stateName, switchOptions) {
@@ -463,8 +420,12 @@ var Game = function ()
         ));
         addState(KickoffState(
             recorder, 
+            playingField, 
+            ball, 
+            resetTeam, 
             updateInputs, 
-            checkDistanceKicks
+            checkDistanceKicks,
+            switchGameState
         ));
         addState(MenuState(
             menu
@@ -473,8 +434,7 @@ var Game = function ()
             updatePause
         ));
         addState(ReplayState(
-            recorder, 
-            prepareKickoff,
+            recorder,
             checkCancel, 
             runner, 
             sound, 
@@ -488,8 +448,11 @@ var Game = function ()
             checkGoal
         ));
         addState(WarmupState(
-            controllerManager.controllers
+            hud, 
+            sound, 
+            switchGameState
         ));
+
         currentGameState = gameStates["menu"];
 
         lastUpdate = performance.now();

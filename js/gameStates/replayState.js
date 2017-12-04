@@ -1,4 +1,4 @@
-var ReplayState = function(recorder, prepareKickoff, checkCancel, runner, sound, switchGameState) {
+var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState) {
     var kickOffTeam = undefined;
 
     function begin(team) {
@@ -6,24 +6,16 @@ var ReplayState = function(recorder, prepareKickoff, checkCancel, runner, sound,
     }
 
     function update() {
-        if (kickOffTeam === undefined)
+        recorder.playTick();
+
+        if (recorder.isDone() || checkCancel())
         {
-            recorder.playTick();
-            if (recorder.isDone() || checkCancel())
-            {
-                runner.enabled = true;
+            runner.enabled = true;
+            if (kickOffTeam === undefined) {
                 switchGameState("ended");
             }
-        }
-        else 
-        {
-            recorder.playTick();
-            if (recorder.isDone() || checkCancel())
-            {
-                runner.enabled = true;
-                prepareKickoff(kickOffTeam);
-                sound.playStart();
-                switchGameState("kickoff");
+            else {
+                switchGameState("kickoff", kickOffTeam);
             }
         }
     }
