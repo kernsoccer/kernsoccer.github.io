@@ -21,8 +21,6 @@ var Player = function (engine, controller, team, pawnCount)
             isPlayer: true,
             isKicking: false,
             hasKicked: false,
-            isEmoting: false,
-            emoteKey: 0,
             energy: 100,
             team: team,
             isExhausted: false

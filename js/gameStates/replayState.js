@@ -3,6 +3,7 @@ var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState
 
     function begin(team) {
         kickOffTeam = team;
+        runner.enabled = false;
     }
 
     function update() {
@@ -21,7 +22,7 @@ var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState
     }
 
     function end() {
-
+        runner.enabled = true;
     }
 
     return {

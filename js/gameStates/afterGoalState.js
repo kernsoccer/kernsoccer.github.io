@@ -1,6 +1,11 @@
 var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
-    function begin() {
+    var returnTimeout;
 
+    function begin(kickOffTeam) {
+        returnTimeout = window.setTimeout(function ()
+        {
+            switchGameState("replay", kickOffTeam);
+        }, GAME_AFTER_GOAL_TIME);
     }
 
     function update(deltaTime) {
@@ -10,7 +15,7 @@ var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
     }
 
     function end() {
-
+        window.clearTimeout(returnTimeout);
     }
 
     return {

@@ -6,7 +6,7 @@ var Game = function ()
     var hud = Hud();
     var sound = Sound();
     var controllerManager = ControllerManager();
-    var stateTimer;
+    
     var lastUpdate;
     var timePlayed;
     var isOverTime = false;
@@ -96,7 +96,6 @@ var Game = function ()
 
     function showMenu()
     {
-        window.clearTimeout(stateTimer);
         switchGameState("menu");
     }
 
@@ -152,7 +151,7 @@ var Game = function ()
     {
         sound.playCheer();
         var gameEnd = false;
-        switchGameState("afterGoal");
+        
         if (scoreTeam == GAME_TEAM_RED)
         {
             teamScores.red += 1;
@@ -172,12 +171,7 @@ var Game = function ()
         else
         {
             hud.showMessage(scoreTeam + " team scores!", scoreTeam == "red" ? "#D24E4E" : "#3A85CC", 5);
-
-            stateTimer = window.setTimeout(function ()
-            {
-                switchGameState("replay", scoreTeam == "red" ? "blue" : "red");
-                runner.enabled = false;
-            }, GAME_AFTER_GOAL_TIME);
+            switchGameState("afterGoal", scoreTeam == "red" ? "blue" : "red");
         }
     }
 
@@ -190,11 +184,7 @@ var Game = function ()
                 winner == "red" ? "#D24E4E" : "#3A85CC");
             if (byGoal)
             {
-                stateTimer = window.setTimeout(function ()
-                {
-                    switchGameState("replay", undefined);
-                    runner.enabled = false;
-                }, GAME_AFTER_GOAL_TIME);
+                switchGameState("afterGoal", undefined);
             }
         }
         else
