@@ -39,7 +39,7 @@ var Ball = function (engine)
             Matter.World.remove(engine.world, body);
         body = createBall();
         HtmlRenderer.setBall(body);
-        Matter.World.add(engine.world, body)
+        Matter.World.add(engine.world, body);
     }
 
     return {

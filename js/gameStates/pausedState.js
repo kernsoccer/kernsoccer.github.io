@@ -1,14 +1,29 @@
-var PausedState = function(updatePause) {
-    function begin() {
+var PausedState = function(hud, runner, switchGameState) {
+    var state;
+    var controller;
 
+    function begin(pausingController, prevState) {
+        controller = pausingController;
+        state = prevState;
+        hud.showMessage("PAUSED", "red");
+        runner.enabled = false;
     }
 
     function update() {
-        updatePause();
+        if (!controller.isConnected() || controller.get("pause"))
+        {
+            switchGameState(state);
+            return;
+        }
+        if (controller.get("menu"))
+        {
+            switchGameState("menu");
+        }
     }
 
     function end() {
-
+        hud.hideMessage();
+        runner.enabled = true;
     }
 
     return {

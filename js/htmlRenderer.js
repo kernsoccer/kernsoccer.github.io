@@ -5,15 +5,18 @@ var HtmlRenderer = function ()
     var field = document.getElementById("playingField");
     var players = [];
     var ballBody;
-    var ballDisplayObject = document.createElement("div");
-    ballDisplayObject.classList.add("displayObject");
-    ballDisplayObject.classList.add("ball");
-    ballDisplayObject.style.transform =
-        "translate(" + SCREEN_WIDTH / 2 + "px," + SCREEN_HEIGHT / 2 + "px)";
-    field.appendChild(ballDisplayObject);
+    var ballDisplayObject;
 
     function setBall(body)
     {
+        if (ballDisplayObject === undefined) {
+            ballDisplayObject = document.createElement("div");
+            ballDisplayObject.classList.add("displayObject");
+            ballDisplayObject.classList.add("ball");
+            ballDisplayObject.style.transform =
+                "translate(" + SCREEN_WIDTH / 2 + "px," + SCREEN_HEIGHT / 2 + "px)";
+            field.appendChild(ballDisplayObject);
+        }
         ballBody = body;
         ballDisplayObject.style.width = body.circleRadius * 2 + "px";
         ballDisplayObject.style.height = body.circleRadius * 2 + "px"

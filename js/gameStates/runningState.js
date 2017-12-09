@@ -1,4 +1,15 @@
-var RunningState = function(recorder, updateInputs, checkDistanceKicks, updateTimer, checkGoal) {
+var RunningState = function(recorder, ball, playingField, updatePlayers, checkDistanceKicks, updateTimer) {
+
+    function checkGoal()
+    {
+        if (ball.getPositionX() > playingField.rightGoalLine)
+        {
+            goalScored(GAME_TEAM_RED);
+        } else if (ball.getPositionX() < playingField.leftGoalLine)
+        {
+            goalScored(GAME_TEAM_BLUE);
+        }
+    }
 
     function begin() {
 
@@ -6,7 +17,7 @@ var RunningState = function(recorder, updateInputs, checkDistanceKicks, updateTi
 
     function update(deltaTime) {
         recorder.recordTick();
-        updateInputs();
+        updatePlayers();
         checkDistanceKicks();
         updateTimer(deltaTime);
         checkGoal();

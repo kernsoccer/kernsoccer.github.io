@@ -1,24 +1,4 @@
-﻿var ControllerManager = function () {
-    var gamepads = navigator.getGamepads();
-    var controllers = [
-        new Controller(),
-        new Controller(),
-        new Controller(),
-        new Controller()
-    ]
-
-    function update() {
-        gamepads = navigator.getGamepads();
-        for (var i = 0; i < gamepads.length; i++) {
-            controllers[i].update(gamepads[i]);
-        }
-    }
-
-    return {
-        update: update,
-        controllers: controllers
-    }
-};
+﻿
     
 var Controller = function () {
     var mapping;

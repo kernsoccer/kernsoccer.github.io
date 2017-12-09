@@ -1,8 +1,10 @@
-var KickoffState = function(recorder, playingField, ball, resetTeam, updateInputs, checkDistanceKicks, switchGameState) {
+var KickoffState = function(recorder, sound, playingField, ball, resetTeam, updatePlayers, checkDistanceKicks, switchGameState) {
     var centerPosition;
     function begin(team) {
+        // code double from warmupstate
         resetTeam(GAME_TEAM_RED, playingField.leftTeamLine);
         resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine);
+        ball.reset();
 
         if (team == GAME_TEAM_RED)
         {
@@ -12,18 +14,19 @@ var KickoffState = function(recorder, playingField, ball, resetTeam, updateInput
         {
             playingField.showLeftBarrier();
         }
-        ball.reset();
-        centerPosition = ball.getPosition();
+        
+        centerPosition = JSON.parse(JSON.stringify(ball.getPosition()));
         recorder.reset();
         sound.playStart();
     }
 
     function update(deltaTime) {
         recorder.recordTick();
-        updateInputs();
+        updatePlayers();
         checkDistanceKicks();
         var ballPosition = ball.getPosition();
-        if (ballPosition != centerPosition) {
+        if (ballPosition.x != centerPosition.x ||
+            ballPosition.y != centerPosition.y) {
             switchGameState("running");
         }
     }

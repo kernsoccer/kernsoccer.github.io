@@ -1,11 +1,11 @@
-var EndedState = function(recorder, updateInputs, checkDistanceKicks, checkMenuReturn) {
+var EndedState = function(recorder, updatePlayers, checkDistanceKicks, checkMenuReturn) {
     function begin() {
 
     }
 
     function update(deltaTime) {
         recorder.recordTick();
-        updateInputs();
+        updatePlayers();
         checkDistanceKicks();
         checkMenuReturn();
     }

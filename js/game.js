@@ -7,13 +7,12 @@ var Game = function ()
     var sound = Sound();
     var controllerManager = ControllerManager();
     
+    // move to timer class?
     var lastUpdate;
     var timePlayed;
     var isOverTime = false;
-    var currentKick = undefined;
 
-    var beforePauseGameState;
-    var pausingPlayer = undefined;
+    var currentKick = undefined;
 
     var menu;
     var optionsMenu;
@@ -94,58 +93,7 @@ var Game = function ()
         });
     };
 
-    function showMenu()
-    {
-        switchGameState("menu");
-    }
 
-    function updateInputs()
-    {
-        for (var i = 0; i < playerList.length; i++)
-        {
-            if (playerList[i].controller.get("pause"))
-            {
-                pauseGame(playerList[i]);
-                return;
-            }
-            playerList[i].update();
-        }
-    }
-
-    function pauseGame(player)
-    {
-        beforePauseGameState = currentGameState.name;
-        switchGameState("paused");
-        pausingPlayer = player;
-        hud.showMessage("PAUSED", "red");
-        runner.enabled = false;
-    }
-
-    function updatePause()
-    {
-        if (!pausingPlayer.controller.isConnected())
-        {
-            continueGame();
-            return;
-        }
-        if (pausingPlayer.controller.get("pause"))
-        {
-            continueGame();
-            return;
-        }
-        if (pausingPlayer.controller.get("menu"))
-        {
-            hud.hideMessage();
-            showMenu();
-        }
-    }
-
-    function continueGame()
-    {
-        switchGameState(beforePauseGameState);
-        runner.enabled = true;
-        hud.hideMessage();
-    }
 
     function goalScored(scoreTeam)
     {
@@ -195,16 +143,7 @@ var Game = function ()
         }
     }
 
-    function checkGoal()
-    {
-        if (ball.getPositionX() > playingField.rightGoalLine)
-        {
-            goalScored(GAME_TEAM_RED);
-        } else if (ball.getPositionX() < playingField.leftGoalLine)
-        {
-            goalScored(GAME_TEAM_BLUE);
-        }
-    }
+
 
     function checkDistanceKicks()
     {
@@ -253,18 +192,6 @@ var Game = function ()
         }
 
         timePlayed = newTimePlayed;
-    }
-
-    function checkCancel()
-    {
-        for (var i = 0; i < 4; i++)
-        {
-            if (controllerManager.controllers[i].get("cancel"))
-            {
-                return true;
-            }
-        }
-        return false;
     }
 
     function update(time)
@@ -379,6 +306,19 @@ var Game = function ()
         gameStates[gameState.name] = gameState;
     }
 
+    function updatePlayers()
+    {
+        for (var i = 0; i < playerList.length; i++)
+        {
+            if (playerList[i].controller.get("pause"))
+            {
+                switchGameState("paused", playerList[i].controller, currentGameState.name);
+                return;
+            }
+            playerList[i].update();
+        }
+    }
+
     function init()
     {
         teamScores = {
@@ -390,6 +330,7 @@ var Game = function ()
         playingField = PlayingField(engine);
         playingField.init();
         ball = Ball(engine);
+        
         hud.updateScore(teamScores);
         menu = Menu(controllerManager.controllers, start);
         menu.init();
@@ -399,21 +340,23 @@ var Game = function ()
 
         addState(AfterGoalState(
             recorder, 
-            updateInputs, 
-            checkDistanceKicks
+            updatePlayers, 
+            checkDistanceKicks,
+            switchGameState
         ));
         addState(EndedState(
             recorder, 
-            updateInputs, 
+            updatePlayers, 
             checkDistanceKicks, 
             checkMenuReturn
         ));
         addState(KickoffState(
-            recorder, 
+            recorder,
+            sound,
             playingField, 
             ball, 
             resetTeam, 
-            updateInputs, 
+            updatePlayers, 
             checkDistanceKicks,
             switchGameState
         ));
@@ -421,25 +364,31 @@ var Game = function ()
             menu
         ));
         addState(PausedState(
-            updatePause
+            hud, 
+            runner, 
+            switchGameState
         ));
         addState(ReplayState(
             recorder,
-            checkCancel, 
+            controllerManager.controllers, 
             runner, 
             sound, 
             switchGameState
         ));
         addState(RunningState(
             recorder, 
-            updateInputs, 
+            ball, 
+            playingField,
+            updatePlayers, 
             checkDistanceKicks, 
-            updateTimer, 
-            checkGoal
+            updateTimer
         ));
         addState(WarmupState(
             hud, 
             sound, 
+            playingField,
+            ball,
+            resetTeam,
             switchGameState
         ));
 

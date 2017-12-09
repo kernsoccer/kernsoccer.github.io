@@ -1,5 +1,17 @@
-var ReplayState = function(recorder, checkCancel, runner, sound, switchGameState) {
+var ReplayState = function(recorder, controllers, runner, sound, switchGameState) {
     var kickOffTeam = undefined;
+
+    function checkCancel()
+    {
+        for (var i = 0; i < controllers.length; i++)
+        {
+            if (controllers[i].get("cancel"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
     function begin(team) {
         kickOffTeam = team;

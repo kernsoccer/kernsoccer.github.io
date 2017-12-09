@@ -1,4 +1,4 @@
-var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
+var AfterGoalState = function(recorder, updatePlayers, checkDistanceKicks, switchGameState) {
     var returnTimeout;
 
     function begin(kickOffTeam) {
@@ -10,7 +10,7 @@ var AfterGoalState = function(recorder, updateInputs, checkDistanceKicks) {
 
     function update(deltaTime) {
         recorder.recordTick();
-        updateInputs();
+        updatePlayers();
         checkDistanceKicks();
     }
 
