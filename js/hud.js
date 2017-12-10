@@ -1,4 +1,4 @@
-var Hud = function ()
+var Hud = function (gameTimer)
 {
     var blueScorePanel = document.getElementById(SCORE_PANEL_BLUE);
     var redScorePanel = document.getElementById(SCORE_PANEL_RED);
@@ -71,20 +71,17 @@ var Hud = function ()
         blueScorePanel.innerText = teamScores.blue;
     }
 
-    function updateTime(totalSeconds)
+    function update()
     {
-        minutesPanel.innerText = Math.floor(totalSeconds / 60);
-
-        var seconds = totalSeconds % 60;
-
-        secondsPanel.innerText = seconds < 10 ? "0" + seconds : seconds;
+        minutesPanel.innerText = gameTimer.getMinutes();
+        secondsPanel.innerText = gameTimer.getSeconds();
     }
 
     return {
         showMessage: showMessage,
         hideMessage: hideMessage,
         showMessageQueue: showMessageQueue,
-        updateTime: updateTime,
+        update: update,
         updateScore: updateScore
     };
 };

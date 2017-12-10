@@ -3,14 +3,13 @@ var Game = function ()
     var gameStates = {};
     var currentGameState = undefined;
     var playerList = [];
-    var hud = Hud();
+    var gameTimer = GameTimer();
+    var hud = Hud(gameTimer);
     var sound = Sound();
     var controllerManager = ControllerManager();
     
-    // move to timer class?
+    
     var lastUpdate;
-    var timePlayed;
-    var isOverTime = false;
 
     var currentKick = undefined;
 
@@ -24,7 +23,6 @@ var Game = function ()
 
     var gameOptions = {
         allowDraw: true,
-        allowBoost: true,
         goalLimit: Number.POSITIVE_INFINITY,
         timeLimit: Number.POSITIVE_INFINITY
     };
@@ -93,58 +91,6 @@ var Game = function ()
         });
     };
 
-
-
-    function goalScored(scoreTeam)
-    {
-        sound.playCheer();
-        var gameEnd = false;
-        
-        if (scoreTeam == GAME_TEAM_RED)
-        {
-            teamScores.red += 1;
-            gameEnd = teamScores.red >= gameOptions.goalLimit;
-        }
-        else
-        {
-            teamScores.blue += 1;
-            gameEnd = teamScores.blue >= gameOptions.goalLimit;
-        }
-        hud.updateScore(teamScores);
-
-        if (gameEnd || isOverTime)
-        {
-            endGame(scoreTeam, true);
-        }
-        else
-        {
-            hud.showMessage(scoreTeam + " team scores!", scoreTeam == "red" ? "#D24E4E" : "#3A85CC", 5);
-            switchGameState("afterGoal", scoreTeam == "red" ? "blue" : "red");
-        }
-    }
-
-    function endGame(winner, byGoal)
-    {
-        if (winner !== undefined)
-        {
-            sound.playCheer();
-            hud.showMessage(winner + " wins the game!",
-                winner == "red" ? "#D24E4E" : "#3A85CC");
-            if (byGoal)
-            {
-                switchGameState("afterGoal", undefined);
-            }
-        }
-        else
-        {
-            switchGameState("ended");
-            sound.playEnd();
-            hud.showMessage("DRAW!", "white");
-        }
-    }
-
-
-
     function checkDistanceKicks()
     {
         for (var i = 0; i < engine.world.bodies.length; i++)
@@ -160,38 +106,6 @@ var Game = function ()
                 }
             }
         }
-    }
-
-    function updateTimer(deltaTime)
-    {
-        var newTimePlayed = timePlayed + deltaTime;
-        var totalSeconds = Math.floor(newTimePlayed / 1000);
-        // if seconds changed we need to update our timer display
-        if (Math.floor(newTimePlayed / 1000) != Math.floor(timePlayed / 1000))
-        {
-            hud.updateTime(Math.abs(gameOptions.timeLimit-totalSeconds));
-        }
-
-        if (gameOptions.timeLimit == totalSeconds)
-        {
-            if (teamScores.red > teamScores.blue)
-            {
-                endGame(GAME_TEAM_RED);
-            } else if (teamScores.red < teamScores.blue)
-            {
-                endGame(GAME_TEAM_BLUE);
-            } else if (gameOptions.allowDraw)
-            {
-                endGame();
-            }
-            else if (!isOverTime)
-            {
-                isOverTime = true;
-                hud.showMessage("Overtime!", "red", 2);
-            }
-        }
-
-        timePlayed = newTimePlayed;
     }
 
     function update(time)
@@ -251,11 +165,11 @@ var Game = function ()
     function start(options)
     {
         runner.enabled = true;
-        teamScores = {
-            red: 0,
-            blue: 0
-        };
+        teamScores.red = teamScores.blue = 0;
+        
+        gameTimer.setTime(options.timeLimit);
         hud.updateScore(teamScores);
+        hud.update();
 
         for (var i = 0; i < playerList.length; i++)
         {
@@ -274,10 +188,6 @@ var Game = function ()
 
             playerList.push(player);
         }
-        pausingGamepadIndex = -1;
-        timePlayed = 0;
-
-        hud.updateTime(options.timeLimit);
 
         isOverTime = false;
         gameOptions.allowDraw = options.allowDraw;
@@ -377,11 +287,16 @@ var Game = function ()
         ));
         addState(RunningState(
             recorder, 
+            sound, 
+            hud, 
+            teamScores, 
+            gameOptions, 
             ball, 
-            playingField,
+            playingField, 
+            gameTimer,
             updatePlayers, 
-            checkDistanceKicks, 
-            updateTimer
+            checkDistanceKicks,
+            switchGameState
         ));
         addState(WarmupState(
             hud, 
