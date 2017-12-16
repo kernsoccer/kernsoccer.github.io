@@ -4,10 +4,9 @@ var WarmupState = function(hud, sound, playingField, ball, resetTeam, switchGame
         resetTeam(GAME_TEAM_RED, playingField.leftTeamLine);
         resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine);
         ball.reset();
-
+        
         window.setTimeout(function ()
         {
-            sound.playStart();
             switchGameState("kickoff", team);
         }, 3000);
 
@@ -24,7 +23,8 @@ var WarmupState = function(hud, sound, playingField, ball, resetTeam, switchGame
     }
 
     function end() {
-
+        sound.playStart();
+        playingField.hideBarrier();
     }
 
     return {

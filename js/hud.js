@@ -74,7 +74,8 @@ var Hud = function (gameTimer)
     function update()
     {
         minutesPanel.innerText = gameTimer.getMinutes();
-        secondsPanel.innerText = gameTimer.getSeconds();
+        var seconds = gameTimer.getSeconds();
+        secondsPanel.innerText = seconds < 10 ? "0" + seconds : seconds;
     }
 
     return {

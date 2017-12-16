@@ -48,7 +48,7 @@ var OptionsMenu = function (menu)
             allowDraw: allowDrawInput.checked,
             goalLimit: (goalLimitInput.value != "") ? goalLimitInput.value : Number.POSITIVE_INFINITY,
             timeLimit: (timeLimitInput.value != "") ? timeLimitInput.value * 60 : Number.POSITIVE_INFINITY,
-            startingTeam: GAME_TEAM_RED
+            startingTeam: undefined
         };
 
         return options;

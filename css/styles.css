@@ -90,12 +90,12 @@ img
 
     #playingField .red
     {
-        background-color: red;
+        background-color: #D24E4E;
     }
 
     #playingField .blue
     {
-        background-color: blue;
+        background-color: #3A85CC;
     }
 
     #playingField .ball
@@ -103,7 +103,6 @@ img
         background-color: white;
         border: 4px black solid;
     }
-
 
 
 #clock
@@ -353,12 +352,12 @@ img
 
 .redTeam
 {
-    color: red;
+    color: #D24E4E;
 }
 
 .blueTeam
 {
-    color: blue;
+    color: #3A85CC;
 }
 
 .gamepad
@@ -401,12 +400,12 @@ img
 
 .blueTeam .pawn
 {
-    background-color: blue;
+    background-color: #3A85CC;
 }
 
 .redTeam .pawn
 {
-    background-color: red;
+    background-color: #D24E4E;
 }
 
 .pawn.second

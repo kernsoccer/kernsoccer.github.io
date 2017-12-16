@@ -10,9 +10,13 @@ var KickoffState = function(recorder, sound, playingField, ball, resetTeam, upda
         {
             playingField.showRightBarrier();
         }
-        else
+        else if (team == GAME_TEAM_BLUE)
         {
             playingField.showLeftBarrier();
+        }
+        else 
+        {
+            playingField.hideBarrier();
         }
         
         centerPosition = JSON.parse(JSON.stringify(ball.getPosition()));

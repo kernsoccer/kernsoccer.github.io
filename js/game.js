@@ -125,7 +125,7 @@ var Game = function ()
         {
             if (controllerManager.controllers[i].get("menu"))
             {
-                showMenu();
+                switchGameState("menu");
                 return;
             }
         }

@@ -4,10 +4,10 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
 
     function checkGoal()
     {
-        if (ball.getPositionX() > playingField.rightGoalLine)
+        if (ball.getPositionX() - BALL_RADIUS > playingField.rightGoalLine)
         {
             goalScored(GAME_TEAM_RED);
-        } else if (ball.getPositionX() < playingField.leftGoalLine)
+        } else if (ball.getPositionX() + BALL_RADIUS < playingField.leftGoalLine)
         {
             goalScored(GAME_TEAM_BLUE);
         }

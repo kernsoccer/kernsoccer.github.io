@@ -99,7 +99,7 @@ var PLAYER_INPUT_MAPPINGS = {
         },
         boost0: {
             type: "button",
-            buttons: [4],
+            buttons: [2,4],
             toggle: false
         },
         pause: {

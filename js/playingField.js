@@ -253,9 +253,7 @@ var PlayingField = function(engine) {
     ],OPTIONS_NET));
   }
 
-  var barrierActive = false;
   function showLeftBarrier() {
-    barrierActive = true;
     for (var i = 0; i < middleLine.bodies.length; i++) {
       middleLine.bodies[i].collisionFilter.category = 1;
     }
@@ -266,7 +264,6 @@ var PlayingField = function(engine) {
   }
 
   function showRightBarrier() {
-    barrierActive = true;
     for (var i = 0; i < middleLine.bodies.length; i++) {
       middleLine.bodies[i].collisionFilter.category = 1;
     }
@@ -277,15 +274,12 @@ var PlayingField = function(engine) {
   }
 
   function hideBarrier() {
-    if (barrierActive) {
-      barrierActive = false;
-      for (var i = 0; i < middleLine.bodies.length; i++) {
-        middleLine.bodies[i].collisionFilter.category = 0;
-      }
-      for (var i = 0; i < rightCircle.bodies.length; i++) {
-        rightCircle.bodies[i].collisionFilter.category = 0;
-        leftCircle.bodies[i].collisionFilter.category = 0;
-      }
+    for (var i = 0; i < middleLine.bodies.length; i++) {
+      middleLine.bodies[i].collisionFilter.category = 0;
+    }
+    for (var i = 0; i < rightCircle.bodies.length; i++) {
+      rightCircle.bodies[i].collisionFilter.category = 0;
+      leftCircle.bodies[i].collisionFilter.category = 0;
     }
   }
 
