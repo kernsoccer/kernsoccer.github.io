@@ -30,7 +30,7 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
         }
         hud.updateScore(teamScores);
 
-        if (gameEnd || isOverTime)
+        if (gameEnd || gameTimer.isOvertime())
         {
             endGame(scoreTeam, true);
         }
@@ -48,9 +48,11 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
             sound.playCheer();
             hud.showMessage(winner + " wins the game!",
                 winner == "red" ? "#D24E4E" : "#3A85CC");
-            if (byGoal)
-            {
+            if (byGoal) {
                 switchGameState("afterGoal", undefined);
+            }
+            else {
+                switchGameState("ended");    
             }
         }
         else
@@ -94,8 +96,8 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
         recorder.recordTick();
         updatePlayers();
         checkDistanceKicks();
-        updateTimer(deltaTime);
         hud.update();
+        updateTimer(deltaTime);
         checkGoal();
     }
 

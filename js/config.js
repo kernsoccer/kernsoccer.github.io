@@ -94,7 +94,7 @@ var PLAYER_INPUT_MAPPINGS = {
         },
         kicking0: {
             type: "button",
-            buttons: [0, 6],
+            buttons: [0, 6, 7],
             toggle: false
         },
         boost0: {

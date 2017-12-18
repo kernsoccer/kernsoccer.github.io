@@ -168,7 +168,7 @@ var Menu = function (controllers, startFunction)
 
         var gameOptions = optionsMenu.getGameOptions();
         gameOptions.players = players;
-
+        
         startFunction(gameOptions);
     }
 

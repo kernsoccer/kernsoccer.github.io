@@ -8,11 +8,11 @@ var GameTimer = function () {
     }
 
     function getSeconds() {
-        return Math.abs(Math.floor(timeRemaining / 1000) % 60);
+        return Math.floor(Math.abs(timeRemaining / 1000) % 60);
     }
 
     function getMinutes() {
-        return Math.abs(Math.floor(timeRemaining / (60 * 1000)));
+        return Math.floor(Math.abs(timeRemaining / (60 * 1000)));
     }
 
     function isOvertime() {

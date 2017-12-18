@@ -8,7 +8,7 @@ var MenuState = function(menu) {
     }
 
     function end() {
-
+        menu.hide();
     }
 
     return {
