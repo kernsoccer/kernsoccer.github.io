@@ -273,7 +273,8 @@ var Game = function ()
             switchGameState
         ));
         addState(MenuState(
-            menu
+            menu,
+            runner
         ));
         addState(PausedState(
             hud, 
