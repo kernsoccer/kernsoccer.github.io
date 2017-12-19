@@ -50,7 +50,7 @@ var Game = function ()
         pawn.hasKicked = true;
         sound.playKick();
         currentKick = {
-            direction: Matter.Vector.normalise(
+            direction: gameOptions.dribbling ? Matter.Vector.normalise(pawn.velocity) : Matter.Vector.normalise(
                 Matter.Vector.sub(ball.position, pawn.position)),
             ball: ball
         };
@@ -116,6 +116,7 @@ var Game = function ()
         HtmlRenderer.update();
         lastUpdate = time;
         // request next animation frame
+        console.log("kernsoccer: " + window.location.hash);
         requestAnimationFrame(update);
     };
 
@@ -193,6 +194,7 @@ var Game = function ()
         gameOptions.allowDraw = options.allowDraw;
         gameOptions.goalLimit = options.goalLimit;
         gameOptions.timeLimit = options.timeLimit;
+        gameOptions.dribbling = options.dribbling;
         switchGameState("warmup", options.startingTeam);
         
     };

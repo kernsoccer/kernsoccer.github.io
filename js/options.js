@@ -11,6 +11,7 @@ var OptionsMenu = function (menu)
     var goalLimitInput = document.getElementById("goalLimit");
     var timeLimitInput = document.getElementById("timeLimit");
     var allowDrawInput = document.getElementById("allowDraw");
+    var dribblingInput = document.getElementById("dribbling");
     var themeInput = document.getElementById("theme");
 
     function setFieldTheme(theme) {
@@ -48,6 +49,7 @@ var OptionsMenu = function (menu)
             allowDraw: allowDrawInput.checked,
             goalLimit: (goalLimitInput.value != "") ? goalLimitInput.value : Number.POSITIVE_INFINITY,
             timeLimit: (timeLimitInput.value != "") ? timeLimitInput.value * 60 : Number.POSITIVE_INFINITY,
+            dribbling: dribblingInput.checked,
             startingTeam: undefined
         };
 

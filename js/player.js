@@ -105,6 +105,7 @@ var Player = function (engine, controller, team, pawnCount)
         // Apply force to body if stick is out of dead zone.
         if (Matter.Vector.magnitude(vect) > PLAYER_INPUT_DEAD_ZONE)
         {
+            body.latestVect = vect;
             Matter.Body.applyForce(body, body.position, Matter.Vector.mult(
                 vect, body.isKicking ? PLAYER_MOVE_FORCE_KICKING : PLAYER_MOVE_FORCE));
         }

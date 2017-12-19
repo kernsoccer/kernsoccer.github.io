@@ -1,6 +1,7 @@
-var MenuState = function(menu) {
+var MenuState = function(menu, runner) {
     function begin() {
         menu.show();
+        runner.enabled = false;
     }
 
     function update() {
