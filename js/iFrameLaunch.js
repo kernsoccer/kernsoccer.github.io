@@ -72,7 +72,7 @@ function update() {
     ctrlMgr.update();
     for (var i=0; i < ctrlMgr.controllers.length; i++) {
         if (ctrlMgr.controllers[i].get("start")) {
-            window.iframe.generate(window.document.body, 'http://kernsoccer.github.io?start');
+            window.iframe.generate(window.document.body, '//kernsoccer.github.io?start');
             requestAnimationFrame(updateIFrame);
             return;
         }

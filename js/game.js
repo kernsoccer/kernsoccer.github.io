@@ -116,7 +116,6 @@ var Game = function ()
         HtmlRenderer.update();
         lastUpdate = time;
         // request next animation frame
-        console.log("kernsoccer: " + window.location.hash);
         requestAnimationFrame(update);
     };
 
