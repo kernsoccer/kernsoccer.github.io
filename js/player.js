@@ -83,7 +83,7 @@ var Player = function (engine, controller, team, pawnCount)
         if (body.isBoosting && body.energy > 0 && !body.isExhausted)
         {
             vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
-            body.energy -= ENERGY_DROWNING;
+            body.energy -= 1;
 
             if (body.energy <= 0)
             {
@@ -91,10 +91,9 @@ var Player = function (engine, controller, team, pawnCount)
                 body.isExhausted = true;
             }
         }
-        else if (body.energy < 100)
+        if (body.isExhausted)
         {
-            body.energy += body.isExhausted ? ENERGY_REGENERATION_OUTPOWERED : ENERGY_REGENERATION;
-
+            body.energy += 0.5;
             if (body.energy >= 100)
             {
                 body.energy = 100;
