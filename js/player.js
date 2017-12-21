@@ -91,18 +91,18 @@ var Player = function (engine, controller, team, pawnCount)
             }
         }
         else {
-            if (body.isExhausted)
-            {
-                body.energy += 0.24;    
+            var multiplier = 1;
+            if (Matter.Vector.magnitudeSquared(body.velocity) < 0.2) {
+                multiplier = 3;
             }
-            else
-            {
-                body.energy += 0.08;    
-            }
+            body.energy += (0.08 * multiplier);
             if (body.energy >= 100)
             {
                 body.energy = 100;
-                body.isExhausted = false;
+                if (body.isExhausted) {
+                    body.isExhausted = false;
+                }
+                
             }
         }
 
