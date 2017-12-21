@@ -83,24 +83,29 @@ var Player = function (engine, controller, team, pawnCount)
         if (body.isBoosting && body.energy > 0 && !body.isExhausted)
         {
             vect = Matter.Vector.mult(vect, PLAYER_BOOSTENERGY);
-            body.energy -= 1;
-
+            body.energy -= 0.4;
             if (body.energy <= 0)
             {
                 body.energy = 0;
                 body.isExhausted = true;
             }
         }
-        if (body.isExhausted)
-        {
-            body.energy += 0.5;
+        else {
+            if (body.isExhausted)
+            {
+                body.energy += 0.24;    
+            }
+            else
+            {
+                body.energy += 0.08;    
+            }
             if (body.energy >= 100)
             {
                 body.energy = 100;
                 body.isExhausted = false;
             }
         }
-        
+
         // Apply force to body if stick is out of dead zone.
         if (Matter.Vector.magnitude(vect) > PLAYER_INPUT_DEAD_ZONE)
         {
