@@ -40,6 +40,11 @@ body
         background-color: #1b7ead;
     }
 
+    body.theme-netzkern {
+        background-image: none;
+        background-color: #aebd14;        
+    }
+
 body.theme-street .field .lines {
     background-image: url('../img/street.jpg');
 }
@@ -96,6 +101,18 @@ img
     #playingField .blue
     {
         background-color: #3A85CC;
+    }
+
+    body.theme-netzkern #playingField .red
+    {
+        background-color: #878787;
+        color: #878787;
+    }
+
+    body.theme-netzkern #playingField .blue
+    {
+        background-color: rgb(166, 51, 204);
+        color: rgb(166, 51, 204);
     }
 
     #playingField .ball
@@ -296,10 +313,6 @@ img
     text-align: center;
     padding-top: 3px;
     box-sizing: border-box;
-}
-
-.menu-content
-{
 }
 
 .menuHeadline
