@@ -42,7 +42,7 @@ body
 
     body.theme-netzkern {
         background-image: none;
-        background-color: #aebd14;        
+        background-color: #878787;        
     }
 
 body.theme-street .field .lines {
@@ -105,8 +105,8 @@ img
 
     body.theme-netzkern #playingField .red
     {
-        background-color: #878787;
-        color: #878787;
+        background-color: #aebd14;
+        color: #aebd14;
     }
 
     body.theme-netzkern #playingField .blue
