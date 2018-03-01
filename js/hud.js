@@ -62,7 +62,7 @@ var Hud = function (gameTimer)
 
     function hideMessage()
     {
-        messagePanel.style.visibility = "visible";
+        messagePanel.style.visibility = "hidden";
     }
 
     function updateScore(teamScores)
