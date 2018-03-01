@@ -2,10 +2,12 @@ var KickoffState = function(recorder, sound, playingField, ball, resetTeam, upda
     var centerPosition;
     function begin(team) {
         // code double from warmupstate
+        if (team === "noReset") {
+            return;
+        }
         resetTeam(GAME_TEAM_RED, playingField.leftTeamLine);
         resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine);
-        ball.reset();
-
+        
         if (team == GAME_TEAM_RED)
         {
             playingField.showRightBarrier();

@@ -223,7 +223,7 @@ var Game = function ()
         {
             if (playerList[i].controller.get("pause"))
             {
-                switchGameState("paused", playerList[i].controller, currentGameState.name);
+                switchGameState("paused", { controller:  playerList[i].controller, prevState: currentGameState.name });
                 return;
             }
             playerList[i].update();
@@ -278,6 +278,7 @@ var Game = function ()
         addState(PausedState(
             hud, 
             runner, 
+            ball,
             switchGameState
         ));
         addState(ReplayState(
