@@ -36,7 +36,7 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
         }
         else
         {
-            hud.showMessage(scoreTeam + " team scores!", scoreTeam == "red" ? "#D24E4E" : "#3A85CC", 5);
+            hud.showMessage("<span class='teamname-" + scoreTeam + "'></span> team scores!", scoreTeam, 5);
             switchGameState("afterGoal", scoreTeam == "red" ? "blue" : "red");
         }
     }
@@ -46,8 +46,8 @@ var RunningState = function(recorder, sound, hud, teamScores, gameOptions, ball,
         if (winner !== undefined)
         {
             sound.playCheer();
-            hud.showMessage(winner + " wins the game!",
-                winner == "red" ? "#D24E4E" : "#3A85CC");
+            hud.showMessage("<span class='teamname-" + winner + "'></span> wins the game!",
+                winner);
             if (byGoal) {
                 switchGameState("afterGoal", undefined);
             }

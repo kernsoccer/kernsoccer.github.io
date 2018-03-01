@@ -416,6 +416,46 @@ img
     background-color: #3A85CC;
 }
 
+.teamname-red::after
+{
+    content: 'red';
+}
+
+.teamname-blue::after
+{
+    content: 'blue';
+}
+
+body.theme-netzkern .teamname-red::after
+{
+    content: 'green';
+}
+
+body.theme-netzkern .teamname-blue::after
+{
+    content: 'violet';
+}
+
+.color-white {
+    color: white;
+}
+
+.color-blue {
+    color: blue;
+}
+
+.color-red {
+    color: red;
+}
+
+body.theme-netzkern .color-blue {
+    color: rgb(166, 51, 204);
+}
+
+body.theme-netzkern .color-red {
+    color: #aebd14;
+}
+
 .redTeam .pawn
 {
     background-color: #D24E4E;

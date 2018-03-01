@@ -32,15 +32,15 @@ var Hud = function (gameTimer)
     function drawMessage(text, color)
     {
         messagePanel.style.visibility = "visible";
-        messagePanel.innerText = text;
+        messagePanel.innerHTML = text;
 
         if (color !== undefined)
         {
-            messagePanel.style.color = color;
+            messagePanel.className = 'color-' + color;
         }
         else
         {
-            messagePanel.style.color = "white";
+            messagePanel.className = "color-white";
         }
     }
 
@@ -62,7 +62,7 @@ var Hud = function (gameTimer)
 
     function hideMessage()
     {
-        messagePanel.style.visibility = "hidden";
+        messagePanel.style.visibility = "visible";
     }
 
     function updateScore(teamScores)
