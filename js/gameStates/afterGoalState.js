@@ -10,7 +10,7 @@ var AfterGoalState = function(recorder, updatePlayers, checkDistanceKicks, switc
 
     function update(deltaTime) {
         recorder.recordTick();
-        updatePlayers();
+        updatePlayers(true);
         checkDistanceKicks();
     }
 

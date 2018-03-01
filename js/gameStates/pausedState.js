@@ -7,9 +7,9 @@ var PausedState = function(hud, runner, ball, switchGameState) {
         controller = switchOptions.controller;
         state = switchOptions.prevState;
         hud.showMessage("PAUSED", "red");
-        var velo = ball.getBody().velocity;
-        velo = Matter.Vector.mult(velo, -1);
-        Matter.Body.setVelocity(ball.getBody(), velo);
+        //var velo = ball.getBody().velocity;
+        //velo = Matter.Vector.mult(velo, -1);
+        //Matter.Body.setVelocity(ball.getBody(), velo);
         runner.enabled = false;
     }
 

@@ -217,11 +217,11 @@ var Game = function ()
         gameStates[gameState.name] = gameState;
     }
 
-    function updatePlayers()
+    function updatePlayers(noPause)
     {
         for (var i = 0; i < playerList.length; i++)
         {
-            if (playerList[i].controller.get("pause"))
+            if (noPause !== true && playerList[i].controller.get("pause"))
             {
                 switchGameState("paused", { controller:  playerList[i].controller, prevState: currentGameState.name });
                 return;

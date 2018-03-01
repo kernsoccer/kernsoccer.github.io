@@ -7,7 +7,7 @@ var KickoffState = function(recorder, sound, playingField, ball, resetTeam, upda
         }
         resetTeam(GAME_TEAM_RED, playingField.leftTeamLine);
         resetTeam(GAME_TEAM_BLUE, playingField.rightTeamLine);
-        
+        ball.reset();
         if (team == GAME_TEAM_RED)
         {
             playingField.showRightBarrier();
